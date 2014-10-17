@@ -12,7 +12,7 @@
 */
 
 //Basic GET Route
-Route::get('/', function()
+/*Route::get('/', function()
 {
 	return View::make('hello');
 });
@@ -57,5 +57,12 @@ Route::get('db', function()
 {
 	return View::make('db');
 });
+*/
+
+Route::get('/', function()
+{
+	return View::make('index')->with('pagetitle','Home');
+});
+
 
 
