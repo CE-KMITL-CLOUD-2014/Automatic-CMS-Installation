@@ -50,14 +50,14 @@ Route::get('foos', array('https', function()
 Route::get('user/{id}', function($id)
 {
 	return 'User page '.$id;
-});
+});*/
 
 //Test Database Connection
 Route::get('db', function()
 {
 	return View::make('db');
 });
-*/
+
 
 Route::get('/', function()
 {
