@@ -25,7 +25,7 @@
                     <li class="page-scroll">
                         <a href="/#about">เกี่ยวกับเรา</a>
                     </li>   
-                    @if(empty($user[0]))                 
+                    @if(!Auth::check())                 
 	        <li class="page-scroll">
                         <a href="/user/register">สมัครสมาชิก</a>
                     </li>

@@ -4,12 +4,12 @@
     <header>
         <div class="container">
             <div class="row">
-                <div class="col-lg-12">  
-                @if(!empty($register_flag)) 
-                <div class='alert alert-info'>
-                        <p>ทำการสมัครสมาชิกเรียบร้อยแล้ว กรุณาเข้าสู่ระบบ</p>
-                 </div> 
-                 @endif  
+                <div class="col-lg-12"> 
+                @if(Session::has('nf_confirm'))
+                <div class='alert alert-info'>   
+               {{ Session::get('nf_confirm') }}
+                </div>
+                @endif
                     <div class="intro-text">
                         <span class="skills">เข้าสู่ระบบ</span>
                         <hr class="star-light">
@@ -21,8 +21,8 @@
                         {{ $error }} <br/>
                         @endforeach
                         </div>  
-                    @endif  
-                        <form name="signIn" id="signinForm" action="/user/login" method="post" validate>
+                    @endif                         
+                        {{ Form::open(array('url'=>'user/login', 'id'=>'signinForm', 'name' => 'signIn' , 'validate' => 'validate')) }}
                             <div class="row control-group">
                                 <div class="form-group col-xs-12 floating-label-form-group controls" style="background-color:white;">
                                     <label>Username</label>
@@ -43,7 +43,7 @@
                                     <button type="submit" class="btn btn-info btn-lg">ตกลง</button>                                    
                                 </div>
                             </div>
-                        </form>                        
+                        {{ Form::close() }}                      
                     </div>                    
                 </div>
             </div>

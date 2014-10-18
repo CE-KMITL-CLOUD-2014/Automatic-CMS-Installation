@@ -11,7 +11,7 @@
 			</div>
 			<div class="row">
                 <div class="col-lg-8 col-lg-offset-2 ">
-                    <form name="signUp" id="signupForm" action="/user/register" method="post" validate> 
+                {{ Form::open(array('url'=>'user/register', 'id'=>'signupForm', 'name' => 'signUp' , 'validate' => 'validate')) }}                    
                      @if($errors->all())
                 <div class='alert alert-danger'>
                     <h3>Error :</h3>
@@ -60,7 +60,7 @@
                                 <button type="submit" class="btn btn-success btn-lg">ลงทะเบียน</button>
                             </div>
                         </div>
-                    </form>
+                     {{ Form::close() }}   
                 </div>
             </div>
 		</div>

@@ -58,21 +58,38 @@ Route::get('db', function()
 	return View::make('db');
 });
 
-
 Route::get('/', function()
 {
-	$user = unserialize(serialize(Session::get('nfuser')));
-	return View::make('index')->with('user',$user)->with('pagetitle','Home');
+    return View::make('index')->with('pagetitle','Home');
 });
 
-
 ## User Route ##
-Route::any('user/register', [
+Route::get('user/register', function()
+{   
+    if (Auth::check()) {
+        return Redirect::to('user/main');
+    } else {
+         return View::make('users/register')->with('pagetitle','Register');
+    }
+});
+
+Route::post('user/register', [
+    "before" => "csrf",
     "as" => "users/register",
     "uses" => "UsersController@registerAction"
 ]);
 
-Route::any('user/login', [
+Route::get('user/login', function()
+{
+    if (Auth::check()) {
+        return Redirect::to('user/main');
+    } else {
+        return View::make('users/login')->with('pagetitle','Login');
+    }
+});
+
+Route::post('user/login', [
+    "before" => "csrf",
     "as" => "users/login",
     "uses" => "UsersController@loginAction"
 ]);
@@ -82,10 +99,24 @@ Route::any('user/logout', [
     "uses" => "UsersController@logoutAction"
 ]);
 
-Route::get('user/main', [
-    "as" => "users/main",
-    "uses" => "UsersController@mainAction"
+Route::get('user/main', function()
+{
+    if (Auth::check()) {
+        return View::make('users/main')->with('pagetitle','Member');
+    } else {
+        return Redirect::to('user/login');
+    }
+});
+
+Route::get('user/confirm/{username}-{confirm_code}', [
+    "as" => "users/confirm",
+    "uses" => "UsersController@confirmAction"
 ]);
+
+Route::get('user/confirm', function()
+{
+    return View::make('users/confirm')->with('pagetitle','Account Confirmation');
+});
 
 
 	
