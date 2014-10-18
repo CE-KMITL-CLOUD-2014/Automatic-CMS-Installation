@@ -182,6 +182,13 @@
 									<div class="form-group">
 										<div class="col-sm-offset-2 col-sm-10">
 											<button type="submit" class="btn btn-default">Submit</button>
+											<button type="button" class="btn btn-default" onclick="ppCancel()">Cancel</button>
+											<script>
+												function ppCancel(){
+													$('#personalProfileEdit').css('display','none');
+													$('#personalProfile').css('display','block');
+												}
+											</script>
 										</div>
 									</div>
 								</form>
@@ -250,6 +257,13 @@
 									<div class="form-group">
 										<div class="col-sm-offset-2 col-sm-10">
 											<button type="submit" class="btn btn-default">Submit</button>
+											<button type="button" class="btn btn-default" onclick="cdCancel()">Cancel</button>
+											<script>
+												function cdCancel(){
+													$('#contactDetailsEdit').css('display','none');
+													$('#contactDetails').css('display','block');
+												}
+											</script>
 										</div>
 									</div>
 								</form>
