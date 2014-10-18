@@ -2,85 +2,331 @@
 
 $(function() {
 
-    // Area Chart
+	//Color for Area Chart
+	//lineColors: ['#16a085'],//GREEN SEA color
+	//lineColors: ['#27ae60'],//NEPHRITIS color
+	//lineColors: ['#2980b9'],//BELIZE HOLE color
+	//lineColors: ['#8e44ad'],//WISTERIA color
+	//lineColors: ['#2c3e50'],//MIDNIGHT BLUE color
+	//lineColors: ['#f39c12'],//ORANGE color
+	//lineColors: ['#d35400'],//PUMPKIN color
+	//lineColors: ['#c0392b'],//POMEGRANATE color
+	//lineColors: ['#bdc3c7'],//SILVER color
+	//lineColors: ['#7f8c8d'],//ASBESTOS color
+
+    // Area Chart - Web site 1
+	// Web site 1 - Month
     Morris.Area({
-        element: 'morris-area-chart',
+        element: 'morris-website1-pageviews-month-chart',
         data: [{
-            period: '2010 Q1',
-            iphone: 2666,
-            ipad: null,
-            itouch: 2647
+            period: '2014-01',
+            pageviews: 2666
         }, {
-            period: '2010 Q2',
-            iphone: 2778,
-            ipad: 2294,
-            itouch: 2441
+            period: '2014-02',
+            pageviews: 2778
         }, {
-            period: '2010 Q3',
-            iphone: 4912,
-            ipad: 1969,
-            itouch: 2501
+            period: '2014-03',
+            pageviews: 4912
         }, {
-            period: '2010 Q4',
-            iphone: 3767,
-            ipad: 3597,
-            itouch: 5689
+            period: '2014-04',
+            pageviews: 3767
         }, {
-            period: '2011 Q1',
-            iphone: 6810,
-            ipad: 1914,
-            itouch: 2293
+            period: '2014-05',
+            pageviews: 6810
         }, {
-            period: '2011 Q2',
-            iphone: 5670,
-            ipad: 4293,
-            itouch: 1881
+            period: '2014-06',
+            pageviews: 5670
         }, {
-            period: '2011 Q3',
-            iphone: 4820,
-            ipad: 3795,
-            itouch: 1588
+            period: '2014-07',
+            pageviews: 4820
         }, {
-            period: '2011 Q4',
-            iphone: 15073,
-            ipad: 5967,
-            itouch: 5175
+            period: '2014-08',
+            pageviews: 15073
         }, {
-            period: '2012 Q1',
-            iphone: 10687,
-            ipad: 4460,
-            itouch: 2028
+            period: '2014-09',
+            pageviews: 10687
         }, {
-            period: '2012 Q2',
-            iphone: 8432,
-            ipad: 5713,
-            itouch: 1791
+            period: '2014-10',
+            pageviews: 8432
         }],
         xkey: 'period',
-        ykeys: ['iphone', 'ipad', 'itouch'],
-        labels: ['iPhone', 'iPad', 'iPod Touch'],
+        ykeys: ['pageviews'],
+        labels: ['Pageviews'],
         pointSize: 2,
         hideHover: 'auto',
+		lineColors: ['#2980b9'],//BELIZE HOLE color
         resize: true
     });
 
-    // Donut Chart
-    Morris.Donut({
-        element: 'morris-donut-chart',
+	// Web site 1 - week
+	Morris.Area({
+        element: 'morris-website1-pageviews-week-chart',
         data: [{
-            label: "Download Sales",
-            value: 12
+            period: '2014-08-24',
+            pageviews: 200
         }, {
-            label: "In-Store Sales",
-            value: 30
+            period: '2014-08-31',
+            pageviews: 700
         }, {
-            label: "Mail-Order Sales",
-            value: 20
+            period: '2014-09-7',
+            pageviews: 900
+        }, {
+            period: '2014-09-14',
+            pageviews: 300
+        }, {
+            period: '2014-09-21',
+            pageviews: 622
+        }, {
+            period: '2014-09-28',
+            pageviews: 100
+        }, {
+            period: '2014-10-5',
+            pageviews: 521
+        }, {
+            period: '2014-10-12',
+            pageviews: 1000
+        }, {
+            period: '2014-10-19',
+            pageviews: 312
+        }, {
+            period: '2014-10-26',
+            pageviews: 426
         }],
+        xkey: 'period',
+        ykeys: ['pageviews'],
+        labels: ['Pageviews'],
+        pointSize: 2,
+        hideHover: 'auto',
+		lineColors: ['#2980b9'],//BELIZE HOLE color
         resize: true
     });
 
-    // Line Chart
+	// Web site 1 - day
+	Morris.Area({
+        element: 'morris-website1-pageviews-day-chart',
+        data: [{
+            period: '2014-10-17',
+            pageviews: 543
+        }, {
+            period: '2014-10-18',
+            pageviews: 645
+        }, {
+            period: '2014-10-19',
+            pageviews: 742
+        }, {
+            period: '2014-10-20',
+            pageviews: 515
+        }, {
+            period: '2014-10-21',
+            pageviews: 751
+        }, {
+            period: '2014-10-22',
+            pageviews: 654
+        }, {
+            period: '2014-10-23',
+            pageviews: 521
+        }, {
+            period: '2014-10-24',
+            pageviews: 800
+        }, {
+            period: '2014-10-25',
+            pageviews: 456
+        }, {
+            period: '2014-10-26',
+            pageviews: 426
+        }],
+        xkey: 'period',
+        ykeys: ['pageviews'],
+        labels: ['Pageviews'],
+        pointSize: 2,
+        hideHover: 'auto',
+		lineColors: ['#2980b9'],//BELIZE HOLE color
+        resize: true
+    });
+
+	// Web site 1 - hourly
+	Morris.Area({
+        element: 'morris-website1-pageviews-hourly-chart',
+        data: [{
+            period: '2014-10-26 10:00',
+            pageviews: 200
+        }, {
+            period: '2014-10-26 11:00',
+            pageviews: 300
+        }, {
+            period: '2014-10-26 12:00',
+            pageviews: 295
+        }, {
+            period: '2014-10-26 13:00',
+            pageviews: 400
+        }, {
+            period: '2014-10-26 14:00',
+            pageviews: 534
+        }, {
+            period: '2014-10-26 15:00',
+            pageviews: 654
+        }, {
+            period: '2014-10-26 16:00',
+            pageviews: 753
+        }, {
+            period: '2014-10-26 17:00',
+            pageviews: 765
+        }, {
+            period: '2014-10-26 18:00',
+            pageviews: 812
+        }, {
+            period: '2014-10-26 19:00',
+            pageviews: 900
+        }],
+        xkey: 'period',
+        ykeys: ['pageviews'],
+        labels: ['Pageviews'],
+        pointSize: 2,
+        hideHover: 'auto',
+		lineColors: ['#2980b9'],//BELIZE HOLE color
+        resize: true
+    });
+
+	// Area Chart - Web site 2
+    Morris.Area({
+        element: 'morris-website2-pageviews-chart',
+        data: [{
+            period: '2014-01',
+            pageviews: 4561
+        }, {
+            period: '2014-02',
+            pageviews: 5345
+        }, {
+            period: '2014-03',
+            pageviews: 6432
+        }, {
+            period: '2014-04',
+            pageviews: 3654
+        }, {
+            period: '2014-05',
+            pageviews: 5413
+        }, {
+            period: '2014-06',
+            pageviews: 5670
+        }, {
+            period: '2014-07',
+            pageviews: 6451
+        }, {
+            period: '2014-08',
+            pageviews: 7542
+        }, {
+            period: '2014-09',
+            pageviews: 10687
+        }, {
+            period: '2014-10',
+            pageviews: 12000
+        }],
+        xkey: 'period',
+        ykeys: ['pageviews'],
+        labels: ['Pageviews'],
+        pointSize: 2,
+        hideHover: 'auto',
+		lineColors: ['#16a085'],//GREEN SEA color
+        resize: true
+    });
+
+	// Area Chart - Web site 3
+    Morris.Area({
+        element: 'morris-website3-pageviews-chart',
+        data: [{
+            period: '2014-01',
+            pageviews: 12300
+        }, {
+            period: '2014-02',
+            pageviews: 8445
+        }, {
+            period: '2014-03',
+            pageviews: 11000
+        }, {
+            period: '2014-04',
+            pageviews: 7412
+        }, {
+            period: '2014-05',
+            pageviews: 2100
+        }, {
+            period: '2014-06',
+            pageviews: 5000
+        }, {
+            period: '2014-07',
+            pageviews: 7511
+        }, {
+            period: '2014-08',
+            pageviews: 3415
+        }, {
+            period: '2014-09',
+            pageviews: 10687
+        }, {
+            period: '2014-10',
+            pageviews: 5004
+        }],
+        xkey: 'period',
+        ykeys: ['pageviews'],
+        labels: ['Pageviews'],
+        pointSize: 2,
+        hideHover: 'auto',
+		lineColors: ['#f39c12'],//ORANGE color
+        resize: true
+    });
+	
+	// set 2 color for Donut Chart, Random color of donut chart math with area chart
+	//colors: ['#1abc9c','#16a085'],//TURQUOISE, GREEN SEA color
+	//colors: ['#2ecc71','#27ae60'],//EMERALD, NEPHRITIS color
+	//colors: ['#2980b9','#3498db'],//BELIZE HOLE, PETER RIVER color
+	//colors: ['#9b59b6','#8e44ad'],//AMETHYST, WISTERIA color
+	//colors: ['#34495e','#2c3e50'],//WET ASPHALT, MIDNIGHT BLUE color
+	//colors: ['#f1c40f','#f39c12'],//SUN FLOWER, ORANGE color
+	//colors: ['#e67e22','#d35400'],//CARROT, PUMPKIN color
+	//colors: ['#e74c3c','#c0392b'],//ALIZARIN, POMEGRANATE color
+
+
+    // Donut Chart - Example
+    Morris.Donut({
+        element: 'morris-website1-donut-chart',
+        data: [{
+            label: "New Visitor",
+            value: 253
+        }, {
+            label: "Returning Visitor",
+            value: 132
+        }],
+		colors: ['#2980b9','#3498db'],//BELIZE HOLE, PETER RIVER color
+        resize: true
+    });
+
+	// Donut Chart - Example
+    Morris.Donut({
+        element: 'morris-website2-donut-chart',
+        data: [{
+            label: "New Visitor",
+            value: 892
+        }, {
+            label: "Returning Visitor",
+            value: 756
+        }],
+		colors: ['#2ecc71','#27ae60'],//EMERALD, NEPHRITIS color
+        resize: true
+    });
+
+	// Donut Chart - Example
+    Morris.Donut({
+        element: 'morris-website3-donut-chart',
+        data: [{
+            label: "New Visitor",
+            value: 6541
+        }, {
+            label: "Returning Visitor",
+            value: 2500
+        }],
+		colors: ['#f1c40f','#f39c12'],//SUN FLOWER, ORANGE color
+        resize: true
+    });
+
+    // Line Chart - Example
     Morris.Line({
         // ID of the element in which to draw the chart.
         element: 'morris-line-chart',
@@ -192,7 +438,7 @@ $(function() {
         resize: true
     });
 
-    // Bar Chart
+    // Bar Chart - Example
     Morris.Bar({
         element: 'morris-bar-chart',
         data: [{
