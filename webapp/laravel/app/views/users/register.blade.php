@@ -23,7 +23,7 @@
                          <div class="row control-group">
                             <div class="form-group col-xs-12 floating-label-form-group controls">
                                 <label>Full Name</label>
-                                <input type="text" class="form-control" placeholder="Full Name" id="fullname" required data-validation-required-message="Please enter your fullname.">
+                                <input type="text" class="form-control" placeholder="Full Name" id="fullname" name="fullname" required data-validation-required-message="Please enter your fullname.">
                                 <p class="help-block text-danger"></p>
                             </div>
                         </div>
@@ -36,7 +36,7 @@
 
                             <div class="form-group col-xs-6 floating-label-form-group controls">
                                 <label>Email Address</label>
-                                <input type="email" class="form-control" placeholder="Email Address" id="email" required data-validation-required-message="Please enter your email address.">
+                                <input type="email" class="form-control" placeholder="Email Address" id="email" name="email" required data-validation-required-message="Please enter your email address.">
                                 <p class="help-block text-danger"></p>
                             </div>
                         </div>	
@@ -48,7 +48,7 @@
                             </div>                        
                             <div class="form-group col-xs-6 floating-label-form-group controls">
                                 <label>Password Again</label>
-                                <input type="password" class="form-control" placeholder="Password Again" id="password-again" required data-validation-required-message="Please enter your password again.">
+                                <input type="password" class="form-control" placeholder="Password Again" id="password_confirmation" name="password_confirmation" required data-validation-required-message="Please enter your password again.">
                                 <p class="help-block text-danger"></p>
                             </div>
                         </div>				

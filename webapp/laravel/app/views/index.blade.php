@@ -11,7 +11,7 @@
                         <span class="skills">Wordpress - Joomla - Drupal</span>
                     </div>
 					<div class="col-lg-8 col-lg-offset-2 text-center" style="margin-top:50px">
-						<a href="#sign-up" class="btn btn-lg btn-outline page-scroll">
+						<a href="/user/register" class="btn btn-lg btn-outline page-scroll">
 							<i class="fa fa-cloud"></i> เริ่มต้นสร้างเว็บไซต์ !
 						</a>
 					</div>

@@ -61,20 +61,34 @@ Route::get('db', function()
 
 Route::get('/', function()
 {
-	return View::make('index')->with('pagetitle','Home');
+	$user = unserialize(serialize(Session::get('nfuser')));
+	return View::make('index')->with('user',$user)->with('pagetitle','Home');
 });
 
 
 ## User Route ##
-Route::get('/user/register', function()
-{
-	return View::make('users/register')->with('pagetitle','Register');
-});
-
-Route::post('user/register', [
+Route::any('user/register', [
     "as" => "users/register",
     "uses" => "UsersController@registerAction"
 ]);
+
+Route::any('user/login', [
+    "as" => "users/login",
+    "uses" => "UsersController@loginAction"
+]);
+
+Route::any('user/logout', [
+    "as" => "users/logout",
+    "uses" => "UsersController@logoutAction"
+]);
+
+Route::get('user/main', [
+    "as" => "users/main",
+    "uses" => "UsersController@mainAction"
+]);
+
+
+	
 
 
 

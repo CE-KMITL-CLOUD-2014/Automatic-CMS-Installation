@@ -24,13 +24,23 @@
                     </li>                    
                     <li class="page-scroll">
                         <a href="/#about">เกี่ยวกับเรา</a>
-                    </li>                    
+                    </li>   
+                    @if(empty($user[0]))                 
 	        <li class="page-scroll">
                         <a href="/user/register">สมัครสมาชิก</a>
                     </li>
                     <li class="page-scroll">
                         <a href="/user/login">เข้าสู่ระบบ</a>
                     </li>
+                    @else
+                     <li class="page-scroll">
+                        <a href="/user/main">บัญชีผู้ใช้</a>
+                    </li>
+                    <li class="page-scroll">
+                        <a href="/user/logout">ออกจากระบบ</a>
+                    </li>
+
+                    @endif
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
