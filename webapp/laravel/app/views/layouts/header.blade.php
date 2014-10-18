@@ -10,7 +10,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#page-top">NFSITE.me</a>
+                <a class="navbar-brand" href="/#page-top">NFSITE.me</a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -19,17 +19,17 @@
                     <li class="hidden">
                         <a href="#page-top"></a>
                     </li>
+                     <li>
+                        <a href="/">หน้าแรก</a>
+                    </li>                    
                     <li class="page-scroll">
-                        <a href="#how-to">How to</a>
-                    </li>
-	       <li class="page-scroll">
-                        <a href="#sign-up">Sign Up</a>
-                    </li>
-                    <li class="page-scroll">
-                        <a href="#about">About</a>
+                        <a href="/#about">เกี่ยวกับเรา</a>
                     </li>                    
 	        <li class="page-scroll">
-                        <a href="#sign-in">Sign In</a>
+                        <a href="/user/register">สมัครสมาชิก</a>
+                    </li>
+                    <li class="page-scroll">
+                        <a href="/user/login">เข้าสู่ระบบ</a>
                     </li>
                 </ul>
             </div>

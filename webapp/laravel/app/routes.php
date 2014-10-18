@@ -65,4 +65,16 @@ Route::get('/', function()
 });
 
 
+## User Route ##
+Route::get('/user/register', function()
+{
+	return View::make('users/register')->with('pagetitle','Register');
+});
+
+Route::post('user/register', [
+    "as" => "users/register",
+    "uses" => "UsersController@registerAction"
+]);
+
+
 
