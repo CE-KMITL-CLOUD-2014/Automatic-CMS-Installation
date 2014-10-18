@@ -26,7 +26,7 @@ return array(
 	|
 	*/
 
-	'default' => 'sqlsrv',
+	'default' => 'localsqlsrv',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -77,6 +77,15 @@ return array(
 		'sqlsrv' => array(
 			'driver'   => 'sqlsrv',
 			'host'     => 'uachc5ufla.database.windows.net:1433',
+			'database' => 'nfsite',
+			'username' => 'nfcmsservice@uachc5ufla',
+			'password' => 'Cecloud159753',
+			'prefix'   => '',
+		),
+
+		'localsqlsrv' => array(
+			'driver'   => 'sqlsrv',
+			'host'     => 'tcp:uachc5ufla.database.windows.net,1433',
 			'database' => 'nfsite',
 			'username' => 'nfcmsservice@uachc5ufla',
 			'password' => 'Cecloud159753',
