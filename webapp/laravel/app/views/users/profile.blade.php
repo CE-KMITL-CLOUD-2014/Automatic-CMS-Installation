@@ -59,7 +59,7 @@
                      {{ Session::get('nf_changpw') }}
                  </div>
                  @endif
-                 {{ Form::open(array('url'=>'user/changepw', 'id'=>'changepwForm', 'name' => 'changePw' , 'class' => 'form-horizontal', 'role' => 'form')) }}
+                 {{ Form::open(array('url'=>'password/change', 'id'=>'changepwForm', 'name' => 'changePw' , 'class' => 'form-horizontal', 'role' => 'form')) }}
                  <div class="form-group">
                     <label for="inputOldPassword" class="col-sm-2 control-label">Old Password</label>
                     <div class="col-sm-4">

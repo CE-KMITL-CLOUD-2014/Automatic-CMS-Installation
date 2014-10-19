@@ -4,29 +4,22 @@
     <header>
         <div class="container">
             <div class="row">
-                <div class="col-lg-12"> 
-                @if(Session::has('nf_confirm'))
-                <div class='alert alert-info'>   
-               {{ Session::get('nf_confirm') }}
-                </div>
-                @endif
+                <div class="col-lg-12">               
                     <div class="intro-text">
-                        <span class="skills">เข้าสู่ระบบ</span>
+                        <span class="skills">Reset Password</span>                        
                         <hr class="star-light">
                     </div>
-                    <div class="col-lg-4 col-lg-offset-4 text-center">
-                    @if($errors->all())
+                    <div class="col-lg-4 col-lg-offset-4 text-center">  
+                    @if (Session::has('error'))
                         <div class='alert alert-danger'>                       
-                        @foreach($errors->all() as $error)
-                        {{ $error }} <br/>
-                        @endforeach
+                        {{ trans(Session::get('error')) }}
                         </div>  
-                    @endif                         
-                        {{ Form::open(array('url'=>'user/login', 'id'=>'signinForm', 'name' => 'signIn' , 'validate' => 'validate')) }}
+                    @endif                                         
+                        {{ Form::open(array('route' => array('password/reset', $token), 'id'=>'resetForm', 'name' => 'reset' , 'validate' => 'validate')) }}
                             <div class="row control-group">
                                 <div class="form-group col-xs-12 floating-label-form-group controls" style="background-color:white;">
-                                    <label>Username</label>
-                                    <input type="text" class="form-control" placeholder="Username" id="username" name="username" required data-validation-required-message="Please enter your username.">
+                                    <label>Email Address</label>
+                                    <input type="email" class="form-control" placeholder="Email Address" id="email" name="email" required data-validation-required-message="Please enter your email.">
                                     <p class="help-block text-danger"></p>
                                 </div>
                             </div>
@@ -37,11 +30,18 @@
                                     <p class="help-block text-danger"></p>
                                 </div>
                             </div>
+                            <div class="row control-group">
+                                <div class="form-group col-xs-12 floating-label-form-group controls" style="background-color:white;">
+                                    <label>Password Again</label>
+                                    <input type="password" class="form-control" placeholder="Password Again" id="password_confirmation" name="password_confirmation" required data-validation-required-message="Please enter your password again.">
+                                    <p class="help-block text-danger"></p>
+                                </div>
+                            </div>
+                            {{ Form::hidden('token', $token) }}
                             <div id="success"></div>
                             <div class="row text-center">
                                 <div class="form-group col-xs-12" style="margin-top:20px;">
-                                    <button type="submit" class="btn btn-info btn-lg">ตกลง</button>    
-                                    <a class="btn btn-info btn-lg" href="/password/forget">ลืมรหัสผ่าน</a>                                
+                                    <button type="submit" class="btn btn-info btn-lg">ยืนยัน</button>                                    
                                 </div>
                             </div>
                         {{ Form::close() }}                      

@@ -127,12 +127,33 @@ Route::get('user/profile', function()
     }
 });
 
-Route::post('user/changepw', [
+
+## Password ##
+Route::post('password/change', [
     "before" => "csrf",
     "as" => "users/profile",
-    "uses" => "UsersController@changepwAction"
+    "uses" => "PasswordController@change"
 ]);
 	
+Route::get('password/forget', function()
+{
+    return View::make('password/forget')->with('pagetitle','Forget Password');
+});
 
+Route::post('password/forget', [
+    "before" => "csrf",
+    "as" => "password/forget",
+    "uses" => "PasswordController@forget"
+]);
 
+Route::get('password/reset/{token}', function($token=null) {
+    if (is_null($token)) App::abort(404);
+    return View::make('password/reset')->with('pagetitle','Reset Password')->with('token', $token);
+});
+
+Route::post('password/reset/{token}', [
+    "before" => "csrf",
+    "as" => "password/reset",
+    "uses" => "PasswordController@reset"
+]);
 
