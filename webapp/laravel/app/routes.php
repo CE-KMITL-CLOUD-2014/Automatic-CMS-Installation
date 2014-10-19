@@ -137,7 +137,11 @@ Route::post('password/change', [
 	
 Route::get('password/forget', function()
 {
-    return View::make('password/forget')->with('pagetitle','Forget Password');
+    if (Auth::check()) {
+        return Redirect::to('dashboard');
+    } else {
+        return View::make('password/forget')->with('pagetitle','Forget Password');
+    }
 });
 
 Route::post('password/forget', [
@@ -148,7 +152,11 @@ Route::post('password/forget', [
 
 Route::get('password/reset/{token}', function($token=null) {
     if (is_null($token)) App::abort(404);
-    return View::make('password/reset')->with('pagetitle','Reset Password')->with('token', $token);
+     if (Auth::check()) {
+        return Redirect::to('dashboard');
+    } else {
+        return View::make('password/reset')->with('pagetitle','Reset Password')->with('token', $token);
+    }    
 });
 
 Route::post('password/reset/{token}', [

@@ -22,7 +22,7 @@ class UsersController extends BaseController {
 			$data = array('fullname' =>  $fullname , 'email' => $email, 'confirm_code' => $confirm_code);
 			Mail::send('emails.user.confirm', $data, function($message) use ($email, $fullname)
 			{
-				$message->to($email , $fullname) ->subject('Confirmation your account.');
+				$message->to($email , $fullname) ->subject('Confirm your account.');
 			});
 
 			$user = new User;
