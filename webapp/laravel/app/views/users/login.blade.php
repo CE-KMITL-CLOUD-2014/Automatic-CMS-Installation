@@ -25,8 +25,8 @@
                         {{ Form::open(array('url'=>'user/login', 'id'=>'signinForm', 'name' => 'signIn' , 'validate' => 'validate')) }}
                             <div class="row control-group">
                                 <div class="form-group col-xs-12 floating-label-form-group controls" style="background-color:white;">
-                                    <label>Username</label>
-                                    <input type="text" class="form-control" placeholder="Username" id="username" name="username" required data-validation-required-message="Please enter your username.">
+                                    <label>Email Address</label>
+                                    <input type="email" class="form-control" placeholder="Email Address" id="email" name="email" required data-validation-required-message="Please enter your email.">
                                     <p class="help-block text-danger"></p>
                                 </div>
                             </div>

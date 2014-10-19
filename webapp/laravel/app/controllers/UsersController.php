@@ -5,7 +5,6 @@ class UsersController extends BaseController {
 		$rules = array(
 			'fullname' => 'required|min:4|max:32',
 			'email' => 'required|between:4,64|email|unique:nf_user',
-			'username' => 'required|min:4|max:32|unique:nf_user',
 			'password' => 'required|min:6|max:32|confirmed',
 			'password_confirmation' => 'required|min:6|max:32'
 			);		
@@ -16,12 +15,11 @@ class UsersController extends BaseController {
 			return Redirect::to('user/register')->withErrors($messages)->withInput();
 		} else {		            	
 			$fullname = Input::get('fullname');
-			$username = Input::get('username');
 			$email = Input::get('email');
 			$confirm_code = substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 32);
 
               		//Send email to confirm
-			$data = array('fullname' =>  $fullname , 'username' => $username, 'email' => $email, 'confirm_code' => $confirm_code);
+			$data = array('fullname' =>  $fullname , 'email' => $email, 'confirm_code' => $confirm_code);
 			Mail::send('emails.user.confirm', $data, function($message) use ($email, $fullname)
 			{
 				$message->to($email , $fullname) ->subject('Confirmation your account.');
@@ -29,7 +27,6 @@ class UsersController extends BaseController {
 
 			$user = new User;
 			$user->fullname= $fullname;
-			$user->username = $username;
 			$user->password = Hash::make(Input::get('password'));
 			$user->email = $email;           			
 			$user->date_register = date('Y-m-d H:i:s');
@@ -46,7 +43,7 @@ class UsersController extends BaseController {
 
 	public function loginAction() {		
 		$rules = array(
-			'username' => 'required|min:4|max:32',
+			'email' => 'required|between:4,64|email',
 			'password' => 'required|min:6|max:32'
 			);
 		
@@ -55,14 +52,14 @@ class UsersController extends BaseController {
 			$messages = $validator->messages();
 			return Redirect::to('user/login')->withErrors($messages)->withInput();
 		} else {		
-			$username = Input::get('username');
+			$email = Input::get('email');
 			$password =  Input::get('password');
-			if (Auth::attempt(array('username' => $username, 'password' => $password, 'status_confirm' => 1, 'status_active' => 1))) {
+			if (Auth::attempt(array('email' => $email, 'password' => $password, 'status_confirm' => 1, 'status_active' => 1))) {
 				return Redirect::to('dashboard');
 			} else {
-				$user = User::where('username','=',$username)->get();
+				$user = User::where('email','=',$email)->get();
 				$messages = array(
-					array('โปรดตรวจสอบ username หรือ password  ')
+					array('โปรดตรวจสอบ email หรือ password  ')
 					);
 				if(count($user)) {
 					if($user[0]->status_confirm == 0) {
@@ -88,8 +85,8 @@ class UsersController extends BaseController {
 		return Redirect::to('/');
 	}
 
-	public function confirmAction($username,$confirm_code) {	
-		$user = User::where('username','=',$username)->where('confirm_code','=',$confirm_code)->get();
+	public function confirmAction($confirm_code) {	
+		$user = User::where('confirm_code','=',$confirm_code)->get();
 		if(count($user)) {
 			if($user[0]->status_confirm == 1) {
 				return Redirect::to('user/login')->with('nf_confirm','บัญชีนี้ถูกยืนยันแล้ว');

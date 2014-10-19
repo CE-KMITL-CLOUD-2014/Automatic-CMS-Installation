@@ -25,7 +25,6 @@
                     <div class="panel-body">
                         <div class="panel panel-default">
                           <div class="panel-body">
-                            <p>Username : {{Auth::user()->username}}</p>
                             <p>Email : {{Auth::user()->email}}</p>
                             <p>Register Date : {{Auth::user()->date_register}}</p>
                             <p>Status: @if(Auth::user()->status_active ==1)   Active @else Banned @endif</p>

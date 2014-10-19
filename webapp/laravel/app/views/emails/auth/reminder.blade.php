@@ -4,7 +4,7 @@
 		<meta charset="utf-8">
 	</head>
 	<body>
-		<h2>รีเซตรหัสผ่าน</h2>
+		<h2>Reset Password</h2>
 
 		<div>
 			กรุณาคลิ้กที่ลิ้งนี้เพื่อทำการรีเซตรหัสผ่านบัญชีของคุณ: {{ URL::to('password/reset', array($token)) }}.<br/>

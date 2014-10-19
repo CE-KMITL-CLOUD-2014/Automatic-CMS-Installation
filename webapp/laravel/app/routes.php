@@ -108,7 +108,7 @@ Route::get('dashboard', function()
     }
 });
 
-Route::get('user/confirm/{username}-{confirm_code}', [
+Route::get('user/confirm/{confirm_code}', [
     "as" => "users/confirm",
     "uses" => "UsersController@confirmAction"
 ]);
