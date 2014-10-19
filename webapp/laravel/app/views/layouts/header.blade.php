@@ -34,7 +34,7 @@
                     </li>
                     @else
                      <li class="page-scroll">
-                        <a href="/user/main">บัญชีผู้ใช้</a>
+                        <a href="/dashboard">บัญชีผู้ใช้</a>
                     </li>
                     <li class="page-scroll">
                         <a href="/user/logout">ออกจากระบบ</a>

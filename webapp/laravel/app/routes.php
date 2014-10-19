@@ -67,7 +67,7 @@ Route::get('/', function()
 Route::get('user/register', function()
 {   
     if (Auth::check()) {
-        return Redirect::to('user/main');
+        return Redirect::to('dashboard');
     } else {
          return View::make('users/register')->with('pagetitle','Register');
     }
@@ -82,7 +82,7 @@ Route::post('user/register', [
 Route::get('user/login', function()
 {
     if (Auth::check()) {
-        return Redirect::to('user/main');
+        return Redirect::to('dashboard');
     } else {
         return View::make('users/login')->with('pagetitle','Login');
     }
@@ -99,10 +99,10 @@ Route::any('user/logout', [
     "uses" => "UsersController@logoutAction"
 ]);
 
-Route::get('user/main', function()
+Route::get('dashboard', function()
 {
     if (Auth::check()) {
-        return View::make('users/main')->with('pagetitle','Member');
+        return View::make('dashboard')->with('pagetitle','Dashboard');
     } else {
         return Redirect::to('user/login');
     }
@@ -118,7 +118,20 @@ Route::get('user/confirm', function()
     return View::make('users/confirm')->with('pagetitle','Account Confirmation');
 });
 
+Route::get('user/profile', function()
+{
+    if (Auth::check()) {
+        return View::make('users/profile')->with('pagetitle','Profile');
+    } else {
+        return Redirect::to('user/login');
+    }
+});
 
+Route::post('user/changepw', [
+    "before" => "csrf",
+    "as" => "users/profile",
+    "uses" => "UsersController@changepwAction"
+]);
 	
 
 

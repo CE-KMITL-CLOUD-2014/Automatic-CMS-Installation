@@ -31,10 +31,10 @@
             </div>
             <div class="row">
                 <div class="col-lg-4 col-lg-offset-2">
-                    <p>Automatic CMS Installation is a free Web Site can easy installation created by Night Fury. Register, Choose your cms you liked, set your domain-name, and config important setting then you will get your web site.</p>
+                    <p>ปัจจุบันอินเทอร์เน็ตมีบทบาทสำคัญในการดำเนินชีวิตประจำวันของมนุษย์ ส่งผลให้เกิดสังคมขนาดใหญ่เพื่อสามารถที่จะเผยแพร่ความรู้ แลกเปลี่ยนประสบการณ์ต่างๆ ในรูปแบบของเว็บไซต์  (website) อีกทั้งยังสามารถประกอบธุรกิจต่างๆได้อีกด้วย ทำให้ผู้ใช้จำนวนมากมีความสนใจที่จะมีเว็บไซต์เป็นของตนเอง แต่ทว่าผู้ใช้เหล่านั้นขาดความรู้ความเชี่ยวชาญในการพัฒนาเว็บไซต์  </p>
                 </div>
                 <div class="col-lg-4">
-                    <p>Whether you're looking to create web site, a professional looking to attract clients, or a graphic artist looking to share your projects, your web site is very easy to install!</p>
+                    <p>Automatic CMS Installation Service จะช่วยเหลือให้ผู้ใช้ดังกล่าวสามารถมีเว็บไซต์เป็นของตนเอง โดยการใช้บริการการติดตั้งเว็บไซต์สำเร็จรูปหรือที่เรียกว่า Content Management System (CMS) แบบอัตโนมัติ ซึ่งทำงานผ่านการประมวลผลแบบกลุ่มเมฆ (cloud computing) ทำให้ผู้ใช้ไม่จำเป็นต้องมีความรู้ดังกล่าว อีกทั้งยังเป็นการประหยัดเวลาและค่าใช้จ่ายในการจ้างพัฒนาเว็บไซต์อีกด้วย</p>
                 </div>
             </div>
         </div>
