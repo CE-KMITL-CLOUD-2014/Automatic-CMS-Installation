@@ -165,3 +165,9 @@ Route::post('password/reset/{token}', [
     "uses" => "PasswordController@reset"
 ]);
 
+## Site ##
+Route::get('site/create/{type}/{name}/{domain}', [
+    "as" => "sites/create",
+    "uses" => "SiteController@createAction"
+]);
+
