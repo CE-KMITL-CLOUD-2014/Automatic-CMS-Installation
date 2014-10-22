@@ -1,8 +1,8 @@
 <?php
 class SiteController extends BaseController {
 	//Azure Setting
-	//static private $AZURE_PATH = "/usr/local/bin/azure";
-	static private $AZURE_PATH = "HOME=/tmp/  /usr/local/bin/azure";
+	static private $AZURE_PATH = "/usr/local/bin/azure";
+	//static private $AZURE_PATH = "HOME=/tmp/  /usr/local/bin/azure";
 	static private $FTP_SUFFIX = "ftp.azurewebsites.windows.net";
 	static private $FTP_USER = "cmsserver";
 	static private $FTP_PW = "e7H+QJ^HV-W!PCbBbev3*w3dNDTtrqUf";
@@ -20,23 +20,46 @@ class SiteController extends BaseController {
 		$suffix = SiteController::randomStr(6);
 		$real_name = $name.'-'.$suffix;
 
-		//Step 1 : create azure website
-		$step1 = SiteController::createAzureSite($real_name);
+		//check exist website
+		$site = new Site;
+		if(!$site->where('name', '=', $name)->count()) {
+			$site->nf_user_uid = Auth::user()->uid;
+			$site->nf_cms_cid = $_type;
+			$site->nf_domain_did = 1;
+			$site->name = $name;
+			$site->mapping = $real_name;
+			$site->status_active = 1;
+			$site->date_create = date('Y-m-d H:i:s');
+			$site->save();
 
-		if($step1) {
-			echo "Step 1 : completed!<br/>";
-			flush();
-			//Step 2 : mapping domain name
-			$step2 = SiteController::mappingDomain($real_name, $name, $domain);
-			if($step2) {
-				echo "Step 2 : completed!<br/>";
-				flush();
-			}			
+			//Get last data for update
+			$sid = $site->sid;
+			$current_site = Site::find($sid);
 
+			//Step 1 : create azure website
+			$step1 = SiteController::createAzureSite($real_name);
+			if($step1) {
+				//update state				
+				$current_site->step1 = 1;
+				$current_site->save();
+				//Step 2 : mapping domain name
+				$step2 = SiteController::mappingDomain($real_name, $name, $domain);
+				if($step2) {
+					//update state				
+					$current_site->step2 = 1;
+					$current_site->save();
+					echo "Step 2 : completed!<br/>";
+					flush();
+				}
+
+
+			}
+			return "done ".$sid;
+
+
+		} else {
+			return "Sorry : site name '$name' has been already used";
 		}
-
-
-
 	}
 
 	private function createAzureSite($real_name) {
@@ -44,7 +67,7 @@ class SiteController extends BaseController {
 		flush();
 		$output = shell_exec(SiteController::$AZURE_PATH.' site list --json "'.$real_name.'" 2>&1');
 		flush();
-		$site_detail = json_decode($output);
+		$site_detail = json_decode($output);		
 		$site_uri = $site_detail[0]->uri;
 		if(!empty($site_uri)) {
 			SiteController::$SITE_FTP = SiteController::getFtpHost($site_uri);	
