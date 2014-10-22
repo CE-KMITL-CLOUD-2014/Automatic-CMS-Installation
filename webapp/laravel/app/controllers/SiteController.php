@@ -21,6 +21,7 @@ class SiteController extends BaseController {
 			$domain = (int) $_domain;
 			$suffix = SiteController::randomStr(6);
 			$real_name = $name.'-'.$suffix;
+			$site_full = $real_name.".azurewebsites.net";
 
 			//check exist website , CMS , domain
 			$site = new Site;
@@ -50,13 +51,24 @@ class SiteController extends BaseController {
 					echo "Step 1 : completed!</br>";
 					ob_flush();
 					//Step 2 : mapping domain name
-					$step2 = SiteController::mappingDomain($real_name, $name, $domain);
+					$step2 = SiteController::mappingDomain($real_name, $name, $site_full, $domain);
 					if($step2) {
 						//update state				
 						$current_site->step2 = 1;
 						$current_site->save();
 						echo "Step 2 : completed!<br/>";
 						ob_flush();
+
+						//Step 3 : upload CMS from blob storage to azure website
+						$step3 = SiteController::uploadScript($type, $real_name, $site_full);
+						if($step3) {
+							$current_site->step3 = 1;
+							$current_site->save();
+							echo "Step 3 : completed!<br/>";
+							ob_flush();
+						} else {
+							echo "Step3 : error!</br>";
+						}
 					} else {
 						echo "Step2 : error!</br>";
 					}
@@ -76,7 +88,7 @@ class SiteController extends BaseController {
 					return "Error : something went wrong";
 			}
 		} else {
-			return "Error : please login";
+			return "Error : you must login to access this section";
 		}
 	}
 
@@ -98,10 +110,9 @@ class SiteController extends BaseController {
 		return false;
 	}
 
-	private function mappingDomain($real_name, $name, $did) {
+	private function mappingDomain($real_name, $name, $site_full, $did) {
 		$site_name = $name;
-		$site_create = $real_name;
-		$site_full = $real_name.".azurewebsites.net";
+		$site_create = $real_name;		
 
 		$domain = Domain::findOrFail($did);
 		$domain_name = $domain->name;
@@ -121,6 +132,49 @@ class SiteController extends BaseController {
 		return false;
 
 	}
+
+	private function uploadScript($cmstype, $real_name, $site_full) {
+		$cms = Cms::findOrFail($cmstype);
+		$script_name = "nfscript.zip";
+		$server_cms_file = '/site/wwwroot/'.$script_name;
+		$local_cms_file = $cms->url;
+		$server_upzip_file = '/site/wwwroot/unzip.php';
+		$local_unzip_file = 'https://nfcmsservice.blob.core.windows.net/cms-scripts/unzip.php';
+		$server_file_default = '/site/wwwroot/hostingstart.html';
+		$conn_id = ftp_connect(SiteController::$SITE_FTP);
+		$ftp_user = $real_name.'\\';
+		$ftp_user .= SiteController::$FTP_USER;
+		$login_result = ftp_login($conn_id,$ftp_user,SiteController::$FTP_PW);
+		// turn passive mode on
+		ftp_pasv($conn_id, true);
+
+		//Upload CMS
+		if(!ftp_put($conn_id, $server_cms_file, $local_cms_file, FTP_BINARY)) {
+			return false;
+		}
+
+		//Upload unzip.php
+		if(!ftp_put($conn_id, $server_upzip_file, $local_unzip_file, FTP_BINARY)) {
+			return false;
+		}
+
+		//Unzip script
+		$result = file_get_contents('http://'.$site_full.'/unzip.php?filename='.$script_name);
+
+		//Delete CMS
+		ftp_delete($conn_id, $server_cms_file);
+
+		//Delete unzip script
+		ftp_delete($conn_id, $server_upzip_file);
+
+		//Delete azure default
+		ftp_delete($conn_id, $server_file_default);
+		echo "uploading script is done.<br> \n";
+		flush();
+		return true;
+	}
+
+
 
 
 
