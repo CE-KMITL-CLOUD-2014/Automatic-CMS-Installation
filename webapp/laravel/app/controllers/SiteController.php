@@ -16,18 +16,21 @@ class SiteController extends BaseController {
 	public function createAction($_type=null, $_name=null, $_domain=null) {
 		//check auth	
 		if(Auth::check()) {
-			$type = $_type;
+			$type = (int) $_type;
 			$name = $_name;
-			$domain = $_domain;
+			$domain = (int) $_domain;
 			$suffix = SiteController::randomStr(6);
 			$real_name = $name.'-'.$suffix;
 
-			//check exist website	
+			//check exist website , CMS , domain
 			$site = new Site;
-			if(!$site->where('name', '=', $name)->count()) {
+			$site_exist = $site->where('name', '=', $name)->count();
+			$cms_exist = Cms::where('cid', '=', $type)->count();
+			$domain_exist = Domain::where('did', '=', $domain)->count();
+			if(!$site_exist && $cms_exist && $domain_exist) {
 				$site->nf_user_uid = Auth::user()->uid;
-				$site->nf_cms_cid = $_type;
-				$site->nf_domain_did = 1;
+				$site->nf_cms_cid = $type;
+				$site->nf_domain_did = $domain;
 				$site->name = $name;
 				$site->mapping = $real_name;
 				$site->status_active = 1;
@@ -36,7 +39,7 @@ class SiteController extends BaseController {
 
 				//Get last data for update
 				$sid = $site->sid;
-				$current_site = Site::find($sid);
+				$current_site = Site::findOrFail($sid);
 
 				//Step 1 : create azure website
 				$step1 = SiteController::createAzureSite($real_name);
@@ -44,8 +47,8 @@ class SiteController extends BaseController {
 					//update state				
 					$current_site->step1 = 1;
 					$current_site->save();
-					echo "Step 1 : complated!</br>";
-					flush();
+					echo "Step 1 : completed!</br>";
+					ob_flush();
 					//Step 2 : mapping domain name
 					$step2 = SiteController::mappingDomain($real_name, $name, $domain);
 					if($step2) {
@@ -53,18 +56,24 @@ class SiteController extends BaseController {
 						$current_site->step2 = 1;
 						$current_site->save();
 						echo "Step 2 : completed!<br/>";
-						flush();
+						ob_flush();
+					} else {
+						echo "Step2 : error!</br>";
 					}
-
-
 				} else {
-					echo "error<br/>";
+					echo "Step 1 : error!<br/>";
 				}
-				return "done ".$sid;
-
+				return "Done";
 
 			} else {
-				return "Sorry : site name '$name' has been already used";
+				if($site_exist)
+					return "Sorry : site name '$name' has been already used";
+				else if(!$cms_exist)
+					return "Error : not found the CMS script";
+				else if(!$domain_exist)
+					return "Error : not found domain name";
+				else
+					return "Error : something went wrong";
 			}
 		} else {
 			return "Error : please login";
@@ -73,60 +82,47 @@ class SiteController extends BaseController {
 
 	private function createAzureSite($real_name) {
 		shell_exec(SiteController::$AZURE_PATH.' site create --location "'.SiteController::$LOCATION.'" "'.$real_name.'" 2>&1');	
-		flush();
+		ob_flush();
 		$output = shell_exec(SiteController::$AZURE_PATH.' site list --json "'.$real_name.'" 2>&1');
-		flush();
+		ob_flush();
 		$site_detail = json_decode($output);	
 		if(count($site_detail) > 0)  {	
 			$site_uri = $site_detail[0]->uri;
 			if(!empty($site_uri)) {
 				SiteController::$SITE_FTP = SiteController::getFtpHost($site_uri);	
 				shell_exec(SiteController::$AZURE_PATH.' site scale mode standard "'.$real_name.'" 2>&1');
-				flush();
+				ob_flush();
 				return true;
 			}
 		}
 		return false;
 	}
 
-	private function mappingDomain($real_name, $name, $domain) {
+	private function mappingDomain($real_name, $name, $did) {
 		$site_name = $name;
 		$site_create = $real_name;
 		$site_full = $real_name.".azurewebsites.net";
+
+		$domain = Domain::findOrFail($did);
+		$domain_name = $domain->name;
+		$domain_mapid = $domain->mapid;
+		$site_new = $site_name.".".$domain_name;
+
 		$site_ip = shell_exec('nslookup '.$site_full.' | tail -2 | head -1 | awk \'{print $2}\'');
-		flush();
-
-		SiteController::MakeSubdomain_Init('16', $site_name, $site_full, $site_ip);	
-		flush();
-		shell_exec(SiteController::$AZURE_PATH.' site domain add "'.$site_name.'.'.$domain.'" "'.$site_create.'" 2>&1');
-		flush();
-		return true;
+		SiteController::MakeSubdomain_Init($domain_mapid, $site_name, $site_full, $site_ip);	
+		shell_exec(SiteController::$AZURE_PATH.' site domain add "'.$site_name.'.'.$domain_name.'" "'.$site_create.'" 2>&1');
+		ob_flush();
+		$output = shell_exec(SiteController::$AZURE_PATH.' site domain list '.$site_create.' --json  2>&1');
+		ob_flush();
+		$site_mapping = json_decode($output);
+		if(count($site_mapping) > 1 && ($site_mapping[0] == $site_new)) {
+			return true;
+		}
+		return false;
 
 	}
 
 
-
-	//Misc
-	private function randomStr($num) {
-		$characters = 'abcdefghijklmnopqrstuvwxyz0123456789';
-		$result = '';
-		for ($i = 0; $i < $num-1; $i++)
-			$result .= $characters[mt_rand(0, 35)];
-		$result .= $characters[mt_rand(0, 25)];
-		return $result;
-	}
-
-	private function findDBServer($DB_HOST) {
-		$tmp = explode('.', $DB_HOST);
-		return $tmp[0];
-	}
-
-	private function getFtpHost($uri) {
-		$split = explode('.',$uri);
-		$result = str_replace("https://","",$split[0]);
-		$result .= '.'.SiteController::$FTP_SUFFIX;
-		return $result;
-	}
 
 	//Manage subdomain
 	private  function MakeSubdomain_Init($i, $subdomain, $site_url, $site_ip) {
@@ -166,7 +162,7 @@ class SiteController extends BaseController {
 	}
 
 	private function MakeSubdomain_AddRecord($ch, $mainurl, $i, $newtype, $subdomain, $site_url, $site_ip) {	
-	// Data Setup
+		// Data Setup
 		$url = $mainurl."/src/record.php?i=".$i;
 		if($newtype == "A") {
 			$postdata = "newhost=".$subdomain."&newtype=".$newtype."&newdestination=".$site_ip;
@@ -213,6 +209,28 @@ class SiteController extends BaseController {
 		curl_setopt($ch, CURLOPT_URL, $url);
 		curl_setopt ($ch, CURLOPT_POST, 0); 
 		$data = curl_exec($ch);
+	}
+
+	//Misc
+	private function randomStr($num) {
+		$characters = 'abcdefghijklmnopqrstuvwxyz0123456789';
+		$result = '';
+		for ($i = 0; $i < $num-1; $i++)
+			$result .= $characters[mt_rand(0, 35)];
+		$result .= $characters[mt_rand(0, 25)];
+		return $result;
+	}
+
+	private function findDBServer($DB_HOST) {
+		$tmp = explode('.', $DB_HOST);
+		return $tmp[0];
+	}
+
+	private function getFtpHost($uri) {
+		$split = explode('.',$uri);
+		$result = str_replace("https://","",$split[0]);
+		$result .= '.'.SiteController::$FTP_SUFFIX;
+		return $result;
 	}
 
 
