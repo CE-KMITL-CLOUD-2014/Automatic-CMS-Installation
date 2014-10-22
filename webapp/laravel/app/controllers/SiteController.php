@@ -3,7 +3,6 @@ class SiteController extends BaseController {
 	//Azure Setting
 	//static private $AZURE_PATH = "/usr/local/bin/azure";
 	static private $AZURE_PATH = "HOME=/tmp/  /usr/local/bin/azure";
-	static private $AZURE_SUFFIX = "azurewebsites.net";
 	static private $FTP_SUFFIX = "ftp.azurewebsites.windows.net";
 	static private $FTP_USER = "cmsserver";
 	static private $FTP_PW = "e7H+QJ^HV-W!PCbBbev3*w3dNDTtrqUf";
@@ -28,8 +27,11 @@ class SiteController extends BaseController {
 			echo "Step 1 : completed!<br/>";
 			flush();
 			//Step 2 : mapping domain name
-			//$step2 = SiteController::mappingDomain($real_name, $name, $domain);
-			
+			$step2 = SiteController::mappingDomain($real_name, $name, $domain);
+			if($step2) {
+				echo "Step 2 : completed!<br/>";
+				flush();
+			}			
 
 		}
 
@@ -39,24 +41,32 @@ class SiteController extends BaseController {
 
 	private function createAzureSite($real_name) {
 		shell_exec(SiteController::$AZURE_PATH.' site create --location "'.SiteController::$LOCATION.'" "'.$real_name.'" 2>&1');	
+		flush();
 		$output = shell_exec(SiteController::$AZURE_PATH.' site list --json "'.$real_name.'" 2>&1');
+		flush();
 		$site_detail = json_decode($output);
 		$site_uri = $site_detail[0]->uri;
 		if(!empty($site_uri)) {
 			SiteController::$SITE_FTP = SiteController::getFtpHost($site_uri);	
 			shell_exec(SiteController::$AZURE_PATH.' site scale mode standard "'.$real_name.'" 2>&1');
+			flush();
 			return true;
 		}
 		return false;
 	}
 
 	private function mappingDomain($real_name, $name, $domain) {
+		$site_name = $name;
+		$site_create = $real_name;
+		$site_full = $real_name.".azurewebsites.net";
 		$site_ip = shell_exec('nslookup '.$site_full.' | tail -2 | head -1 | awk \'{print $2}\'');
-
-		SiteController::MakeSubdomain_Init('12', $site_name, $site_full, $site_ip);	
-		shell_exec(SiteController::$AZURE_PATH.' site domain add "'.$site_name.'.binfspoc6.com" "'.$site_create.'"');
-		echo "mapped subdomain";
 		flush();
+
+		SiteController::MakeSubdomain_Init('16', $site_name, $site_full, $site_ip);	
+		flush();
+		shell_exec(SiteController::$AZURE_PATH.' site domain add "'.$site_name.'.'.$domain.'" "'.$site_create.'" 2>&1');
+		flush();
+		return true;
 
 	}
 
@@ -121,9 +131,7 @@ class SiteController extends BaseController {
 }
 }
 
-private function MakeSubdomain_AddRecord($ch, $mainurl, $i, $newtype, $subdomain, $site_url, $site_ip) {
-	// Load Simple HTML Dom class
-	require_once('simple_html_dom.php');
+private function MakeSubdomain_AddRecord($ch, $mainurl, $i, $newtype, $subdomain, $site_url, $site_ip) {	
 	// Data Setup
 	$url = $mainurl."/src/record.php?i=".$i;
 	if($newtype == "A") {
@@ -141,7 +149,8 @@ private function MakeSubdomain_AddRecord($ch, $mainurl, $i, $newtype, $subdomain
 	$data = curl_exec($ch);
 
 	// Read HTML Forms
-	$html = str_get_html($data);
+	$html = new Htmldom();
+	$html->load($data);
 	$query_string = "";
 	foreach($html->find('input[name]') as $ret ) {
 		if($ret->name != "newhost" && $ret->name != "newdestination" && strpos($ret->name,'delete') === false) {

@@ -796,60 +796,6 @@
         "homepage": "http://symfony.com"
     },
     {
-        "name": "swiftmailer/swiftmailer",
-        "version": "v5.2.2",
-        "version_normalized": "5.2.2.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/swiftmailer/swiftmailer.git",
-            "reference": "e02f71a35436af4bd58a1bd90116089e632e29e1"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/e02f71a35436af4bd58a1bd90116089e632e29e1",
-            "reference": "e02f71a35436af4bd58a1bd90116089e632e29e1",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.2.4"
-        },
-        "require-dev": {
-            "mockery/mockery": "~0.9.1"
-        },
-        "time": "2014-09-20 07:17:36",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "5.2-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "files": [
-                "lib/swift_required.php"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Chris Corbyn"
-            },
-            {
-                "name": "Fabien Potencier",
-                "email": "fabien@symfony.com"
-            }
-        ],
-        "description": "Swiftmailer, free feature-rich PHP mailer",
-        "homepage": "http://swiftmailer.org",
-        "keywords": [
-            "mail",
-            "mailer"
-        ]
-    },
-    {
         "name": "stack/builder",
         "version": "v1.0.2",
         "version_normalized": "1.0.2.0",
@@ -1566,26 +1512,80 @@
         ]
     },
     {
-        "name": "laravel/framework",
-        "version": "v4.2.9",
-        "version_normalized": "4.2.9.0",
+        "name": "swiftmailer/swiftmailer",
+        "version": "v5.3.0",
+        "version_normalized": "5.3.0.0",
         "source": {
             "type": "git",
-            "url": "https://github.com/laravel/framework.git",
-            "reference": "14665bc3c38c3ec24a12c904d013a663dc4a1d8f"
+            "url": "https://github.com/swiftmailer/swiftmailer.git",
+            "reference": "b86b927dfefdb56ab0b22d1350033d9a38e9f205"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/laravel/framework/zipball/14665bc3c38c3ec24a12c904d013a663dc4a1d8f",
-            "reference": "14665bc3c38c3ec24a12c904d013a663dc4a1d8f",
+            "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/b86b927dfefdb56ab0b22d1350033d9a38e9f205",
+            "reference": "b86b927dfefdb56ab0b22d1350033d9a38e9f205",
             "shasum": ""
         },
         "require": {
-            "classpreloader/classpreloader": "~1.0",
+            "php": ">=5.3.3"
+        },
+        "require-dev": {
+            "mockery/mockery": "~0.9.1"
+        },
+        "time": "2014-10-04 05:53:18",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "5.3-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "files": [
+                "lib/swift_required.php"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Chris Corbyn"
+            },
+            {
+                "name": "Fabien Potencier",
+                "email": "fabien@symfony.com"
+            }
+        ],
+        "description": "Swiftmailer, free feature-rich PHP mailer",
+        "homepage": "http://swiftmailer.org",
+        "keywords": [
+            "mail",
+            "mailer"
+        ]
+    },
+    {
+        "name": "laravel/framework",
+        "version": "v4.2.11",
+        "version_normalized": "4.2.11.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/laravel/framework.git",
+            "reference": "e29253c7f29e3b1ca716de7fe309b272e3ddf47d"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/laravel/framework/zipball/e29253c7f29e3b1ca716de7fe309b272e3ddf47d",
+            "reference": "e29253c7f29e3b1ca716de7fe309b272e3ddf47d",
+            "shasum": ""
+        },
+        "require": {
+            "classpreloader/classpreloader": "~1.0.2",
             "d11wtq/boris": "~1.0",
             "filp/whoops": "1.1.*",
             "ircmaxell/password-compat": "~1.0",
-            "jeremeamia/superclosure": "~1.0",
+            "jeremeamia/superclosure": "~1.0.1",
             "monolog/monolog": "~1.6",
             "nesbot/carbon": "~1.0",
             "patchwork/utf8": "1.1.*",
@@ -1647,7 +1647,7 @@
         "suggest": {
             "doctrine/dbal": "Allow renaming columns and dropping SQLite columns."
         },
-        "time": "2014-09-15 02:45:24",
+        "time": "2014-10-04 18:48:27",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -1679,6 +1679,48 @@
         "description": "The Laravel Framework.",
         "keywords": [
             "framework",
+            "laravel"
+        ]
+    },
+    {
+        "name": "yangqi/htmldom",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/yangqi/Htmldom.git",
+            "reference": "9abebd93f657a650b4e221a0bef0dc730d81fee5"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/yangqi/Htmldom/zipball/9abebd93f657a650b4e221a0bef0dc730d81fee5",
+            "reference": "9abebd93f657a650b4e221a0bef0dc730d81fee5",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.0"
+        },
+        "time": "2014-10-06 19:08:02",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "Yangqi\\Htmldom": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "yangqi",
+                "email": "i@yangqi.me"
+            }
+        ],
+        "description": "Simple Html Dom Parser for Laravel 4",
+        "keywords": [
+            "HTML Parser",
             "laravel"
         ]
     }

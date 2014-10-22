@@ -1,0 +1,9 @@
+Wed Oct 22 2014 00:25:58 GMT+0700 (ICT):
+{ [Error: There is no current subscription. Please use the azure login command to set your current subscription.]
+  stack: [Getter/Setter],
+  __frame: undefined,
+  rawStack: [Getter] }
+Error: There is no current subscription. Please use the azure login command to set your current subscription.
+    at Profile._.extend.getSubscription (/usr/local/azure/lib/util/profile/profile.js:176:15)
+    at __1 (/usr/local/azure/lib/commands/asm/site.js:69:39)
+
