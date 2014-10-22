@@ -66,6 +66,29 @@ class SiteController extends BaseController {
 							$current_site->save();
 							echo "Step 3 : completed!<br/>";
 							ob_flush();
+
+							//Step 4 : create Azure SQL database
+							$step4 = SiteController::createAzureSQL($real_name);
+							if($step4) {
+								$current_site->step4 = 1;
+								$current_site->save();
+								echo "Step 4 : completed!<br/>";
+								ob_flush();
+
+								//Step 5 : install CMS
+								$step5 = SiteController::installCMS($type, $real_name,$name,$domain);
+								if($step5) {
+									$current_site->step5 = 1;
+									$current_site->save();
+									echo "Step 5 : completed!<br/>";
+									ob_flush();
+								} else {
+									echo "Step5 : error!</br>";
+								}
+							} else {
+								echo "Step4 : error!</br>";
+							}
+
 						} else {
 							echo "Step3 : error!</br>";
 						}
@@ -92,6 +115,7 @@ class SiteController extends BaseController {
 		}
 	}
 
+	//Step1 : create azure website
 	private function createAzureSite($real_name) {
 		shell_exec(SiteController::$AZURE_PATH.' site create --location "'.SiteController::$LOCATION.'" "'.$real_name.'" 2>&1');	
 		ob_flush();
@@ -110,6 +134,7 @@ class SiteController extends BaseController {
 		return false;
 	}
 
+	//Step2 : domain mapping
 	private function mappingDomain($real_name, $name, $site_full, $did) {
 		$site_name = $name;
 		$site_create = $real_name;		
@@ -133,6 +158,7 @@ class SiteController extends BaseController {
 
 	}
 
+	//Step3 : upload CMS script
 	private function uploadScript($cmstype, $real_name, $site_full) {
 		$cms = Cms::findOrFail($cmstype);
 		$script_name = "nfscript.zip";
@@ -168,14 +194,55 @@ class SiteController extends BaseController {
 		ftp_delete($conn_id, $server_upzip_file);
 
 		//Delete azure default
-		ftp_delete($conn_id, $server_file_default);
-		echo "uploading script is done.<br> \n";
-		flush();
+		ftp_delete($conn_id, $server_file_default);		
 		return true;
 	}
 
+	//Step4 : create Azure SQL database
+	private function createAzureSQL($site_create) {
+		$DB_SERVER = SiteController::findDBServer(SiteController::$DB_HOST);
+		shell_exec(SiteController::$AZURE_PATH.' sql db create "'.$DB_SERVER.'" "'.$site_create.'" "'.SiteController::$DB_USER.'" "'.SiteController::$DB_PW.'" --location "'.SiteController::$LOCATION.'" --edition basic --maxSizeInGB 1 2>&1');
+		ob_flush();
+		$output = shell_exec(SiteController::$AZURE_PATH.' sql db show --json "'.$DB_SERVER.'" "'.$site_create.'" "'.SiteController::$DB_USER.'" "'.SiteController::$DB_PW.'" 2>&1');	
+		ob_flush();
+		$db_detail = json_decode($output);
+		if(!empty($db_detail->Name)) {
+			return true;
+		}
+		return false;
+	}
 
+	//Step5 : install CMS
+	private function installCMS($cmstype, $site_create,$name,$did) {
+		$cms = Cms::findOrFail($cmstype);
+		//Wordpress
+		if($cms->cid == 1) {
+			SiteController::installWordpress($site_create,$name,$did);
+			return true;
 
+		}
+		return false;
+	}
+
+	//CMS Installation
+	private function installWordpress($site_create,$name,$did) {
+		$domain = Domain::findOrFail($did);
+		$domain_name = $domain->name;
+		$subdomain = $name.'.'.$domain_name;
+		$url = 'http://'.$subdomain.'/wp-content/mu-plugins/wp-db-abstraction/setup-config.php?step=2';
+		$data = array('dbname' => $site_create, 'uname' => SiteController::$DB_USER, 'pwd' => SiteController::$DB_PW, 'dbhost' => SiteController::$DB_HOST, 'dbtype' => 'pdo_sqlsrv', 'prefix' => 'wp_');
+
+		// use key 'http' even if you send the request to https://...
+		$options = array(
+			'http' => array(
+				'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+				'method'  => 'POST',
+				'content' => http_build_query($data),
+			),
+		);
+		$context  = stream_context_create($options);
+		$result = file_get_contents($url, false, $context);
+	}
 
 
 	//Manage subdomain
@@ -264,6 +331,7 @@ class SiteController extends BaseController {
 		curl_setopt ($ch, CURLOPT_POST, 0); 
 		$data = curl_exec($ch);
 	}
+	
 
 	//Misc
 	private function randomStr($num) {
@@ -287,6 +355,4 @@ class SiteController extends BaseController {
 		return $result;
 	}
 
-
-
-}
+} //end of class
