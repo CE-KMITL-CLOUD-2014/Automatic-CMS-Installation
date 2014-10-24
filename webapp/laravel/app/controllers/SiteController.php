@@ -5,10 +5,7 @@ class SiteController extends BaseController {
 	static private $AZURE_PATH = "HOME=/tmp/  /usr/local/bin/azure";
 	static private $FTP_SUFFIX = "ftp.azurewebsites.windows.net";
 	static private $FTP_USER = "cmsserver";
-	static private $FTP_PW = "e7H+QJ^HV-W!PCbBbev3*w3dNDTtrqUf";
-	static private $DB_HOST = "dh96f1a9t7.database.windows.net";
-	static private $DB_USER = "CMS-South-Asia-Server";
-	static private $DB_PW = "LazPe%Zg3MqjHVs*z4=bJX(W#-Br3eGRMg/m";
+	static private $FTP_PW = "e7H+QJ^HV-W!PCbBbev3*w3dNDTtrqUf";	
 	static private $LOCATION = "Southeast Asia";
 	static private $SITE_FTP = "";
 
@@ -22,6 +19,14 @@ class SiteController extends BaseController {
 			$suffix = SiteController::randomStr(6);
 			$real_name = $name.'-'.$suffix;
 			$site_full = $real_name.".azurewebsites.net";
+
+			//site config
+			$site_config = array(
+				'site_name' => 'Hello Oppa',
+				'site_username' => 'admin',
+				'site_password' => '159753',
+				'site_email' => 'admin@nfsite.me'
+			);
 
 			//check exist website , CMS , domain
 			$site = new Site;
@@ -67,8 +72,8 @@ class SiteController extends BaseController {
 							echo "Step 3 : completed!<br/>";
 							ob_flush();
 
-							//Step 4 : create Azure SQL database
-							$step4 = SiteController::createAzureSQL($real_name);
+							//Step 4 : create AmazonRDS mySQL database
+							$step4 = SiteController::createAmazonRDS($type, $name);
 							if($step4) {
 								$current_site->step4 = 1;
 								$current_site->save();
@@ -76,7 +81,7 @@ class SiteController extends BaseController {
 								ob_flush();
 
 								//Step 5 : install CMS
-								$step5 = SiteController::installCMS($type, $real_name,$name,$domain);
+								$step5 = SiteController::installCMS($type, $name, $domain, $site_config);
 								if($step5) {
 									$current_site->step5 = 1;
 									$current_site->save();
@@ -196,52 +201,99 @@ class SiteController extends BaseController {
 		//Delete azure default
 		ftp_delete($conn_id, $server_file_default);		
 		return true;
-	}
+	}	
 
-	//Step4 : create Azure SQL database
-	private function createAzureSQL($site_create) {
-		$DB_SERVER = SiteController::findDBServer(SiteController::$DB_HOST);
-		shell_exec(SiteController::$AZURE_PATH.' sql db create "'.$DB_SERVER.'" "'.$site_create.'" "'.SiteController::$DB_USER.'" "'.SiteController::$DB_PW.'" --location "'.SiteController::$LOCATION.'" --edition basic --maxSizeInGB 1 2>&1');
-		ob_flush();
-		$output = shell_exec(SiteController::$AZURE_PATH.' sql db show --json "'.$DB_SERVER.'" "'.$site_create.'" "'.SiteController::$DB_USER.'" "'.SiteController::$DB_PW.'" 2>&1');	
-		ob_flush();
-		$db_detail = json_decode($output);
-		if(!empty($db_detail->Name)) {
+	//Step4 : create AmazonRDS mySQL database
+	private function createAmazonRDS($type, $name) {
+		$cms = Cms::findOrFail($type);
+		if($cms->type == 'wordpress' || $cms->type == 'joomla' || $cms->type == 'drupal') {
+			shell_exec('mysql -u'.$cms->db_username.' -p"'.$cms->db_password.'" -h '.$cms->db_host.' -e "create database \`'.$name.'\`";');
 			return true;
-		}
-		return false;
+		} 
+		return false;		
 	}
 
 	//Step5 : install CMS
-	private function installCMS($cmstype, $site_create,$name,$did) {
-		$cms = Cms::findOrFail($cmstype);
+	private function installCMS($type, $name, $did, $site_config) {
+		$cms = Cms::findOrFail($type);
+		$param = array(
+			'did' => $did,
+			'db_name' => $name,
+			'db_host' => $cms->db_host,
+			'db_username' => $cms->db_username,
+			'db_password' => $cms->db_password,
+			'site_name' => $site_config['site_name'],
+			'site_username' => $site_config['site_username'],
+			'site_password' => $site_config['site_password'],
+			'site_email' => $site_config['site_email']
+		);
 		//Wordpress
-		if($cms->cid == 1) {
-			SiteController::installWordpress($site_create,$name,$did);
+		if($cms->type == 'wordpress') {
+			SiteController::installWordpress($param);
 			return true;
-
+		} else if($cms->type == 'joomla') {
+			return true;
+		} else if($cms->type == 'drupal') {
+			SiteController::installDrupal($param);
+			return true;
 		}
 		return false;
 	}
 
 	//CMS Installation
-	private function installWordpress($site_create,$name,$did) {
-		$domain = Domain::findOrFail($did);
+	//---wordpress
+	private function installWordpress($param) {
+		$domain = Domain::findOrFail($param['did']);
 		$domain_name = $domain->name;
-		$subdomain = $name.'.'.$domain_name;
-		$url = 'http://'.$subdomain.'/wp-content/mu-plugins/wp-db-abstraction/setup-config.php?step=2';
-		$data = array('dbname' => $site_create, 'uname' => SiteController::$DB_USER, 'pwd' => SiteController::$DB_PW, 'dbhost' => SiteController::$DB_HOST, 'dbtype' => 'pdo_sqlsrv', 'prefix' => 'wp_');
+		$subdomain = 'http://'.$param['db_name'].'.'.$domain_name;		
 
-		// use key 'http' even if you send the request to https://...
-		$options = array(
-			'http' => array(
-				'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
-				'method'  => 'POST',
-				'content' => http_build_query($data),
-			),
+		//Database Config
+		$url_db_config = $subdomain.'/wp-admin/setup-config.php?step=2';
+		$db_config = array(
+			'dbname' => $param['db_name'],
+			'uname' => $param['db_username'],
+			'pwd' => $param['db_password'],
+			'dbhost' => $param['db_host'],
+			'prefix' => 'wp_'
 		);
-		$context  = stream_context_create($options);
-		$result = file_get_contents($url, false, $context);
+		SiteController::callPostMethod($url_db_config, $db_config);
+
+		//Site Config
+		$url_site_config = $subdomain.'/wp-admin/install.php?step=2';
+		$site_config = array(
+			'weblog_title' => $param['site_name'],
+			'user_name' => $param['site_username'],
+			'admin_password' => $param['site_password'],
+			'admin_password2' => $param['site_password'],
+			'admin_email' => $param['site_email'],
+			'blog_public' => 1
+		);
+		SiteController::callPostMethod($url_site_config, $site_config);
+
+		
+	}
+
+	//---drupal
+	private function installDrupal($param) {
+		$domain = Domain::findOrFail($param['did']);
+		$domain_name = $domain->name;
+		$subdomain = $param['db_name'].'.'.$domain_name;
+		$url = 'http://'.$subdomain.'/nf_install.php';
+
+		$data = array(
+			'db_type' => 'mysql',
+			'username' => $param['db_username'],
+			'host' => $param['db_host'],
+			'password' => $param['db_password'],
+			'database' => $param['db_name'],
+			'db_prefix' => 'dp_',
+
+			'site_name' => $param['site_name'],
+			'site_mail' => $param['site_email'],
+			'site_username' => $param['site_username'],
+			'site_pw' => $param['site_password']
+		);		
+		SiteController::callPostMethod($url, $data);
 	}
 
 
@@ -341,12 +393,7 @@ class SiteController extends BaseController {
 			$result .= $characters[mt_rand(0, 35)];
 		$result .= $characters[mt_rand(0, 25)];
 		return $result;
-	}
-
-	private function findDBServer($DB_HOST) {
-		$tmp = explode('.', $DB_HOST);
-		return $tmp[0];
-	}
+	}	
 
 	private function getFtpHost($uri) {
 		$split = explode('.',$uri);
@@ -354,5 +401,19 @@ class SiteController extends BaseController {
 		$result .= '.'.SiteController::$FTP_SUFFIX;
 		return $result;
 	}
+
+	private function callPostMethod($url, $data) {
+		// use key 'http' even if you send the request to https://...
+		$options = array(
+			'http' => array(
+				'timeout' => 3600,
+				'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+				'method'  => 'POST',
+				'content' => http_build_query($data),
+			),
+		);
+		$context  = stream_context_create($options);
+		$result = file_get_contents($url, false, $context);
+	}		
 
 } //end of class
