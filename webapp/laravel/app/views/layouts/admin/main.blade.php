@@ -12,7 +12,7 @@
     <title>{{$pagetitle}} | Automatic CMS Installation Service</title>
 
     <!-- Bootstrap Core CSS -->
-    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/bootstrap.min.admin.css" rel="stylesheet">
 
     <!-- Custom CSS -->
     <link href="/css/sb-admin.css" rel="stylesheet">
@@ -28,29 +28,13 @@
     <!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-        <![endif]-->
-
-        <!-- Select period frequency function -->
-        <script>
-          function cc(x,y){
-           $('#'+x+'-hourly').css("display","none");
-           $('#'+x+'-day').css("display","none");
-           $('#'+x+'-week').css("display","none");
-           $('#'+x+'-month').css("display","none");
-           $('#'+x+'-'+y).css("display","block");
-       }
-   </script>
+        <![endif]-->   
 
    <!-- jQuery Version 1.11.0 -->
    <script src="/js/jquery-1.11.0.js"></script>
 
    <!-- Bootstrap Core JavaScript -->
    <script src="/js/bootstrap.min.js"></script>
-
-   <!-- Morris Charts JavaScript -->
-   <script src="/js/plugins/morris/raphael.min.js"></script>
-   <script src="/js/plugins/morris/morris.min.js"></script>
-   <script src="/js/plugins/morris/morris-data.js"></script>
 
 </head>
 

@@ -9,12 +9,75 @@ class SiteController extends BaseController {
 	static private $LOCATION = "Southeast Asia";
 	static private $SITE_FTP = "";
 	static private $SCRIPT_NAME = "nfscript.zip";
-	static private $SCRIPT_PATH= "/site/wwwroot/";	
+	static private $SCRIPT_PATH= "/site/wwwroot/";
+
+	//Check available site
+	public function checkAvailable($mode = 'json') {				
+		$rules = array(
+			'sitename' => 'required|min:4|max:16|regex:/^[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*$/',
+			'domain_id' => 'required|digits_between:1,3'
+			);
+		$validator = Validator::make(Input::all(),$rules);
+
+		if($validator->fails()){
+			$messages = $validator->messages();
+			$error_msg = '';
+			foreach($messages->all() as $error) {
+				$error_msg .= $error.'<br/>';
+			}
+			return Response::json(array('status' => 'error', 'message' => $error_msg));
+		} else {
+			$name = Input::get('sitename');
+			$did = Input::get('domain_id');
+			$status_ok = 'สามารถใช้ชื่อเว็บไซต์นี้ได้';
+			$status_error = 'ขออภัย ชื่อเว็บไซต์นี้ถูกใช้งานแล้ว';
+			$domain_count = SiteController::countExistSite($name, $did);
+			if($domain_count == 0) {
+				return Response::json(array('status' => 'ok', 'message' =>$status_ok));
+			} 
+			return Response::json(array('status' => 'error', 'message' => $status_error));
+		}
+	} 
+
+	private function countExistSite($name, $did) {
+		return Site::where('name','=',$name)->where('nf_domain_did','=',$did)->count();
+	}
+	
 
 	//Site creation
 	public function createAction($_type=null, $_name=null, $_domain=null) {
+		$rules = array(
+			'sitename' => 'required|min:4|max:16|regex:/^[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*$/',
+			'sitetitle' => 'required|min:4|max:32',
+			'domain_id' => 'required|digits_between:1,3',
+			'email' => 'required|between:4,64|email',
+			'CMS-Selected' => 'required|min:4|max:12',
+			'username' => 'required|min:4|max:16',
+			'password' => 'required|min:6|max:32|confirmed',
+			'password_confirmation' => 'required|min:6|max:32'
+		);
+		$validator = Validator::make(Input::all(),$rules);
+
+		if($validator->fails()){
+			$messages = $validator->messages();
+			$error_msg = '';
+			foreach($messages->all() as $error) {
+				$error_msg .= $error.'<br/>';
+			}
+			return Response::json(array('status' => 'error', 'message' => $error_msg));
+			//return Redirect::to('site/create')->withErrors($messages)->withInput();
+		} else {
+			$name = Input::get('sitename');
+			$did = Input::get('domain_id');
+			$domain_count = SiteController::countExistSite($name, $did);
+			if($domain_count != 0) {
+				$messages = 'ชื่อเว็บไซต์ถูกใช้งานแล้ว';
+				return Response::json(array('status' => 'error', 'message' => $messages));
+			} 
+			return Response::json(array('status' => 'ok', 'message' => ''));
+		}
 		//check auth	
-		if(Auth::check()) {
+		/*if(Auth::check()) {
 			$type = (int) $_type;
 			$name = $_name;
 			$domain = (int) $_domain;
@@ -130,7 +193,7 @@ class SiteController extends BaseController {
 			}
 		} else {
 			return "Error : you must login to access this section";
-		}
+		}*/
 	}
 
 	//Step1 : create azure website

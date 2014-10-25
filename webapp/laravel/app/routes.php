@@ -171,3 +171,21 @@ Route::get('site/create/{type}/{name}/{domain}', [
     "uses" => "SiteController@createAction"
 ]);
 
+Route::get('site/create', function()
+{
+    if (Auth::check()) {
+        $domain = DB::table('nf_domain')->orderBy('did', 'asc')->lists('name','did');
+        return View::make('sites/create')->with('pagetitle','Create Website')->with('domain', $domain);
+    } else {
+        return Redirect::to('/user/login');
+    }
+});
+
+Route::post('site/create', [
+    "before" => "csrf",
+    "as" => "sites/create",
+    "uses" => "SiteController@createAction"
+]);
+
+Route::post('site/check', 'SiteController@checkAvailable');
+
