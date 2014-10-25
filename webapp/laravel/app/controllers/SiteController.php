@@ -8,6 +8,8 @@ class SiteController extends BaseController {
 	static private $FTP_PW = "e7H+QJ^HV-W!PCbBbev3*w3dNDTtrqUf";	
 	static private $LOCATION = "Southeast Asia";
 	static private $SITE_FTP = "";
+	static private $SCRIPT_NAME = "nfscript.zip";
+	static private $SCRIPT_PATH= "/site/wwwroot/";	
 
 	//Site creation
 	public function createAction($_type=null, $_name=null, $_domain=null) {
@@ -87,6 +89,17 @@ class SiteController extends BaseController {
 									$current_site->save();
 									echo "Step 5 : completed!<br/>";
 									ob_flush();
+
+									//Step 6 : delete script
+									$step6 = SiteController::deleteScript($type, $real_name);
+									if($step6) {
+										$current_site->step6 = 1;
+										$current_site->save();
+										echo "Step 6 : completed!<br/>";
+										ob_flush();
+									} else {
+										echo "Step6 : error!</br>";
+									}
 								} else {
 									echo "Step5 : error!</br>";
 								}
@@ -166,12 +179,13 @@ class SiteController extends BaseController {
 	//Step3 : upload CMS script
 	private function uploadScript($cmstype, $real_name, $site_full) {
 		$cms = Cms::findOrFail($cmstype);
-		$script_name = "nfscript.zip";
-		$server_cms_file = '/site/wwwroot/'.$script_name;
+		$script_name = SiteController::$SCRIPT_NAME;
+		$script_path = SiteController::$SCRIPT_PATH;
+		$server_cms_file = $script_path.$script_name;
 		$local_cms_file = $cms->url;
-		$server_upzip_file = '/site/wwwroot/unzip.php';
+		$server_upzip_file = $script_path.'unzip.php';
 		$local_unzip_file = 'https://nfcmsservice.blob.core.windows.net/cms-scripts/unzip.php';
-		$server_file_default = '/site/wwwroot/hostingstart.html';
+		$server_file_default = $script_path.'hostingstart.html';
 		$conn_id = ftp_connect(SiteController::$SITE_FTP);
 		$ftp_user = $real_name.'\\';
 		$ftp_user .= SiteController::$FTP_USER;
@@ -189,17 +203,15 @@ class SiteController extends BaseController {
 			return false;
 		}
 
-		//Unzip script
-		$result = file_get_contents('http://'.$site_full.'/unzip.php?filename='.$script_name);
-
-		//Delete CMS
-		ftp_delete($conn_id, $server_cms_file);
-
-		//Delete unzip script
-		ftp_delete($conn_id, $server_upzip_file);
-
 		//Delete azure default
-		ftp_delete($conn_id, $server_file_default);		
+		ftp_delete($conn_id, $server_file_default);	
+
+		//Close FTP connection
+		ftp_close($conn_id);
+
+		//Unzip script		
+		$result = SiteController::url_get_contents('http://'.$site_full.'/unzip.php?filename='.$script_name);
+			
 		return true;
 	}	
 
@@ -232,6 +244,7 @@ class SiteController extends BaseController {
 			SiteController::installWordpress($param);
 			return true;
 		} else if($cms->type == 'joomla') {
+			SiteController::installJoomla($param);
 			return true;
 		} else if($cms->type == 'drupal') {
 			SiteController::installDrupal($param);
@@ -273,6 +286,28 @@ class SiteController extends BaseController {
 		
 	}
 
+	//---joomla
+	private function installJoomla($param) {
+		$domain = Domain::findOrFail($param['did']);
+		$domain_name = $domain->name;
+		$subdomain = $param['db_name'].'.'.$domain_name;
+		$url = 'http://'.$subdomain.'/nf_install.php';
+
+		$data = array(
+			'db_username' => $param['db_username'],
+			'db_host' => $param['db_host'],
+			'db_password' => $param['db_password'],
+			'db_name' => $param['db_name'],
+			'db_prefix' => 'jl_',
+
+			'site_name' => $param['site_name'],
+			'site_email' => $param['site_email'],
+			'site_username' => $param['site_username'],
+			'site_password' => $param['site_password']
+		);		
+		SiteController::callPostMethod($url, $data);
+	}
+
 	//---drupal
 	private function installDrupal($param) {
 		$domain = Domain::findOrFail($param['did']);
@@ -296,6 +331,37 @@ class SiteController extends BaseController {
 		SiteController::callPostMethod($url, $data);
 	}
 
+	//Step 6 delete install file and script
+	private function deleteScript($cmstype, $real_name) {
+		$cms = Cms::findOrFail($cmstype);
+		$script_name = SiteController::$SCRIPT_NAME;
+		$script_path = SiteController::$SCRIPT_PATH;
+		$server_cms_file = $script_path.$script_name;
+		$server_upzip_file = $script_path.'unzip.php';
+		$server_install_file = $script_path.'nf_install.php';
+
+		$conn_id = ftp_connect(SiteController::$SITE_FTP);
+		$ftp_user = $real_name.'\\';
+		$ftp_user .= SiteController::$FTP_USER;
+		$login_result = ftp_login($conn_id,$ftp_user,SiteController::$FTP_PW);
+		// turn passive mode on
+		ftp_pasv($conn_id, true);		
+
+		//Delete CMS
+		ftp_delete($conn_id, $server_cms_file);
+
+		//Delete unzip script
+		ftp_delete($conn_id, $server_upzip_file);
+
+		//Delete install script
+		if($cms->type == "joomla" || $cms->type == "drupal")
+			ftp_delete($conn_id, $server_install_file);
+
+		//Close FTP connection
+		ftp_close($conn_id);
+			
+		return true;
+	}	
 
 	//Manage subdomain
 	private  function MakeSubdomain_Init($i, $subdomain, $site_url, $site_ip) {
@@ -414,6 +480,20 @@ class SiteController extends BaseController {
 		);
 		$context  = stream_context_create($options);
 		$result = file_get_contents($url, false, $context);
-	}		
+	}
+
+	private function url_get_contents($Url) {
+		if (!function_exists('curl_init')){ 
+			die('CURL is not installed!');
+		}
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $Url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT ,0); 
+	   	curl_setopt($ch, CURLOPT_TIMEOUT, 400); //timeout in seconds
+	 	$output = curl_exec($ch);
+	 	curl_close($ch);
+		return $output;
+	}	
 
 } //end of class
