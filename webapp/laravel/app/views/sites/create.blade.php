@@ -236,6 +236,7 @@
                     <li><a href="#step2" role="tab" data-toggle="tab" onclick="sS(2)">Step 2</a></li>
                     <li><a href="#step3" role="tab" data-toggle="tab" onclick="sS(3)">Step 3</a></li>
                     <li><a href="#step4" role="tab" data-toggle="tab" onclick="sS(4)">Step 4</a></li>
+                     <li><a href="#step5" role="tab" data-toggle="tab" onclick="sS(5)">Step 5</a></li>
                     <li><a href="#" onclick="cN()">&raquo;</a></li>
                 </ul>
                 <script>
@@ -255,7 +256,7 @@
                                             function cN(){
                                                 $('#modalCheckAvailable_1').modal('hide');   
                                                 var x=0;
-                                                for(i=3;i>0;i--){
+                                                for(i=4;i>0;i--){
                                                     var y = $('#create-tab li:eq('+i+')').attr("class");
                                                     if(y=='active'){
                                                         var j=i+1;

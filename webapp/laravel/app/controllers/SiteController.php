@@ -94,8 +94,14 @@ class SiteController extends BaseController {
 					$site->status_active = 1;
 					$site->date_create = date('Y-m-d H:i:s');
 					$site->install_token = $install_token;
+					$site->site_title = Input::get('sitetitle');
+					$site->site_username = Input::get('username');
+					$site->site_password = Input::get('password');
+					$site->site_email = Input::get('email');
 					$site->save();
 
+
+					//Get id of recently site insertion
 					$sid = $site->sid;
 
 					$params = array(
@@ -135,7 +141,15 @@ class SiteController extends BaseController {
 				$domain = $current_site->nf_domain_did;
 				$real_name  = $current_site->mapping;
 				$site_full = $real_name.'.'.SiteController::$AZURE_SUFFIX;
-				
+
+				//site config
+				$site_config = array(
+					'site_name' => $current_site->site_title,
+					'site_username' => $current_site->site_username,
+					'site_password' => $current_site->site_password,
+					'site_email' => $current_site->site_email
+				);
+
 				if($step == 1) {
 					//Step 1 : create azure website
 					$chk_step = SiteController::createAzureSite($real_name);
@@ -159,13 +173,51 @@ class SiteController extends BaseController {
 						return Response::json(array('status' => 'error', 'message' => 'ไม่สามารถลงทะเบียนเว็บไซต์ได้'));
 					}
 				} else if($step == 3) {
-					return Response::json(array('status' => 'ok', 'message' => ''));
+					//Step 3 : upload CMS from blob storage to azure website
+					$chk_step = SiteController::uploadScript($type, $real_name, $site_full);
+					if($chk_step) {
+						//update state				
+						$current_site->step3 = 1;
+						$current_site->save();
+						return Response::json(array('status' => 'ok', 'message' => 'กำลังสร้างฐานข้อมูล'));
+					} else {
+						return Response::json(array('status' => 'error', 'message' => 'ไม่สามารถอัพโหลด CMSได้'));
+					}
 				} else if($step == 4) {
-					return Response::json(array('status' => 'ok', 'message' => ''));
+					//Step 4 : create AmazonRDS mySQL database
+					$chk_step = SiteController::createAmazonRDS($type, $name);
+					if($chk_step) {
+						//update state				
+						$current_site->step4 = 1;
+						$current_site->save();
+						return Response::json(array('status' => 'ok', 'message' => 'กำลังติดตั้ง CMS'));
+					} else {
+						return Response::json(array('status' => 'error', 'message' => 'ไม่สามารถสร้างฐานข้อมูลได้'));
+					}
 				} else if($step == 5) {
-					return Response::json(array('status' => 'ok', 'message' => ''));
+					//Step 5 : install CMS
+					$chk_step = SiteController::installCMS($type, $name, $domain, $site_config);
+					if($chk_step) {
+						//update state				
+						$current_site->step5 = 1;
+						$tmp_pw = $current_site->site_password;
+						$current_site->site_password = Hash::make($tmp_pw);
+						$current_site->save();
+						return Response::json(array('status' => 'ok', 'message' => 'กำลังลบไฟล์ติดตั้ง CMS'));
+					} else {
+						return Response::json(array('status' => 'error', 'message' => 'ไม่สามารถติดตั้ง CMSได้'));
+					}
 				} else if($step == 6) {
-					return Response::json(array('status' => 'ok', 'message' => ''));
+					//Step 6 : delete script
+					$chk_step = SiteController::deleteScript($type, $real_name);
+					if($chk_step) {
+						//update state				
+						$current_site->step6 = 1;
+						$current_site->save();
+						return Response::json(array('status' => 'ok', 'message' => 'การสร้างเว็บไซต์เสร็จสมบูรณ์'));
+					} else {
+						return Response::json(array('status' => 'error', 'message' => 'ไม่สามารถลบไฟล์ติดตั้ง CMSได้'));
+					}
 				} else {
 					return Response::json(array('status' => 'error', 'message' => 'ขั้นตอนการติดตั้งไม่ถูกต้อง'));
 				}

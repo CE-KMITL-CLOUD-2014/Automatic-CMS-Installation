@@ -132,11 +132,13 @@ function stepInstall(step,sid,install_token) {
             		updateInstallBar(90, data.message); 
             	} else if(step == 6) {
             		updateInstallBar(100, data.message); 
-            		cN();
+            		setTimeout(function() {
+						cN();
+					}, 1000);            		
             	}
             	            	
-            	//Recursive
-            	if(step >= 1 && step < 2)
+            	//Recursive stepInstall
+            	if(step >= 1 && step < 6)
             		stepInstall(step+1,sid,install_token);            	
             	
             } else {
