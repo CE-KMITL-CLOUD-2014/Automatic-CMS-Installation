@@ -172,7 +172,7 @@ class SiteController extends BaseController {
 						$current_site->save();
 						return Response::json(array('status' => 'ok', 'message' => 'กำลังอัพโหลด CMS'));
 					} else {
-						return Response::json(array('status' => 'error', 'message' => 'ไม่สามารถลงทะเบียนเว็บไซต์ได้'));
+						return Response::json(array('status' => 'error', 'message' => 'ไม่สามารถจดทะเบียนเว็บไซต์ได้'));
 					}
 				} else if($step == 3) {
 					//Step 3 : upload CMS from blob storage to azure website
