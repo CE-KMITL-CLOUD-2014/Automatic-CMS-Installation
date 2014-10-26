@@ -145,7 +145,7 @@ class SiteController extends BaseController {
 
 				//site config
 				$site_config = array(
-					'site_name' => $current_site->site_title,
+					'site_title' => $current_site->site_title,
 					'site_username' => $current_site->site_username,
 					'site_password' => $current_site->site_password,
 					'site_email' => $current_site->site_email
@@ -187,7 +187,7 @@ class SiteController extends BaseController {
 					}
 				} else if($step == 4) {
 					//Step 4 : create AmazonRDS mySQL database
-					$chk_step = SiteController::createAmazonRDS($type, $name);
+					$chk_step = SiteController::createAmazonRDS($type, $name, $domain);
 					if($chk_step) {
 						//update state				
 						$current_site->step4 = 1;
@@ -316,10 +316,11 @@ class SiteController extends BaseController {
 	}	
 
 	//Step4 : create AmazonRDS mySQL database
-	private function createAmazonRDS($type, $name) {
+	private function createAmazonRDS($type, $name, $did) {
+		$db_name = $name.'-'.$did;
 		$cms = Cms::findOrFail($type);
 		if($cms->type == 'wordpress' || $cms->type == 'joomla' || $cms->type == 'drupal') {
-			shell_exec('mysql -u'.$cms->db_username.' -p"'.$cms->db_password.'" -h '.$cms->db_host.' -e "create database \`'.$name.'\`";');
+			shell_exec('mysql -u'.$cms->db_username.' -p"'.$cms->db_password.'" -h '.$cms->db_host.' -e "create database \`'.$db_name.'\`";');
 			return true;
 		} 
 		return false;		
@@ -328,13 +329,15 @@ class SiteController extends BaseController {
 	//Step5 : install CMS
 	private function installCMS($type, $name, $did, $site_config) {
 		$cms = Cms::findOrFail($type);
+		$db_name = $name.'-'.$did;
 		$param = array(
 			'did' => $did,
-			'db_name' => $name,
+			'db_name' => $db_name,
 			'db_host' => $cms->db_host,
 			'db_username' => $cms->db_username,
 			'db_password' => $cms->db_password,
-			'site_name' => $site_config['site_name'],
+			'site_name' => $name,
+			'site_title' => $site_config['site_title'],
 			'site_username' => $site_config['site_username'],
 			'site_password' => $site_config['site_password'],
 			'site_email' => $site_config['site_email']
@@ -358,7 +361,7 @@ class SiteController extends BaseController {
 	private function installWordpress($param) {
 		$domain = Domain::findOrFail($param['did']);
 		$domain_name = $domain->name;
-		$subdomain = 'http://'.$param['db_name'].'.'.$domain_name;		
+		$subdomain = 'http://'.$param['site_name'].'.'.$domain_name;		
 
 		//Database Config
 		$url_db_config = $subdomain.'/wp-admin/setup-config.php?step=2';
@@ -374,7 +377,7 @@ class SiteController extends BaseController {
 		//Site Config
 		$url_site_config = $subdomain.'/wp-admin/install.php?step=2';
 		$site_config = array(
-			'weblog_title' => $param['site_name'],
+			'weblog_title' => $param['site_title'],
 			'user_name' => $param['site_username'],
 			'admin_password' => $param['site_password'],
 			'admin_password2' => $param['site_password'],
@@ -390,7 +393,7 @@ class SiteController extends BaseController {
 	private function installJoomla($param) {
 		$domain = Domain::findOrFail($param['did']);
 		$domain_name = $domain->name;
-		$subdomain = $param['db_name'].'.'.$domain_name;
+		$subdomain = $param['site_name'].'.'.$domain_name;
 		$url = 'http://'.$subdomain.'/nf_install.php';
 
 		$data = array(
@@ -400,7 +403,7 @@ class SiteController extends BaseController {
 			'db_name' => $param['db_name'],
 			'db_prefix' => 'jl_',
 
-			'site_name' => $param['site_name'],
+			'site_name' => $param['site_title'],
 			'site_email' => $param['site_email'],
 			'site_username' => $param['site_username'],
 			'site_password' => $param['site_password']
@@ -412,7 +415,7 @@ class SiteController extends BaseController {
 	private function installDrupal($param) {
 		$domain = Domain::findOrFail($param['did']);
 		$domain_name = $domain->name;
-		$subdomain = $param['db_name'].'.'.$domain_name;
+		$subdomain = $param['site_name'].'.'.$domain_name;
 		$url = 'http://'.$subdomain.'/nf_install.php';
 
 		$data = array(
@@ -423,7 +426,7 @@ class SiteController extends BaseController {
 			'database' => $param['db_name'],
 			'db_prefix' => 'dp_',
 
-			'site_name' => $param['site_name'],
+			'site_name' => $param['site_title'],
 			'site_mail' => $param['site_email'],
 			'site_username' => $param['site_username'],
 			'site_pw' => $param['site_password']

@@ -195,7 +195,7 @@
         <div id="nf_install_ok">
             <h3 class="text-center">กำลังสร้างเว็บไซต์</h3>   
             <h5 class="text-center">โปรดรอสักครู่ (ประมาณ 5 นาที)</h5>   
-            <div class="alert alert-info text-center col-sm-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">คำเตือน : ห้ามทำการปิดเว็บบราวเซอร์จนกว่าการติดตั้งจะเสร็จสมบูรณ์</div>
+            <div class="alert alert-warning text-center col-sm-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">คำเตือน : ห้ามทำการปิดเว็บบราวเซอร์จนกว่าการติดตั้งจะเสร็จสมบูรณ์</div>
             <form action="#" method="post">
                 <div class="row" style="margin-top:10px;margin-bottom:100px;">                        
                     <div class="col-sm-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">                            
