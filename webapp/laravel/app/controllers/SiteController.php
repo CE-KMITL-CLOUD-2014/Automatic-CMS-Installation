@@ -3,6 +3,7 @@ class SiteController extends BaseController {
 	//Azure Setting
 	//static private $AZURE_PATH = "/usr/local/bin/azure";
 	static private $AZURE_PATH = "HOME=/tmp/  /usr/local/bin/azure";
+	static private $AZURE_SUFFIX = "azurewebsites.net";
 	static private $FTP_SUFFIX = "ftp.azurewebsites.windows.net";
 	static private $FTP_USER = "cmsserver";
 	static private $FTP_PW = "e7H+QJ^HV-W!PCbBbev3*w3dNDTtrqUf";	
@@ -12,7 +13,7 @@ class SiteController extends BaseController {
 	static private $SCRIPT_PATH= "/site/wwwroot/";
 
 	//Check available site
-	public function checkAvailable($mode = 'json') {				
+	public function checkAvailable() {				
 		$rules = array(
 			'sitename' => 'required|min:4|max:16|regex:/^[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*$/',
 			'domain_id' => 'required|digits_between:1,3'
@@ -65,17 +66,105 @@ class SiteController extends BaseController {
 				$error_msg .= $error.'<br/>';
 			}
 			return Response::json(array('status' => 'error', 'message' => $error_msg));
-			//return Redirect::to('site/create')->withErrors($messages)->withInput();
 		} else {
+			//check data from DB
 			$name = Input::get('sitename');
 			$did = Input::get('domain_id');
-			$domain_count = SiteController::countExistSite($name, $did);
-			if($domain_count != 0) {
-				$messages = 'ชื่อเว็บไซต์ถูกใช้งานแล้ว';
-				return Response::json(array('status' => 'error', 'message' => $messages));
-			} 
-			return Response::json(array('status' => 'ok', 'message' => ''));
+			$cms_type = Input::get('CMS-Selected');
+			$cms_data = Cms::where('type','=',$cms_type)->get();
+			$cms_exist = count($cms_data);
+			$site_exist = SiteController::countExistSite($name, $did);
+			$domain_exist = Domain::where('did', '=', $did)->count();
+
+			if(Auth::check()) {
+				if(!$site_exist && $cms_exist && $domain_exist) {
+					//Define data
+					$suffix = SiteController::randomStr(5);
+					$real_name = $name.'-'.$suffix;
+					$install_token = substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 32);
+					$uid = Auth::user()->uid;
+					$cid = $cms_data[0]->cid;
+					//Add data into DB
+					$site = new Site;
+					$site->nf_user_uid = $uid;
+					$site->nf_cms_cid = $cid;
+					$site->nf_domain_did = $did;
+					$site->name = $name;
+					$site->mapping = $real_name;
+					$site->status_active = 1;
+					$site->date_create = date('Y-m-d H:i:s');
+					$site->install_token = $install_token;
+					$site->save();
+
+					$sid = $site->sid;
+
+					$params = array(
+						'sid' => $sid,
+						'install_token' => $install_token
+					);
+
+					return Response::json(array('status' => 'ok', 'message' => '', 'params' => $params));
+				} else if($site_exist) {
+					return Response::json(array('status' => 'error', 'message' => 'ชื่อเว็บไซต์ถูกใช้งานแล้ว'));
+				} else if(!$cms_exist) {
+					return Response::json(array('status' => 'error', 'message' => 'ไม่พบชนิด CMS'));
+				} else if(!$domain_exist) {
+					return Response::json(array('status' => 'error', 'message' => 'ไม่พบโดเมนเนมในระบบ'));
+				} else {
+					return Response::json(array('status' => 'error', 'message' => 'มีบางอย่างผิดพลาด โปรดลองใหม่อีกครั้ง'));
+				}
+			} else {
+				return Response::json(array('status' => 'error', 'message' => 'กรุณาเข้าสู่ระบบ'));
+			}
+
 		}
+	}
+
+	public function installSite() {
+		$step = Input::get('step');
+		$sid = Input::get('sid');
+		$install_token = Input::get('install_token');	
+
+		if(!empty($step) && !empty($sid) && !empty($install_token)) {
+			$chk_install = Site::where('step'.$step,'=','0')->where('sid','=',$sid)->where('install_token','=',$install_token)->count();
+			if($chk_install == 1) {
+				//Get current site for update
+				$current_site = Site::findOrFail($sid);
+
+				if($step == 1) {
+					//Step 1 : create azure website
+					$chk_step = SiteController::createAzureSite($current_site->mapping);
+					if($chk_step) {
+						//update state				
+						$current_site->step1 = 1;
+						$current_site->save();
+						return Response::json(array('status' => 'ok', 'message' => 'กำลังจดทะเบียนชื่อเว็บไซต์'));
+					} else {
+						return Response::json(array('status' => 'error', 'message' => 'ไม่สามารถสร้างเว็บไซต์ได้'));
+					}
+				} else if($step == 2) {
+					return Response::json(array('status' => 'ok', 'message' => ''));
+				} else if($step == 3) {
+					return Response::json(array('status' => 'ok', 'message' => ''));
+				} else if($step == 4) {
+					return Response::json(array('status' => 'ok', 'message' => ''));
+				} else if($step == 5) {
+					return Response::json(array('status' => 'ok', 'message' => ''));
+				} else if($step == 6) {
+					return Response::json(array('status' => 'ok', 'message' => ''));
+				} else {
+					return Response::json(array('status' => 'error', 'message' => 'ขั้นตอนการติดตั้งไม่ถูกต้อง'));
+				}
+
+			} else {
+				return Response::json(array('status' => 'error', 'message' => 'ไม่พบรายการเว็บไซต์ที่ต้องการติดตั้ง'));
+			}
+		} else {
+			return Response::json(array('status' => 'error', 'message' => 'มีบางอย่างผิดพลาด โปรดลองใหม่อีกครั้ง'));
+
+		}
+	} 
+
 		//check auth	
 		/*if(Auth::check()) {
 			$type = (int) $_type;
@@ -194,7 +283,7 @@ class SiteController extends BaseController {
 		} else {
 			return "Error : you must login to access this section";
 		}*/
-	}
+	
 
 	//Step1 : create azure website
 	private function createAzureSite($real_name) {

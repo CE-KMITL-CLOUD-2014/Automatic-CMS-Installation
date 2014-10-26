@@ -158,7 +158,8 @@
                     <input type="hidden" id="CMS-Sitename" name="sitename" value="0">
                     <input type="hidden" id="CMS-DomainID" name="domain_id" value="0">
                     <input type="hidden" id="CMS-DomainName" name="domain_name" value="0">
-                    <input type="hidden" id="CMS-Selected" name="CMS-Selected" value="0"><!-- CMS-Selected -->
+                    <input type="hidden" id="CMS-Selected" name="CMS-Selected" value="0">
+                    <input type="hidden" id="NF_BASE_URL" name="nfurl" value="{{URL::to('/')}}">                    
 
                     <!-- Modal for verify site before create-->
                     <div class="modal fade" id="modalVerifySite" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -191,17 +192,17 @@
             <!-- Step 4 -->
             <div class="row tab-pane fade" id="step4">
                 <div class="col-md-12">
-                    <h3 class="text-center">กำลังติดตั้งเว็บไซต์</h3>   
+                    <h3 class="text-center">กำลังสร้างเว็บไซต์</h3>   
                     <h5 class="text-center">โปรดรอสักครู่ (ประมาณ 10 นาที)</h5>   
                     <div class="alert alert-info text-center col-sm-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">คำเตือน : ห้ามทำการปิดเว็บบราวเซอร์จนกว่าการติดตั้งจะเสร็จสมบูรณ์</div>
                     <form action="#" method="post">
                         <div class="row" style="margin-top:10px;margin-bottom:100px;">                        
-                            <div class="col-sm-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
+                            <div class="col-sm-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">                            
                                 <div class="progress">
-                                    <div class="progress-bar progress-bar-striped active"  role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">                                        
+                                    <div class="progress-bar progress-bar-striped active"  role="progressbar" id="nf_install_bar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">                                        
                                     </div>
                                 </div>
-                                <p class="text-center"><small>สถานะ : <span id="createSiteStatus">สร้างเว็บไซต์</span></small></p>
+                                <p class="text-center"><small>สถานะ : <span id="createSiteStatus">เตรียมดำเนินการ</span></small></p>
                             </div>
                         </div>
                     </form>
@@ -267,109 +268,6 @@
                                             function sS(x){
                                                 $('#step-state').html("ขั้นตอนที่ "+x);
                                             };
-
-                                            //Check available website      
-                                            //--Step2
-                                            $("#checkAvailable").click(function () {
-                                                $(this).attr('disabled', 'disabled');                                                
-                                                    //Callback handler for form submit event
-                                                    $("#sitenameForm").submit(function (e) {
-                                                        var formObj = $(this);
-                                                        var formURL = formObj.attr("action");
-                                                        var formData = new FormData(this);
-                                                        $.ajax({
-                                                            url: formURL,
-                                                            type: 'POST',
-                                                            data: formData,
-                                                            mimeType: "multipart/form-data",
-                                                            dataType: "json",
-                                                            contentType: false,
-                                                            cache: false,
-                                                            processData: false,
-                                                            async: false,
-                                                            success: function (data, textStatus, jqXHR) {
-                                                                if (data.status == 'ok') {
-                                                                    $("#CMS-Sitename").val($("#setSiteName").val());
-                                                                    $("#CMS-DomainID").val($("#setDomain").val());
-                                                                    $("#CMS-DomainName").val($("#setDomain option:selected").text());
-                                                                    $(".modalCheckAvailable_msg").html(data.message);
-                                                                    $('#modalCheckAvailable_1').modal('show');
-
-                                                                } else {
-                                                                    $(".modalCheckAvailable_msg").html(data.message);
-                                                                    $('#modalCheckAvailable_0').modal('show');
-                                                                }
-                                                                //$.mobile.changePage('#show_dialog', "{transition: 'pop', role: 'dialog'}");                                       
-                                                            },
-                                                            //end success
-                                                            error: function (jqXHR, textStatus, errorThrown) {
-                                                                //alert("ERROR");
-                                                                $(".modalCheckAvailable_msg").html(jqXHR.responseText);
-                                                                $('#modalCheckAvailable_0').modal('show');
-                                                                //alert(thrownError);
-                                                            } //end error         
-                                                        });
-                                                        e.preventDefault(); //Prevent Default action. 
-                                                        e.unbind();
-                                                    }); //--end ajax
-                                                $(this).removeAttr('disabled');
-                                            });
-
-                                            //--Step 3
-                                            String.prototype.capitalize = function() {
-                                                return this.charAt(0).toUpperCase() + this.slice(1);
-                                            }
-                                            $("#createSiteButton").click(function () {
-                                                $("#cms_msg").text($("#CMS-Selected").val().capitalize());
-                                                $("#sitename_msg").text($("#CMS-Sitename").val()+'.'+$("#CMS-DomainName").val());
-                                                $("#sitetitle_msg").text($("#inputSiteTitle").val());
-                                                $("#site_username").text($("#inputUsername").val());
-                                                $("#site_email").text($("#inputEmail").val());
-                                                $('#modalVerifySite').modal('show'); 
-                                            });
-
-                                            $("#createConfirmButton").click(function() {  
-                                                $('#modalVerifySite').modal('hide'); 
-                                                 //Callback handler for form submit event
-                                                    $("#createsiteForm").submit(function (e) {
-                                                        var formObj = $(this);
-                                                        var formURL = formObj.attr("action");
-                                                        var formData = new FormData(this);
-                                                        $.ajax({
-                                                            url: formURL,
-                                                            type: 'POST',
-                                                            data: formData,
-                                                            mimeType: "multipart/form-data",
-                                                            dataType: "json",
-                                                            contentType: false,
-                                                            cache: false,
-                                                            processData: false,
-                                                            async: false,
-                                                            success: function (data, textStatus, jqXHR) {
-                                                                if (data.status == 'ok') {
-                                                                    cN();    
-                                                                } else {
-                                                                    $(".modalCheckAvailable_msg").html(data.message);
-                                                                    $('#modalCheckAvailable_0').modal('show');
-                                                                }
-                                                                //$.mobile.changePage('#show_dialog', "{transition: 'pop', role: 'dialog'}");                                       
-                                                            },
-                                                            //end success
-                                                            error: function (jqXHR, textStatus, errorThrown) {
-                                                                //alert("ERROR");
-                                                                $(".modalCheckAvailable_msg").html(jqXHR.responseText);
-                                                                $('#modalCheckAvailable_0').modal('show');
-                                                                //alert(thrownError);
-                                                            } //end error         
-                                                        });
-                                                        e.preventDefault(); //Prevent Default action. 
-                                                        e.unbind();
-                                                    }); //--end ajax
-                                            });
-
-
-
-
                                         </script>
                                     </div>
                                 </div><!-- /.Step control bar -->
@@ -412,11 +310,14 @@
      <p class="modalCheckAvailable_msg alert alert-success"></p>
  </div>
  <div class="modal-footer">
-    <button type="button" class="btn btn-default" data-dismiss="modal">ปิด</button>
+    <button type="button" class="btn btn-default" data-dismiss="modal">ยกเลิก</button>
     <button type="button" class="btn btn-primary" onclick="cN()">ใช้ชื่อเว็บไซต์นี้</button>
 </div>
 </div>
 </div>
 </div>
+
+<!-- NF Site Installer-->
+<script src="/js/installer.js"></script>
 
 @stop

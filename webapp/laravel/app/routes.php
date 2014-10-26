@@ -189,3 +189,5 @@ Route::post('site/create', [
 
 Route::post('site/check', 'SiteController@checkAvailable');
 
+Route::post('site/install', 'SiteController@installSite');
+
