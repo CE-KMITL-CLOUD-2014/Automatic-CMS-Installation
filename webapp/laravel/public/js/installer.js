@@ -117,10 +117,28 @@ function stepInstall(step,sid,install_token) {
         type: 'POST',
         data: postData,
         dataType: "json",
-        async: false,
+        async: true,
         success: function(data, textStatus, jqXHR) {
             if (data.status == "ok") {
-             	alert('pass');
+            	if(step == 1) {
+            		updateInstallBar(15, data.message);            		
+            	} else if(step == 2) {
+            		updateInstallBar(25, data.message); 
+            	} else if(step == 3) {
+            		updateInstallBar(45, data.message); 
+            	} else if(step == 4) {
+            		updateInstallBar(60, data.message); 
+            	} else if(step == 5) {
+            		updateInstallBar(90, data.message); 
+            	} else if(step == 6) {
+            		updateInstallBar(100, data.message); 
+            		cN();
+            	}
+            	            	
+            	//Recursive
+            	if(step >= 1 && step < 2)
+            		stepInstall(step+1,sid,install_token);            	
+            	
             } else {
                	alert('error');
             }

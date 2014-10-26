@@ -129,11 +129,16 @@ class SiteController extends BaseController {
 			$chk_install = Site::where('step'.$step,'=','0')->where('sid','=',$sid)->where('install_token','=',$install_token)->count();
 			if($chk_install == 1) {
 				//Get current site for update
-				$current_site = Site::findOrFail($sid);
-
+				$current_site = Site::findOrFail($sid);				
+				$type = $current_site->nf_cms_cid;
+				$name  = $current_site->name;
+				$domain = $current_site->nf_domain_did;
+				$real_name  = $current_site->mapping;
+				$site_full = $real_name.'.'.SiteController::$AZURE_SUFFIX;
+				
 				if($step == 1) {
 					//Step 1 : create azure website
-					$chk_step = SiteController::createAzureSite($current_site->mapping);
+					$chk_step = SiteController::createAzureSite($real_name);
 					if($chk_step) {
 						//update state				
 						$current_site->step1 = 1;
@@ -143,7 +148,16 @@ class SiteController extends BaseController {
 						return Response::json(array('status' => 'error', 'message' => 'ไม่สามารถสร้างเว็บไซต์ได้'));
 					}
 				} else if($step == 2) {
-					return Response::json(array('status' => 'ok', 'message' => ''));
+					//Step 2 : mapping domain name
+					$chk_step = SiteController::mappingDomain($real_name, $name, $site_full, $domain);
+					if($chk_step) {
+						//update state				
+						$current_site->step2 = 1;
+						$current_site->save();
+						return Response::json(array('status' => 'ok', 'message' => 'กำลังอัพโหลด CMS'));
+					} else {
+						return Response::json(array('status' => 'error', 'message' => 'ไม่สามารถลงทะเบียนเว็บไซต์ได้'));
+					}
 				} else if($step == 3) {
 					return Response::json(array('status' => 'ok', 'message' => ''));
 				} else if($step == 4) {
