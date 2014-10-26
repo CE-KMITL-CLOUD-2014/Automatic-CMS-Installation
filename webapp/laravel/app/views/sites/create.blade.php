@@ -192,8 +192,9 @@
             <!-- Step 4 -->
             <div class="row tab-pane fade" id="step4">
                 <div class="col-md-12">
+                    <div id="nf_install_ok">
                     <h3 class="text-center">กำลังสร้างเว็บไซต์</h3>   
-                    <h5 class="text-center">โปรดรอสักครู่ (ประมาณ 10 นาที)</h5>   
+                    <h5 class="text-center">โปรดรอสักครู่ (ประมาณ 5 นาที)</h5>   
                     <div class="alert alert-info text-center col-sm-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">คำเตือน : ห้ามทำการปิดเว็บบราวเซอร์จนกว่าการติดตั้งจะเสร็จสมบูรณ์</div>
                     <form action="#" method="post">
                         <div class="row" style="margin-top:10px;margin-bottom:100px;">                        
@@ -206,6 +207,18 @@
                             </div>
                         </div>
                     </form>
+                    </div>
+
+                    <div id="nf_install_error" style="display:none;">
+                        <h3 class="text-center text-danger"><span class="glyphicon glyphicon-exclamation-sign"></span> เกิดข้อผิดพลาด</h3>   
+                        <div class="alert alert-danger text-center col-sm-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
+                           <h5 id="nf_install_error_msg"></h5>
+                           <h6>กรุณาลองใหม่อีกครั้ง</h6>
+                       </div>
+                   </div>
+
+
+
                 </div>
             </div>
             <!-- /.Step 4 -->
@@ -213,11 +226,16 @@
             <!-- Step 5 -->
             <div class="row tab-pane fade" id="step5">
                 <div class="col-md-12">
-                    <h3 style="margin: 20px;">Congrat Success </h3>
+                    <h3 class="text-center text-success">การสร้างเว็บไซต์เสร็จสมบูรณ์</h3>   
                     <form action="#" method="post">
-                        <div class="row" style="margin-top:100px;margin-bottom:100px;">
-                            <div class="col-sm-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2 text-center">
-                                <h2>Your web site is "website.nfsite.me"</h2>
+                        <div class="row" style="margin-top:20px;margin-bottom:100px;">
+                            <div class="col-sm-12 col-md-offset-4 col-lg-4 col-lg-offset-4">                            
+                                <div class="well"><h4 class="text-center"><span class="glyphicon glyphicon-info-sign"></span> รายละเอียดการเข้าถึงเว็บไซต์</h4>
+                                <img src="/img/icon/w-icon-200.png" class="center-block" id="nf_url_image">
+                                    <h5>หน้าหลัก : <a id="nf_url_main" target="_blank" href="#">sd</a></h5>
+                                    <h5>หน้าผู้ดูแลระบบ : <a id="nf_url_admin" target="_blank" href="#">sd</a></h5>
+                                </div>
+                                <button type="button" class="btn btn-info center-block" onclick="window.location.replace('/site/manage');">จัดการเว็บไซต์</button>
                             </div>
                         </div>
                     </form>

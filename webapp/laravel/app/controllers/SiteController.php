@@ -141,6 +141,7 @@ class SiteController extends BaseController {
 				$domain = $current_site->nf_domain_did;
 				$real_name  = $current_site->mapping;
 				$site_full = $real_name.'.'.SiteController::$AZURE_SUFFIX;
+				$site_ftp_server = $current_site->site_ftp_server;
 
 				//site config
 				$site_config = array(
@@ -156,6 +157,7 @@ class SiteController extends BaseController {
 					if($chk_step) {
 						//update state				
 						$current_site->step1 = 1;
+						$current_site->site_ftp_server = SiteController::$SITE_FTP;
 						$current_site->save();
 						return Response::json(array('status' => 'ok', 'message' => 'กำลังจดทะเบียนชื่อเว็บไซต์'));
 					} else {
@@ -174,7 +176,7 @@ class SiteController extends BaseController {
 					}
 				} else if($step == 3) {
 					//Step 3 : upload CMS from blob storage to azure website
-					$chk_step = SiteController::uploadScript($type, $real_name, $site_full);
+					$chk_step = SiteController::uploadScript($type, $real_name, $site_full, $site_ftp_server);
 					if($chk_step) {
 						//update state				
 						$current_site->step3 = 1;
@@ -209,7 +211,7 @@ class SiteController extends BaseController {
 					}
 				} else if($step == 6) {
 					//Step 6 : delete script
-					$chk_step = SiteController::deleteScript($type, $real_name);
+					$chk_step = SiteController::deleteScript($type, $real_name, $site_ftp_server);
 					if($chk_step) {
 						//update state				
 						$current_site->step6 = 1;
@@ -229,127 +231,7 @@ class SiteController extends BaseController {
 			return Response::json(array('status' => 'error', 'message' => 'มีบางอย่างผิดพลาด โปรดลองใหม่อีกครั้ง'));
 
 		}
-	} 
-
-		//check auth	
-		/*if(Auth::check()) {
-			$type = (int) $_type;
-			$name = $_name;
-			$domain = (int) $_domain;
-			$suffix = SiteController::randomStr(6);
-			$real_name = $name.'-'.$suffix;
-			$site_full = $real_name.".azurewebsites.net";
-
-			//site config
-			$site_config = array(
-				'site_name' => 'Hello Oppa',
-				'site_username' => 'admin',
-				'site_password' => '159753',
-				'site_email' => 'admin@nfsite.me'
-			);
-
-			//check exist website , CMS , domain
-			$site = new Site;
-			$site_exist = $site->where('name', '=', $name)->count();
-			$cms_exist = Cms::where('cid', '=', $type)->count();
-			$domain_exist = Domain::where('did', '=', $domain)->count();
-			if(!$site_exist && $cms_exist && $domain_exist) {
-				$site->nf_user_uid = Auth::user()->uid;
-				$site->nf_cms_cid = $type;
-				$site->nf_domain_did = $domain;
-				$site->name = $name;
-				$site->mapping = $real_name;
-				$site->status_active = 1;
-				$site->date_create = date('Y-m-d H:i:s');
-				$site->save();
-
-				//Get last data for update
-				$sid = $site->sid;
-				$current_site = Site::findOrFail($sid);
-
-				//Step 1 : create azure website
-				$step1 = SiteController::createAzureSite($real_name);
-				if($step1) {
-					//update state				
-					$current_site->step1 = 1;
-					$current_site->save();
-					echo "Step 1 : completed!</br>";
-					ob_flush();
-					//Step 2 : mapping domain name
-					$step2 = SiteController::mappingDomain($real_name, $name, $site_full, $domain);
-					if($step2) {
-						//update state				
-						$current_site->step2 = 1;
-						$current_site->save();
-						echo "Step 2 : completed!<br/>";
-						ob_flush();
-
-						//Step 3 : upload CMS from blob storage to azure website
-						$step3 = SiteController::uploadScript($type, $real_name, $site_full);
-						if($step3) {
-							$current_site->step3 = 1;
-							$current_site->save();
-							echo "Step 3 : completed!<br/>";
-							ob_flush();
-
-							//Step 4 : create AmazonRDS mySQL database
-							$step4 = SiteController::createAmazonRDS($type, $name);
-							if($step4) {
-								$current_site->step4 = 1;
-								$current_site->save();
-								echo "Step 4 : completed!<br/>";
-								ob_flush();
-
-								//Step 5 : install CMS
-								$step5 = SiteController::installCMS($type, $name, $domain, $site_config);
-								if($step5) {
-									$current_site->step5 = 1;
-									$current_site->save();
-									echo "Step 5 : completed!<br/>";
-									ob_flush();
-
-									//Step 6 : delete script
-									$step6 = SiteController::deleteScript($type, $real_name);
-									if($step6) {
-										$current_site->step6 = 1;
-										$current_site->save();
-										echo "Step 6 : completed!<br/>";
-										ob_flush();
-									} else {
-										echo "Step6 : error!</br>";
-									}
-								} else {
-									echo "Step5 : error!</br>";
-								}
-							} else {
-								echo "Step4 : error!</br>";
-							}
-
-						} else {
-							echo "Step3 : error!</br>";
-						}
-					} else {
-						echo "Step2 : error!</br>";
-					}
-				} else {
-					echo "Step 1 : error!<br/>";
-				}
-				return "Done";
-
-			} else {
-				if($site_exist)
-					return "Sorry : site name '$name' has been already used";
-				else if(!$cms_exist)
-					return "Error : not found the CMS script";
-				else if(!$domain_exist)
-					return "Error : not found domain name";
-				else
-					return "Error : something went wrong";
-			}
-		} else {
-			return "Error : you must login to access this section";
-		}*/
-	
+	} 	
 
 	//Step1 : create azure website
 	private function createAzureSite($real_name) {
@@ -395,7 +277,7 @@ class SiteController extends BaseController {
 	}
 
 	//Step3 : upload CMS script
-	private function uploadScript($cmstype, $real_name, $site_full) {
+	private function uploadScript($cmstype, $real_name, $site_full, $site_ftp_server) {
 		$cms = Cms::findOrFail($cmstype);
 		$script_name = SiteController::$SCRIPT_NAME;
 		$script_path = SiteController::$SCRIPT_PATH;
@@ -404,7 +286,7 @@ class SiteController extends BaseController {
 		$server_upzip_file = $script_path.'unzip.php';
 		$local_unzip_file = 'https://nfcmsservice.blob.core.windows.net/cms-scripts/unzip.php';
 		$server_file_default = $script_path.'hostingstart.html';
-		$conn_id = ftp_connect(SiteController::$SITE_FTP);
+		$conn_id = ftp_connect($site_ftp_server);
 		$ftp_user = $real_name.'\\';
 		$ftp_user .= SiteController::$FTP_USER;
 		$login_result = ftp_login($conn_id,$ftp_user,SiteController::$FTP_PW);
@@ -550,7 +432,7 @@ class SiteController extends BaseController {
 	}
 
 	//Step 6 delete install file and script
-	private function deleteScript($cmstype, $real_name) {
+	private function deleteScript($cmstype, $real_name, $site_ftp_server) {
 		$cms = Cms::findOrFail($cmstype);
 		$script_name = SiteController::$SCRIPT_NAME;
 		$script_path = SiteController::$SCRIPT_PATH;
@@ -558,7 +440,7 @@ class SiteController extends BaseController {
 		$server_upzip_file = $script_path.'unzip.php';
 		$server_install_file = $script_path.'nf_install.php';
 
-		$conn_id = ftp_connect(SiteController::$SITE_FTP);
+		$conn_id = ftp_connect($site_ftp_server);
 		$ftp_user = $real_name.'\\';
 		$ftp_user .= SiteController::$FTP_USER;
 		$login_result = ftp_login($conn_id,$ftp_user,SiteController::$FTP_PW);

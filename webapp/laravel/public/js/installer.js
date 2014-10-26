@@ -79,7 +79,7 @@ $("#createConfirmButton").click(function() {
                 if (data.status == 'ok') {
                     cN();
                     setTimeout(function() {
-						updateInstallBar(0, 'กำลังสร้างเว็บไซต์');
+						updateInstallBar(0, 'กำลังจัดสรรทรัพยากรสำหรับเว็บไซต์');
 						stepInstall(1,data.params.sid,data.params.install_token);
 					}, 3000);
                 } else {
@@ -132,9 +132,10 @@ function stepInstall(step,sid,install_token) {
             		updateInstallBar(90, data.message); 
             	} else if(step == 6) {
             		updateInstallBar(100, data.message); 
-            		setTimeout(function() {
+            		setTimeout(function() {						
+						getSiteUrl();
 						cN();
-					}, 1000);            		
+					}, 1500);            		
             	}
             	            	
             	//Recursive stepInstall
@@ -142,12 +143,44 @@ function stepInstall(step,sid,install_token) {
             		stepInstall(step+1,sid,install_token);            	
             	
             } else {
-               	alert('error');
+               	$("#nf_install_error_msg").html(data.message);
+                $("#nf_install_ok").hide();
+                $("#nf_install_error").show();
             }
         }, //end success
-        error: function(jqXHR, textStatus, errorThrown) {
-                $(".modalCheckAvailable_msg").html(jqXHR.responseText);
-                $('#modalCheckAvailable_0').modal('show');
+        error: function(jqXHR, textStatus, errorThrown) {                
+                $("#nf_install_error_msg").html(jqXHR.responseText);
+                $("#nf_install_ok").hide();
+                $("#nf_install_error").show();
             } //end error         
     });
+}
+
+function getSiteUrl() {
+	var cms_type = $("#CMS-Selected").val();
+    var site_url = $("#CMS-Sitename").val() + '.' + $("#CMS-DomainName").val();
+    var main_url = 'http://'+site_url;
+    var admin_url = main_url;
+    var url_image = '';
+    if(cms_type == 'wordpress') {
+    	admin_url += '/wp-admin';
+    	url_image = '/img/icon/w-icon-200.png';
+    } else if (cms_type == 'joomla') {
+    	admin_url += '/administrator';
+    	url_image = '/img/icon/j-icon-200.png';
+    } else if (cms_type == 'drupal') {
+    	admin_url += '/admin';
+    	url_image = '/img/icon/d-icon-200.png';
+    }
+    
+    //update url main
+	$("#nf_url_main").attr('href',main_url);
+	$("#nf_url_main").text(main_url);
+	
+	//update url admin
+	$("#nf_url_admin").attr('href',admin_url);
+	$("#nf_url_admin").text(admin_url);
+	
+	//update url image
+	$("#nf_url_image").attr('src',url_image);
 }
