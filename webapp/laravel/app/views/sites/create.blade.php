@@ -247,7 +247,16 @@
 
 <!-- Step control bar -->
 <div class="row">
-    <div class="col-md-12 text-center">                
+    <div class="col-md-12 text-center">    
+    <ul class="pagination pagination-lg" role="tablist" id="create-tab" style="display:none;">
+<li><a href="#" onclick="cP()">&laquo;</a></li>
+<li class="active"><a href="#step1" role="tab" data-toggle="tab" onclick="sS(1)">Step 1</a></li>
+<li><a href="#step2" role="tab" data-toggle="tab" onclick="sS(2)">Step 2</a></li>
+<li><a href="#step3" role="tab" data-toggle="tab" onclick="sS(3)">Step 3</a></li>
+<li><a href="#step4" role="tab" data-toggle="tab" onclick="sS(4)">Step 4</a></li>
+<li><a href="#step5" role="tab" data-toggle="tab" onclick="sS(5)">Step 5</a></li>
+<li><a href="#" onclick="cN()">&raquo;</a></li>
+ </ul>          
         <script>
                                             //Function for go to previous step
                                             function cP(){
