@@ -263,14 +263,17 @@ class SiteController extends BaseController {
 		$site_new = $site_name.".".$domain_name;
 
 		$site_ip = shell_exec('nslookup '.$site_full.' | tail -2 | head -1 | awk \'{print $2}\'');
-		SiteController::MakeSubdomain_Init($domain_mapid, $site_name, $site_full, $site_ip);	
-		shell_exec(SiteController::$AZURE_PATH.' site domain add "'.$site_name.'.'.$domain_name.'" "'.$site_create.'" 2>&1');
-		ob_flush();
-		$output = shell_exec(SiteController::$AZURE_PATH.' site domain list '.$site_create.' --json  2>&1');
-		ob_flush();
-		$site_mapping = json_decode($output);
-		if(count($site_mapping) > 1 && ($site_mapping[0] == $site_new)) {
-			return true;
+
+		$make_subdomain = SiteController::MakeSubdomain_Init($domain_mapid, $site_name, $site_full, $site_ip);
+		if($make_subdomain)	{
+			shell_exec(SiteController::$AZURE_PATH.' site domain add "'.$site_name.'.'.$domain_name.'" "'.$site_create.'" 2>&1');
+			ob_flush();
+			$output = shell_exec(SiteController::$AZURE_PATH.' site domain list '.$site_create.' --json  2>&1');
+			ob_flush();
+			$site_mapping = json_decode($output);
+			if(count($site_mapping) > 1 && ($site_mapping[0] == $site_new)) {
+				return true;
+			}
 		}
 		return false;
 
@@ -492,57 +495,46 @@ class SiteController extends BaseController {
 			curl_setopt ($ch, CURLOPT_POSTFIELDS, $postdata); 		//send username and password to auth
 			curl_setopt ($ch, CURLOPT_POST, 1); 
 			$result = curl_exec ($ch); 
-			SiteController::MakeSubdomain_AddRecord($ch, $mainurl, $i, "A", $subdomain, $site_url, $site_ip);
-			SiteController::MakeSubdomain_AddRecord($ch, $mainurl, $i, "CNAME", $subdomain, $site_url, $site_ip);
-			SiteController::MakeSubdomain_Commit($ch, $mainurl);
-			//echo $result;
-			curl_close($ch);
+
+			$status_A = 
+			$status_CNAME =
+
+			if(SiteController::MakeSubdomain_AddRecord($ch, $mainurl, $i, "A", $subdomain, $site_url, $site_ip) && SiteController::MakeSubdomain_AddRecord($ch, $mainurl, $i, "CNAME", $subdomain, $site_url, $site_ip))  {
+				SiteController::MakeSubdomain_Commit($ch, $mainurl);
+				curl_close($ch);
+				return true;
+			} else {
+				curl_close($ch);
+				return false;
+			}			
 		} else {
-			echo "Fatal Error.";
-			return 0;
+			return false;
 		}
 	}
 
 	private function MakeSubdomain_AddRecord($ch, $mainurl, $i, $newtype, $subdomain, $site_url, $site_ip) {	
 		// Data Setup
-		$url = $mainurl."/src/record.php?i=".$i;
+		$url = $mainurl."/src/nf_add_domain.php?i=".$i;
 		if($newtype == "A") {
-			$postdata = "newhost=".$subdomain."&newtype=".$newtype."&newdestination=".$site_ip;
+			$postdata = "newhost=".$subdomain."&newtype=".$newtype."&newdestination=".$site_ip."&zoneid=".$i;
 		} else if($newtype == "CNAME") {
-			$postdata = "newhost=awverify.".$subdomain."&newtype=".$newtype."&newdestination=awverify.".$site_url;
+			$postdata = "newhost=awverify.".$subdomain."&newtype=".$newtype."&newdestination=awverify.".$site_url."&zoneid=".$i;
 		} else {
-			echo "Fatal Error.";
-			exit();
-		}
-
-		// Get current DNS records
-		curl_setopt($ch, CURLOPT_URL, $url);
-		curl_setopt ($ch, CURLOPT_POST, 0); 
-		$data = curl_exec($ch);
-
-		// Read HTML Forms
-		$html = new Htmldom();
-		$html->load($data);
-		$query_string = "";
-		foreach($html->find('input[name]') as $ret ) {
-			if($ret->name != "newhost" && $ret->name != "newdestination" && strpos($ret->name,'delete') === false) {
-				$query_string .= urlencode($ret->name)."=".$ret->value."&";
-			//echo $ret->name."=".$ret->value."<br/>";
-			}
-		}
-		foreach($html->find('select') as $ret ) {
-			if($ret->name != "newtype") {
-				$query_string .= urlencode($ret->name)."=".$ret->find('option[selected]', 0)->value."&";
-			}
-		//echo $ret->name."=".$ret->find('option[selected]', 0)->value."<br/>";	
-		}
+			return 'error';
+		}			
 
 		//Set A Record
 		curl_setopt($ch, CURLOPT_URL, $url);
-		curl_setopt ($ch, CURLOPT_POSTFIELDS, $query_string.$postdata); 
+		curl_setopt ($ch, CURLOPT_POSTFIELDS, $postdata); 
 		curl_setopt ($ch, CURLOPT_POST, 1); 
 		$data = curl_exec($ch);
-		//echo $data;
+		
+		//Get result
+		$result = json_decode($data);
+		
+		if($result->status == 'ok')
+			return true;
+		return false;
 	}
 
 	private function MakeSubdomain_Commit($ch, $mainurl) {
