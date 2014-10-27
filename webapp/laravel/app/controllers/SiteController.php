@@ -494,10 +494,7 @@ class SiteController extends BaseController {
 			curl_setopt ($ch, CURLOPT_REFERER, $url); 
 			curl_setopt ($ch, CURLOPT_POSTFIELDS, $postdata); 		//send username and password to auth
 			curl_setopt ($ch, CURLOPT_POST, 1); 
-			$result = curl_exec ($ch); 
-
-			$status_A = 
-			$status_CNAME =
+			$result = curl_exec ($ch); 			
 
 			if(SiteController::MakeSubdomain_AddRecord($ch, $mainurl, $i, "A", $subdomain, $site_url, $site_ip) && SiteController::MakeSubdomain_AddRecord($ch, $mainurl, $i, "CNAME", $subdomain, $site_url, $site_ip))  {
 				SiteController::MakeSubdomain_Commit($ch, $mainurl);
