@@ -231,9 +231,9 @@
             <div class="row" style="margin-top:20px;margin-bottom:100px;">
                 <div class="col-sm-12 col-md-offset-4 col-lg-4 col-lg-offset-4">                            
                     <div class="well"><h4 class="text-center"><span class="glyphicon glyphicon-info-sign"></span> รายละเอียดการเข้าถึงเว็บไซต์</h4>
-                        <img src="/img/icon/w-icon-200.png" class="center-block" id="nf_url_image">
-                        <h5>หน้าหลัก : <a id="nf_url_main" target="_blank" href="#">sd</a></h5>
-                        <h5>หน้าผู้ดูแลระบบ : <a id="nf_url_admin" target="_blank" href="#">sd</a></h5>
+                        <img src="#" class="center-block" id="nf_url_image">
+                        <h5>หน้าหลัก : <a id="nf_url_main" target="_blank" href="#">#</a></h5>
+                        <h5>หน้าผู้ดูแลระบบ : <a id="nf_url_admin" target="_blank" href="#">#</a></h5>
                     </div>
                     <button type="button" class="btn btn-info center-block" onclick="window.location.replace('/site/manage');">จัดการเว็บไซต์</button>
                 </div>
