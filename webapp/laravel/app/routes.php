@@ -166,9 +166,9 @@ Route::post('password/reset/{token}', [
 ]);
 
 ## Site ##
-Route::get('site/create/{type}/{name}/{domain}', [
-    "as" => "sites/create",
-    "uses" => "SiteController@createAction"
+Route::get('site/delete/{sid}', [
+    "as" => "sites/delete",
+    "uses" => "SiteController@deleteAction"
 ]);
 
 Route::get('site/create', function()

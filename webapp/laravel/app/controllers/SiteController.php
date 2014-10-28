@@ -469,8 +469,62 @@ class SiteController extends BaseController {
 		return true;
 	}	
 
+
+	//Delete Website
+	public function deleteAction($sid) {
+		if(Auth::check()) {
+			$uid = Auth::user()->uid;
+			$count_site = Site::where('sid','=',$sid)->where('nf_user_uid','=',$uid)->count();
+			if($count_site == 1) {
+				$del_status = SiteController::confirmDeleteSite($sid);
+				if($del_status) {
+					return true;
+				} else {
+					return false;
+				}
+			} else {
+				return false;
+			}
+		} else {
+			return false;
+		}
+	}
+
+	private function confirmDeleteSite($sid) {
+		$site = Site::findOrFail($sid);
+
+		//delete azure website
+		if($site->step1 == 1) {
+			shell_exec(SiteController::$AZURE_PATH.' site delete -q "'.$site->mapping.'" 2>&1');
+		}
+
+		//delete mapping domain
+		if($site->step2 == 1) {
+			$domain = Domain::findOrFail($site->nf_domain_did);
+			$domain_mapid = $domain->mapid;
+
+			$del_subdomain = SiteController::MakeSubdomain_Init($domain_mapid, $site->name, null, null , "DEL");
+		}
+
+		//delete mysql database
+		if($site->step4 == 1) {
+			$db_name = $site->name.'-'.$site->nf_domain_did;
+			$cms = Cms::findOrFail($site->nf_cms_cid);			
+			shell_exec('mysql -u'.$cms->db_username.' -p"'.$cms->db_password.'" -h '.$cms->db_host.' -e "delete database \`'.$db_name.'\`";');
+		}
+
+		//delete the row from nfsite database
+		$site->delete();
+
+		return true;
+
+	}
+
+
+
+
 	//Manage subdomain
-	private  function MakeSubdomain_Init($i, $subdomain, $site_url, $site_ip) {
+	private  function MakeSubdomain_Init($i, $subdomain, $site_url, $site_ip, $mode = "ADD") {
 		if(!empty($i) && !empty($subdomain) && !empty($site_url) && !empty($site_ip)) {
 			// BindDNS Setting
 			$username = "admin"; 
@@ -496,14 +550,27 @@ class SiteController extends BaseController {
 			curl_setopt ($ch, CURLOPT_POST, 1); 
 			$result = curl_exec ($ch); 			
 
-			if(SiteController::MakeSubdomain_AddRecord($ch, $mainurl, $i, "A", $subdomain, $site_url, $site_ip) && SiteController::MakeSubdomain_AddRecord($ch, $mainurl, $i, "CNAME", $subdomain, $site_url, $site_ip))  {
-				SiteController::MakeSubdomain_Commit($ch, $mainurl);
-				curl_close($ch);
-				return true;
+			if($mode == "ADD") {
+				if(SiteController::MakeSubdomain_AddRecord($ch, $mainurl, $i, "A", $subdomain, $site_url, $site_ip) && SiteController::MakeSubdomain_AddRecord($ch, $mainurl, $i, "CNAME", $subdomain, $site_url, $site_ip))  {
+					SiteController::MakeSubdomain_Commit($ch, $mainurl);
+					curl_close($ch);
+					return true;
+				} else {
+					curl_close($ch);
+					return false;
+				}	
+			} else if($mode == "DEL") {
+				if(SiteController::MakeSubdomain_DelRecord($ch, $mainurl, $i, 'A', $subdomain) && SiteController::MakeSubdomain_DelRecord($ch, $mainurl, $i, 'CNAME', $subdomain)) {
+					SiteController::MakeSubdomain_Commit($ch, $mainurl);
+					curl_close($ch);
+					return true;
+				} else {
+					curl_close($ch);
+					return false;
+				}
 			} else {
-				curl_close($ch);
 				return false;
-			}			
+			}	
 		} else {
 			return false;
 		}
@@ -516,6 +583,31 @@ class SiteController extends BaseController {
 			$postdata = "newhost=".$subdomain."&newtype=".$newtype."&newdestination=".$site_ip."&zoneid=".$i;
 		} else if($newtype == "CNAME") {
 			$postdata = "newhost=awverify.".$subdomain."&newtype=".$newtype."&newdestination=awverify.".$site_url."&zoneid=".$i;
+		} else {
+			return 'error';
+		}			
+
+		//Set A Record
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt ($ch, CURLOPT_POSTFIELDS, $postdata); 
+		curl_setopt ($ch, CURLOPT_POST, 1); 
+		$data = curl_exec($ch);
+		
+		//Get result
+		$result = json_decode($data);
+		
+		if($result->status == 'ok')
+			return true;
+		return false;
+	}
+
+	private function MakeSubdomain_DelRecord($ch, $mainurl, $i, $deltype, $subdomain) {	
+		// Data Setup
+		$url = $mainurl."/src/nf_del_domain.php?i=".$i;
+		if($deltype == "A") {
+			$postdata = "delhost=".$subdomain."&deltype=".$deltype."&zoneid=".$i;
+		} else if($deltype == "CNAME") {
+			$postdata = "delhost=awverify.".$subdomain."&deltype=".$deltype."&zoneid=".$i;
 		} else {
 			return 'error';
 		}			
