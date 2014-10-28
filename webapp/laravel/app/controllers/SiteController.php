@@ -161,6 +161,7 @@ class SiteController extends BaseController {
 						$current_site->save();
 						return Response::json(array('status' => 'ok', 'message' => 'กำลังจดทะเบียนชื่อเว็บไซต์'));
 					} else {
+						SiteController::confirmDeleteSite($sid);
 						return Response::json(array('status' => 'error', 'message' => 'ไม่สามารถสร้างเว็บไซต์ได้'));
 					}
 				} else if($step == 2) {
@@ -172,6 +173,7 @@ class SiteController extends BaseController {
 						$current_site->save();
 						return Response::json(array('status' => 'ok', 'message' => 'กำลังอัพโหลด CMS'));
 					} else {
+						SiteController::confirmDeleteSite($sid);
 						return Response::json(array('status' => 'error', 'message' => 'ไม่สามารถจดทะเบียนเว็บไซต์ได้'));
 					}
 				} else if($step == 3) {
@@ -183,6 +185,7 @@ class SiteController extends BaseController {
 						$current_site->save();
 						return Response::json(array('status' => 'ok', 'message' => 'กำลังสร้างฐานข้อมูล'));
 					} else {
+						SiteController::confirmDeleteSite($sid);
 						return Response::json(array('status' => 'error', 'message' => 'ไม่สามารถอัพโหลด CMSได้'));
 					}
 				} else if($step == 4) {
@@ -194,6 +197,7 @@ class SiteController extends BaseController {
 						$current_site->save();
 						return Response::json(array('status' => 'ok', 'message' => 'กำลังติดตั้ง CMS'));
 					} else {
+						SiteController::confirmDeleteSite($sid);
 						return Response::json(array('status' => 'error', 'message' => 'ไม่สามารถสร้างฐานข้อมูลได้'));
 					}
 				} else if($step == 5) {
@@ -207,6 +211,7 @@ class SiteController extends BaseController {
 						$current_site->save();
 						return Response::json(array('status' => 'ok', 'message' => 'กำลังลบไฟล์ติดตั้ง CMS'));
 					} else {
+						SiteController::confirmDeleteSite($sid);
 						return Response::json(array('status' => 'error', 'message' => 'ไม่สามารถติดตั้ง CMSได้'));
 					}
 				} else if($step == 6) {
@@ -218,6 +223,7 @@ class SiteController extends BaseController {
 						$current_site->save();
 						return Response::json(array('status' => 'ok', 'message' => 'การสร้างเว็บไซต์เสร็จสมบูรณ์'));
 					} else {
+						SiteController::confirmDeleteSite($sid);
 						return Response::json(array('status' => 'error', 'message' => 'ไม่สามารถลบไฟล์ติดตั้ง CMSได้'));
 					}
 				} else {
