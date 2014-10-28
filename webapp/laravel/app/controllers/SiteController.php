@@ -473,20 +473,22 @@ class SiteController extends BaseController {
 	//Delete Website
 	public function deleteAction($sid) {
 		if(Auth::check()) {
-			$uid = Auth::user()->uid;
-			$count_site = Site::where('sid','=',$sid)->where('nf_user_uid','=',$uid)->count();
-			if($count_site == 1) {
-				$del_status = SiteController::confirmDeleteSite($sid);
-				if($del_status) {
-					return true;
-				} else {
-					return false;
-				}
+			$uid = Auth::user()->uid;			
+			if(Auth::user()->role == 1) {
+				//if admin
+				$count_site = Site::where('sid','=',$sid)->count();
 			} else {
-				return false;
+				//if user
+				$count_site = Site::where('sid','=',$sid)->where('nf_user_uid','=',$uid)->count();
+			}
+			if($count_site == 1) {
+				SiteController::confirmDeleteSite($sid);
+				return Redirect::to('site/manage')->with('nf_del_success','ทำการลบเว็บไซต์เรียบร้อย');
+			} else {
+				return Redirect::to('site/manage')->with('nf_del_error','ไม่สามารถลบเว็บไซต์นี้ได้');
 			}
 		} else {
-			return false;
+			return Redirect::to('/user/login');
 		}
 	}
 
@@ -503,25 +505,20 @@ class SiteController extends BaseController {
 			$domain = Domain::findOrFail($site->nf_domain_did);
 			$domain_mapid = $domain->mapid;
 
-			$del_subdomain = SiteController::MakeSubdomain_Init($domain_mapid, $site->name, null, null , "DEL");
+			$del_subdomain = SiteController::MakeSubdomain_Init($domain_mapid, $site->name, 'del', 'del' , "DEL");			
 		}
 
 		//delete mysql database
 		if($site->step4 == 1) {
 			$db_name = $site->name.'-'.$site->nf_domain_did;
 			$cms = Cms::findOrFail($site->nf_cms_cid);			
-			shell_exec('mysql -u'.$cms->db_username.' -p"'.$cms->db_password.'" -h '.$cms->db_host.' -e "delete database \`'.$db_name.'\`";');
+			shell_exec('mysql -u'.$cms->db_username.' -p"'.$cms->db_password.'" -h '.$cms->db_host.' -e "drop database \`'.$db_name.'\`";');
 		}
 
 		//delete the row from nfsite database
 		$site->delete();
 
-		return true;
-
 	}
-
-
-
 
 	//Manage subdomain
 	private  function MakeSubdomain_Init($i, $subdomain, $site_url, $site_ip, $mode = "ADD") {
