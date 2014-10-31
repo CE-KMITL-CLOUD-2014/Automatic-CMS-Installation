@@ -111,219 +111,345 @@
                 </div>
                 <!-- /.row -->
 
-				<!-- Web site -->
+				<!-- Content -->
+				<!-- Web Site 1-3 -->
 				<div class="row">
-
-					<div class="col-md-8">
-
-						<div class="panel-group" id="accordion">
-						  
-						  <!-- Web site #1 -->
-						  <div class="panel panel-default">
-							<div class="panel-heading">
-							  <h4 class="panel-title">
-								<a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
-								  Web site #1
-								</a>
-							  </h4>
+					
+					<!-- Web Site 1 -->
+					<div class="col-sm-4">
+						
+						<!-- Button trigger modal -->
+						<a href="#" data-toggle="modal" data-target="#webSite1">
+							<div class="panel panel-default">
+								<div class="panel-body">
+									<table style="background-color: #f5f5f5;">
+										<tr>
+											<td valign="middle" style="width:100%;">
+												<img src='img/user-page/w1-page.png' style="width:inherit"/>
+											</td>
+										</tr>
+									</table>
+									<h3>Web Site 1</h3>
+								</div>
 							</div>
-							<!-- /.panel-heading -->
-							<div id="collapseOne" class="panel-collapse collapse in">
-							  <div class="panel-body">
-								<table class="table">
-									<thead></thead>
-									<tbody>
-									<tr>
-										<td width="120">
-											<p class="text-right">Domain name : </p>
-										</td>
-										<td>
-											<a href="#" alt="Word Press">http://website1.nf.in.th</a>	
-										</td>
-									</tr>
-									<tr>
-										<td>
-											<p class="text-right">Type : </p>
-										</td>
-										<td>
-											<img src="img/icon/w-icon-200.png" style="width:50px;" class="img-thumbnail">
-											<!-- Word Press = w-icon-200.png" -->
-											<!-- Joomla = j-icon-200.png" -->
-											<!-- Drupal = d-icon-200.png" -->
-										</td>
-									</tr>
-									</tbody>
-								</table>
-								<div class="row">
-									<div class="col-sm-3 col-sm-offset-9 text-right">
-										<!-- Delete button -->
-										<button class="btn btn-danger" data-toggle="modal" data-target="#web-site-1-delete-modal-conferm">Delete</button>
-										<!-- /.Delete button -->
+						</a>
+
+						<!-- Modal -->
+						<div class="modal fade" id="webSite1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+							<div class="modal-dialog">
+								<div class="modal-content">
+									<div class="modal-header">
+										<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+										<h4 class="modal-title" id="myModalLabel">Web Site 1 </h4>
 									</div>
-									<!-- Delete modal -->
-									<div class="modal fade" id="web-site-1-delete-modal-conferm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
-										<div class="modal-dialog modal-sm">
-											<div class="modal-content">
-												<div class="modal-header">
-													<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-													<h4 class="modal-title" id="myModalLabel">Web site #1 Delete!</h4>
+									<div class="modal-body">
+										<div class="row">
+											<div class="col-md-12">
+												<img src='img/user-page/w1-page.png' style="width:100%"/>
+											</div>
+										</div>
+										<div class="row" style="background-color: #f5f5f5;margin-top:15px;">
+											<div class="col-sm-9">
+												<div style="padding:10px;">
+													<a href="#"><h2>website1.nfsite.me</h2></a>
 												</div>
-												<div class="modal-body">Are you sure to delete this site! Press Delete or Cancel.</div>
-												<div class="modal-footer">
-													<button type="button" class="btn btn-danger">delete</button>
-													<button type="button" class="btn btn-default" data-dismiss="modal">cancel</button>
-												</div>
+											</div>
+											<div class="col-sm-2" style="padding-top:15px;padding-bottom:15px;background-color: #e0e0e0;text-align: center;">
+													<img src='img/icon/wordpress-icon.png' style="width:100%;max-width:120px;"/>
 											</div>
 										</div>
 									</div>
-									<!-- /.Delete modal -->
+									<div class="modal-footer">
+										<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+										<button type="button" class="btn btn-danger">Delete</button>
+									</div>
 								</div>
-								<!-- /.Delete button -->
-							  </div>
-							  <!-- /.panel-body -->
 							</div>
-							<!-- /.collapseOne -->
-						  </div>
-						  <!-- /.Web site #1 -->
-							
-						  <!-- Web site #2 -->
-						  <div class="panel panel-default">
-							<div class="panel-heading">
-							  <h4 class="panel-title">
-								<a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
-								  Web site #2
-								</a>
-							  </h4>
-							</div>
-							<div id="collapseTwo" class="panel-collapse collapse">
-							  <div class="panel-body">
-								<table class="table">
-									<thead></thead>
-									<tbody>
-									<tr>
-										<td width="120">
-											<p class="text-right">Domain name : </p>
-										</td>
-										<td>
-											<a href="#" alt="Word Press">http://website2.nf.in.th</a>	
-										</td>
-									</tr>
-									<tr>
-										<td>
-											<p class="text-right">Type : </p>
-										</td>
-										<td>
-											<img src="img/icon/j-icon-200.png" style="width:50px;" class="img-thumbnail">
-											<!-- Word Press = w-icon-200.png" -->
-											<!-- Joomla = j-icon-200.png" -->
-											<!-- Drupal = d-icon-200.png" -->
-										</td>
-									</tr>
-									</tbody>
-								</table>
-								<div class="row">
-									<div class="col-sm-3 col-sm-offset-9 text-right">
-										<!-- Delete button -->
-										<button class="btn btn-danger" data-toggle="modal" data-target="#web-site-2-delete-modal-conferm">Delete</button>
-										<!-- /.Delete button -->
-									</div>
-									<!-- Delete modal -->
-									<div class="modal fade" id="web-site-2-delete-modal-conferm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
-										<div class="modal-dialog modal-sm">
-											<div class="modal-content">
-												<div class="modal-header">
-													<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-													<h4 class="modal-title" id="myModalLabel">Web site #2 Delete!</h4>
-												</div>
-												<div class="modal-body">Are you sure to delete this site! Press Delete or Cancel.</div>
-												<div class="modal-footer">
-													<button type="button" class="btn btn-danger">delete</button>
-													<button type="button" class="btn btn-default" data-dismiss="modal">cancel</button>
-												</div>
-											</div>
-										</div>
-									</div>
-									<!-- /.Delete modal -->
-								</div>
-								<!-- /.Delete button -->
-							  </div>
-							</div>
-						  </div>
-						  <!-- /.Web site #2 -->
-
-						  <!-- Web site #3 -->
-						  <div class="panel panel-default">
-							<div class="panel-heading">
-							  <h4 class="panel-title">
-								<a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
-								  Web site #3
-								</a>
-							  </h4>
-							</div>
-							<div id="collapseThree" class="panel-collapse collapse">
-							  <div class="panel-body">
-								<table class="table">
-									<thead></thead>
-									<tbody>
-									<tr>
-										<td width="120">
-											<p class="text-right">Domain name : </p>
-										</td>
-										<td>
-											<a href="#" alt="Word Press">http://website3.nf.in.th</a>	
-										</td>
-									</tr>
-									<tr>
-										<td>
-											<p class="text-right">Type : </p>
-										</td>
-										<td>
-											<img src="img/icon/d-icon-200.png" style="width:50px;" class="img-thumbnail">
-											<!-- Word Press = w-icon-200.png" -->
-											<!-- Joomla = j-icon-200.png" -->
-											<!-- Drupal = d-icon-200.png" -->
-										</td>
-									</tr>
-									</tbody>
-								</table>
-								<div class="row">
-									<div class="col-sm-3 col-sm-offset-9 text-right">
-										<!-- Delete button -->
-										<button class="btn btn-danger" data-toggle="modal" data-target="#web-site-3-delete-modal-conferm">Delete</button>
-										<!-- /.Delete button -->
-									</div>
-									<!-- Delete modal -->
-									<div class="modal fade" id="web-site-3-delete-modal-conferm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
-										<div class="modal-dialog modal-sm">
-											<div class="modal-content">
-												<div class="modal-header">
-													<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-													<h4 class="modal-title" id="myModalLabel">Web site #3 Delete!</h4>
-												</div>
-												<div class="modal-body">Are you sure to delete this site! Press Delete or Cancel.</div>
-												<div class="modal-footer">
-													<button type="button" class="btn btn-danger">delete</button>
-													<button type="button" class="btn btn-default" data-dismiss="modal">cancel</button>
-												</div>
-											</div>
-										</div>
-									</div>
-									<!-- /.Delete modal -->
-								</div>
-								<!-- /.Delete button -->
-							  </div>
-							</div>
-						  </div>
-						  <!-- /.Web site #3 -->
-
 						</div>
-						<!-- /.panal-group -->
+
+					</div><!-- /.col -->
+					<!-- /.Web Site 1 -->
+
+					<!-- Web Site 2 -->
+					<div class="col-sm-4">
+						
+						<!-- Button trigger modal -->
+						<a href="#" data-toggle="modal" data-target="#webSite2">
+							<div class="panel panel-default">
+								<div class="panel-body">
+									<table style="background-color: #f5f5f5;">
+										<tr>
+											<td valign="middle" style="width:100%;">
+												<img src='img/user-page/j1-page.png' style="width:inherit"/>
+											</td>
+										</tr>
+									</table>
+									<h3>Web Site 2</h3>
+								</div>
+							</div>
+						</a>
+
+						<!-- Modal -->
+						<div class="modal fade" id="webSite2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+							<div class="modal-dialog">
+								<div class="modal-content">
+									<div class="modal-header">
+										<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+										<h4 class="modal-title" id="myModalLabel">Web Site 2 </h4>
+									</div>
+									<div class="modal-body">
+										<div class="row">
+											<div class="col-md-12">
+												<img src='img/user-page/j1-page.png' style="width:100%"/>
+											</div>
+										</div>
+										<div class="row" style="background-color: #f5f5f5;margin-top:15px;">
+											<div class="col-sm-9">
+												<div style="padding:10px;">
+													<a href="#"><h2>website2.nfsite.me</h2></a>
+												</div>
+											</div>
+											<div class="col-sm-2" style="padding-top:15px;padding-bottom:15px;background-color: #e0e0e0;text-align: center;">
+													<img src='img/icon/joomla-icon.png' style="width:100%;max-width:120px;"/>
+											</div>
+										</div>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+										<button type="button" class="btn btn-danger">Delete</button>
+									</div>
+								</div>
+							</div>
+						</div>
+
+					</div><!-- /.col -->
+					<!-- /.Web Site 2 -->
+
+					<!-- Web Site 3 -->
+					<div class="col-sm-4">
+						
+						<!-- Button trigger modal -->
+						<a href="#" data-toggle="modal" data-target="#webSite3">
+							<div class="panel panel-default">
+								<div class="panel-body">
+									<table style="background-color: #f5f5f5;">
+										<tr>
+											<td valign="middle" style="width:100%;">
+												<img src='img/user-page/d1-page.png' style="width:inherit"/>
+											</td>
+										</tr>
+									</table>
+									<h3>Web Site 3</h3>
+								</div>
+							</div>
+						</a>
+
+						<!-- Modal -->
+						<div class="modal fade" id="webSite3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+							<div class="modal-dialog">
+								<div class="modal-content">
+									<div class="modal-header">
+										<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+										<h4 class="modal-title" id="myModalLabel">Web Site 3 </h4>
+									</div>
+									<div class="modal-body">
+										<div class="row">
+											<div class="col-md-12">
+												<img src='img/user-page/d1-page.png' style="width:100%"/>
+											</div>
+										</div>
+										<div class="row" style="background-color: #f5f5f5;margin-top:15px;">
+											<div class="col-sm-9">
+												<div style="padding:10px;">
+													<a href="#"><h2>website3.nfsite.me</h2></a>
+												</div>
+											</div>
+											<div class="col-sm-2" style="padding-top:15px;padding-bottom:15px;background-color: #e0e0e0;text-align: center;">
+													<img src='img/icon/drupal-icon.png' style="width:100%;max-width:120px;"/>
+											</div>
+										</div>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+										<button type="button" class="btn btn-danger">Delete</button>
+									</div>
+								</div>
+							</div>
+						</div>
+
+					</div><!-- /.col -->
+					<!-- /.Web Site 3 -->
+
+				</div><!-- /.row -->
+				<!-- Web Site 4-6 -->
+				<div class="row">
 					
-					</div>
-					<!-- /.col -->
-					
-				</div>
-				<!-- /.row -->
+					<!-- Web Site 4 -->
+					<div class="col-sm-4">
+						
+						<!-- Button trigger modal -->
+						<a href="#" data-toggle="modal" data-target="#webSite4">
+							<div class="panel panel-default">
+								<div class="panel-body">
+									<table style="background-color: #f5f5f5;">
+										<tr>
+											<td valign="middle" style="width:100%;">
+												<img src='img/user-page/w2-page.png' style="width:inherit"/>
+											</td>
+										</tr>
+									</table>
+									<h3>Web Site 4</h3>
+								</div>
+							</div>
+						</a>
+
+						<!-- Modal -->
+						<div class="modal fade" id="webSite4" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+							<div class="modal-dialog">
+								<div class="modal-content">
+									<div class="modal-header">
+										<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+										<h4 class="modal-title" id="myModalLabel">Web Site 4 </h4>
+									</div>
+									<div class="modal-body">
+										<div class="row">
+											<div class="col-md-12">
+												<img src='img/user-page/w2-page.png' style="width:100%"/>
+											</div>
+										</div>
+										<div class="row" style="background-color: #f5f5f5;margin-top:15px;">
+											<div class="col-sm-9">
+												<div style="padding:10px;">
+													<a href="#"><h2>website4.nfsite.me</h2></a>
+												</div>
+											</div>
+											<div class="col-sm-2" style="padding-top:15px;padding-bottom:15px;background-color: #e0e0e0;text-align: center;">
+													<img src='img/icon/wordpress-icon.png' style="width:100%;max-width:120px;"/>
+											</div>
+										</div>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+										<button type="button" class="btn btn-danger">Delete</button>
+									</div>
+								</div>
+							</div>
+						</div>
+
+					</div><!-- /.col -->
+					<!-- /.Web Site 4 -->
+
+					<!-- Web Site 5 -->
+					<div class="col-sm-4">
+						
+						<!-- Button trigger modal -->
+						<a href="#" data-toggle="modal" data-target="#webSite5">
+							<div class="panel panel-default">
+								<div class="panel-body">
+									<table style="background-color: #f5f5f5;">
+										<tr>
+											<td valign="middle" style="width:100%;">
+												<img src='img/user-page/j2-page.png' style="width:inherit"/>
+											</td>
+										</tr>
+									</table>
+									<h3>Web Site 5</h3>
+								</div>
+							</div>
+						</a>
+
+						<!-- Modal -->
+						<div class="modal fade" id="webSite5" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+							<div class="modal-dialog">
+								<div class="modal-content">
+									<div class="modal-header">
+										<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+										<h4 class="modal-title" id="myModalLabel">Web Site 5 </h4>
+									</div>
+									<div class="modal-body">
+										<div class="row">
+											<div class="col-md-12">
+												<img src='img/user-page/j2-page.png' style="width:100%"/>
+											</div>
+										</div>
+										<div class="row" style="background-color: #f5f5f5;margin-top:15px;">
+											<div class="col-sm-9">
+												<div style="padding:10px;">
+													<a href="#"><h2>website5.nfsite.me</h2></a>
+												</div>
+											</div>
+											<div class="col-sm-2" style="padding-top:15px;padding-bottom:15px;background-color: #e0e0e0;text-align: center;">
+													<img src='img/icon/joomla-icon.png' style="width:100%;max-width:120px;"/>
+											</div>
+										</div>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+										<button type="button" class="btn btn-danger">Delete</button>
+									</div>
+								</div>
+							</div>
+						</div>
+
+					</div><!-- /.col -->
+					<!-- /.Web Site 5 -->
+
+					<!-- Web Site 6 -->
+					<div class="col-sm-4">
+						
+						<!-- Button trigger modal -->
+						<a href="#" data-toggle="modal" data-target="#webSite6">
+							<div class="panel panel-default">
+								<div class="panel-body">
+									<table style="background-color: #f5f5f5;">
+										<tr>
+											<td valign="middle" style="width:100%;">
+												<img src='img/user-page/d2-page.png' style="width:inherit"/>
+											</td>
+										</tr>
+									</table>
+									<h3>Web Site 6</h3>
+								</div>
+							</div>
+						</a>
+
+						<!-- Modal -->
+						<div class="modal fade" id="webSite6" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+							<div class="modal-dialog">
+								<div class="modal-content">
+									<div class="modal-header">
+										<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+										<h4 class="modal-title" id="myModalLabel">Web Site 6 </h4>
+									</div>
+									<div class="modal-body">
+										<div class="row">
+											<div class="col-md-12">
+												<img src='img/user-page/d2-page.png' style="width:100%"/>
+											</div>
+										</div>
+										<div class="row" style="background-color: #f5f5f5;margin-top:15px;">
+											<div class="col-sm-9">
+												<div style="padding:10px;">
+													<a href="#"><h2>website6.nfsite.me</h2></a>
+												</div>
+											</div>
+											<div class="col-sm-2" style="padding-top:15px;padding-bottom:15px;background-color: #e0e0e0;text-align: center;">
+													<img src='img/icon/drupal-icon.png' style="width:100%;max-width:120px;"/>
+											</div>
+										</div>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+										<button type="button" class="btn btn-danger">Delete</button>
+									</div>
+								</div>
+							</div>
+						</div>
+
+					</div><!-- /.col -->
+					<!-- /.Web Site 3 -->
+
+				</div><!-- /.row -->
 
 			</div>
             <!-- /.container-fluid -->
@@ -336,3 +462,28 @@
 </body>
 
 </html>
+
+<script>
+	var x=0;
+	$(document).ready(function(){
+		var temp=$('img[src^="img/user-page/"]');
+		setTimeout(function(){
+			$('img[src^="img/user-page/"]').each(function(){
+				var i=$(this).height();
+				//alert('height:'+i);
+				if(i>x){
+					x=i;
+					temp=$(this);
+				}
+			});
+			//alert('max-height:'+x);
+			$('img[src^="img/user-page/"]').parent().not('div').animate({height:x+'px'});
+		},2000);
+		$(window).resize(function(){
+			setTimeout(function(){
+				$('img[src^="img/user-page/"]').parent().not('div').animate({height:temp.height()+"px"});
+			},500);
+		});
+	});
+	
+</script>
