@@ -39,8 +39,8 @@
 </head>
 
 <body>
-<div id="wrapper">    
     @include("layouts.admin.header")
+<div id="wrapper">    
     @yield("content")
 </div>
 
