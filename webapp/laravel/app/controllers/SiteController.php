@@ -526,6 +526,43 @@ class SiteController extends BaseController {
 
 	}
 
+	//Manage Website
+	public function ManageSiteAction() {
+		if (Auth::check()) { 
+			$uid = Auth::user()->uid;
+			$site_data = Site::where('nf_user_uid','=',$uid)->where('status_active','=',1)->where('step1','=',1)->where('step2','=',1)->where('step3','=',1)->where('step4','=',1)->where('step5','=',1)->where('step6','=',1)->get();
+			$data = array();
+
+			for($i=0;$i<count($site_data);$i++) {
+				$domain = Domain::findOrFail($site_data[$i]->nf_domain_did);
+				$domain_name = $domain->name;
+
+				$cms = Cms::findOrFail($site_data[$i]->nf_cms_cid);
+				$cms_name = $cms->name;
+				$cms_type = $cms->type;
+
+				$sid = $site_data[$i]->sid;
+				$url = $site_data[$i]->name.'.'.$domain_name;
+				$title = $site_data[$i]->site_title;
+				$img = SiteController::getScreenShot($url);
+
+				$data[] = array(
+					'sid' => $sid,
+					'url' => $url,
+					'title' => $title,
+					'cms_name' => $cms_name,
+					'cms_type' => $cms_type,
+					'img' => $img
+				);
+			}
+
+			return View::make('sites/manage')->with('pagetitle','Manage Website')->with('site_data',$data)->with('site_count',count($site_data));
+		} else {
+			return Redirect::to('/user/login');
+		}
+
+	}
+
 	//Manage subdomain
 	private  function MakeSubdomain_Init($i, $subdomain, $site_url, $site_ip, $mode = "ADD") {
 		if(!empty($i) && !empty($subdomain) && !empty($site_url) && !empty($site_ip)) {
@@ -681,6 +718,25 @@ class SiteController extends BaseController {
 	 	$output = curl_exec($ch);
 	 	curl_close($ch);
 		return $output;
+	}
+
+	private function getScreenShot($url) {
+		//API Settings
+		$URLBOX_APIKEY = "2d6d4015-447f-4a40-a263-42a3049ea621";
+		$URLBOX_SECRET = "bbdff8d9-7a94-414c-8037-3d1eee78db14";
+		$args['width'] = "1024";
+		$args['height'] = "768";
+		$args['full_page'] = 'false';
+		$args['force'] = 'false';
+
+		$options['url'] = urlencode($url);
+		$options += $args;
+		foreach ($options as $key => $value) {
+			$_parts[] = "$key=$value";
+		}
+		$query_string = implode("&", $_parts);
+		$TOKEN = hash_hmac("sha1", $query_string, $URLBOX_SECRET);
+		return "https://api.urlbox.io/v1/$URLBOX_APIKEY/$TOKEN/png?$query_string";
 	}	
 
 } //end of class

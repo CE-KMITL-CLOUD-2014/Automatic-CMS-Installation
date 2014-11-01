@@ -191,3 +191,5 @@ Route::post('site/check', 'SiteController@checkAvailable');
 
 Route::post('site/install', 'SiteController@installSite');
 
+Route::get('site/manage', 'SiteController@ManageSiteAction');
+
