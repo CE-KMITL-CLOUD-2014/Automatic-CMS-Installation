@@ -132,7 +132,7 @@ $count++;
         <h4 class="modal-title" id="myModalLabel">ลบเว็บไซต์</h4>
     </div>
     <div class="modal-body">
-     <p class="modalCheckAvailable_msg alert alert-warning">กรุณายืนยันการลบเว็บไซต์ : <span id="show_del_site"></span></p>
+     <p class="modalCheckAvailable_msg alert alert-warning" id="show_del_status">กรุณายืนยันการลบเว็บไซต์ : <span id="show_del_site"></span></p>
  </div>
  <div class="modal-footer">
      <input type="hidden" id="confirm_del_input" value="0" />

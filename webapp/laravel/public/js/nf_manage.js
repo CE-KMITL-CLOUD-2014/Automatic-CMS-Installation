@@ -8,7 +8,8 @@ function del_site(sid,count) {
 }
 
 $("#confirm_del_btn").click(function() {
+	$(this).attr('disabled', 'disabled');
+	$("#show_del_status").html("<h4 class='text-center'>กำลังลบเว็บไซต์ กรุณารอสักครู่...</h4>");
 	var sid = $("#confirm_del_input").val();
-	//alert(sid);
 	window.location.replace('/site/delete/'+sid);
 });
