@@ -30,8 +30,9 @@
 
      @if($site_count == 0)
      <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-12" style="margin-bottom:100px;">
             <h4 class="text-center text-info">คุณยังไม่ได้สร้างเว็บไซต์</h4>
+            <button type="button" class="btn btn-primary btn-lg center-block" onclick="window.location.replace('/site/create');">สร้างเว็บไซต์ใหม่</button>
         </div>
     </div>
     @else

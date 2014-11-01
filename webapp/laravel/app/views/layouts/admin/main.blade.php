@@ -36,12 +36,21 @@
    <!-- Bootstrap Core JavaScript -->
    <script src="/js/bootstrap.min.js"></script>
 
+@if(Request::is('*user') || Request::is('*site'))
+   <!-- DataTables CSS -->
+<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.3/css/jquery.dataTables.css">  
+
+<!-- DataTables -->
+<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.3/js/jquery.dataTables.js"></script>
+@endif
+
 </head>
 
 <body>
     @include("layouts.admin.header")
 <div id="wrapper">    
     @yield("content")
+    @include("layouts.admin.footer")
 </div>
 
 </body>

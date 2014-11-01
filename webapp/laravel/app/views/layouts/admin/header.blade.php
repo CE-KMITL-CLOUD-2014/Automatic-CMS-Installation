@@ -23,7 +23,7 @@
 				</li> 
 				@if(Auth::check())       
 				<li class="dropdown">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> {{Auth::user()->fullname}}<b class="caret"></b></a>
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> {{Auth::user()->fullname}}<b class="caret"></b></a>
 					<ul class="dropdown-menu">
 						<li>
 							<a href="/user/profile"><i class="fa fa-fw fa-user"></i> ข้อมูลส่วนตัว</a>

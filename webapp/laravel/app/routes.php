@@ -67,7 +67,7 @@ Route::get('/', function()
 Route::get('user/register', function()
 {   
     if (Auth::check()) {
-        return Redirect::to('dashboard');
+        return Redirect::to('site/manage');
     } else {
          return View::make('users/register')->with('pagetitle','Register');
     }
@@ -82,7 +82,7 @@ Route::post('user/register', [
 Route::get('user/login', function()
 {
     if (Auth::check()) {
-        return Redirect::to('dashboard');
+        return Redirect::to('site/manage');
     } else {
         return View::make('users/login')->with('pagetitle','Login');
     }
@@ -138,7 +138,7 @@ Route::post('password/change', [
 Route::get('password/forget', function()
 {
     if (Auth::check()) {
-        return Redirect::to('dashboard');
+        return Redirect::to('site/manage');
     } else {
         return View::make('password/forget')->with('pagetitle','Forget Password');
     }
@@ -153,7 +153,7 @@ Route::post('password/forget', [
 Route::get('password/reset/{token}', function($token=null) {
     if (is_null($token)) App::abort(404);
      if (Auth::check()) {
-        return Redirect::to('dashboard');
+        return Redirect::to('site/manage');
     } else {
         return View::make('password/reset')->with('pagetitle','Reset Password')->with('token', $token);
     }    
@@ -192,4 +192,13 @@ Route::post('site/check', 'SiteController@checkAvailable');
 Route::post('site/install', 'SiteController@installSite');
 
 Route::get('site/manage', 'SiteController@ManageSiteAction');
+
+
+## Admin ##
+Route::get('admin/user', 'AdminController@ShowUserAction');
+
+Route::get('admin/site', 'AdminController@ShowSiteAction');
+
+Route::get('admin/setting', 'AdminController@ShowSettingAction');
+Route::post('admin/setting', 'AdminController@FormSettingAction');
 

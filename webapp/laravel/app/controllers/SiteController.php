@@ -76,8 +76,11 @@ class SiteController extends BaseController {
 			$site_exist = SiteController::countExistSite($name, $did);
 			$domain_exist = Domain::where('did', '=', $did)->count();
 
+			$count_user_sid = Site::where('nf_user_uid','=',Auth::user()->uid)->where('step1','=',1)->where('step2','=',1)->where('step3','=',1)->where('step4','=',1)->where('step5','=',1)->where('step6','=',1)->count();
+			$get_max_site = Setting::findOrFail(1)->max_site;
+
 			if(Auth::check()) {
-				if(!$site_exist && $cms_exist && $domain_exist) {
+				if(!$site_exist && $cms_exist && $domain_exist && ($count_user_sid < $get_max_site)) {
 					//Define data
 					$suffix = SiteController::randomStr(5);
 					$real_name = $name.'-'.$suffix;
@@ -116,6 +119,8 @@ class SiteController extends BaseController {
 					return Response::json(array('status' => 'error', 'message' => 'ไม่พบชนิด CMS'));
 				} else if(!$domain_exist) {
 					return Response::json(array('status' => 'error', 'message' => 'ไม่พบโดเมนเนมในระบบ'));
+				} else if($count_user_sid >= $get_max_site) {
+					return Response::json(array('status' => 'error', 'message' => 'อนุญาตให้สร้างเว็บไซต์ได้ '.$get_max_site.' เว็บไซต์เท่านั้น!'));
 				} else {
 					return Response::json(array('status' => 'error', 'message' => 'มีบางอย่างผิดพลาด โปรดลองใหม่อีกครั้ง'));
 				}
@@ -737,6 +742,5 @@ class SiteController extends BaseController {
 		$query_string = implode("&", $_parts);
 		$TOKEN = hash_hmac("sha1", $query_string, $URLBOX_SECRET);
 		return "https://api.urlbox.io/v1/$URLBOX_APIKEY/$TOKEN/png?$query_string";
-	}	
-
+	}
 } //end of class

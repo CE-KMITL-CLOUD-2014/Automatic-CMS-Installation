@@ -25,10 +25,10 @@
                     <div class="panel-body">
                         <div class="panel panel-default">
                           <div class="panel-body">
-                            <p>Email : {{Auth::user()->email}}</p>
-                            <p>Register Date : {{Auth::user()->date_register}}</p>
-                            <p>Status: @if(Auth::user()->status_active ==1)   Active @else Banned @endif</p>
-                            <p>Role: @if(Auth::user()->role ==1)   Admin @else User @endif</p>
+                            <p><b>Email :</b> {{Auth::user()->email}}</p>
+                            <p><b>Register Date :</b> {{CommonController::convertTime(Auth::user()->date_register)}} ({{CommonController::showTimeAgo(Auth::user()->date_register)}})</p>
+                            <p><b>Status :</b> @if(Auth::user()->status_active ==1)   <span class="text-success">Active</span> @else <span class="text-danger">Banned</span> @endif</p>
+                            <p><b>Role :</b> @if(Auth::user()->role ==1)   Admin @else User @endif</p>
                         </div>
                     </div>
                 </div>
