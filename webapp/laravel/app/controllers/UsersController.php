@@ -55,7 +55,7 @@ class UsersController extends BaseController {
 			$email = Input::get('email');
 			$password =  Input::get('password');
 			if (Auth::attempt(array('email' => $email, 'password' => $password, 'status_confirm' => 1, 'status_active' => 1))) {
-				return Redirect::to('dashboard');
+				return Redirect::to('site/manage');
 			} else {
 				$user = User::where('email','=',$email)->get();
 				$messages = array(

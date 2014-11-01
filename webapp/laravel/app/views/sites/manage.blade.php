@@ -9,7 +9,6 @@
             <div class="col-lg-12">
                 <h1 class="page-header">
                     จัดการเว็บไซต์
-                    <button type="button" class="btn btn-primary btn-lg pull-right" onclick="window.location.replace('/site/create');"><span class="glyphicon glyphicon-plus"></span> สร้างเว็บไซต์ใหม่</button>   
                 </h1>                 
             </div>
         </div>

@@ -9,10 +9,10 @@
 			<span class="icon-bar"></span>
 			<span class="icon-bar"></span>
 		</button>
-		<a class="navbar-brand" href="/dashboard">NFSITE.ME Management</a>
+		<a class="navbar-brand" href="/site/manage">NFSITE.ME Management</a>
 	</div>
 	<!-- Top Menu Items -->
-	<ul class="nav navbar-nav navbar-right">
+	<ul class="nav navbar-nav navbar-right collapse navbar-collapse navbar-ex1-collapse">
 		<li>
 			<a href="/">หน้าแรก</a>
 		</li>                    
