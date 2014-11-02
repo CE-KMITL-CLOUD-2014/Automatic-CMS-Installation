@@ -13,6 +13,18 @@
 
 		<div class="row">
 			<div class="col-lg-12">
+				@if(Session::has('nf_success'))
+				<div class='alert alert-success'>   
+					{{ Session::get('nf_success') }}
+				</div>
+				@endif
+
+				@if(Session::has('nf_error'))
+				<div class='alert alert-danger'>   
+					{{ Session::get('nf_error') }}
+				</div>
+				@endif
+
 				<!-- Nav tabs -->
 				<ul class="nav nav-tabs" role="tablist">
 					<li role="presentation" class="active"><a href="#general" role="tab" data-toggle="tab">ข้อมูลทั่วไป</a></li>

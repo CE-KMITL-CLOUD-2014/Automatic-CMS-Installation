@@ -4,7 +4,7 @@
 <div class="container" style="padding-top:50px;">
  <!-- Main component for a primary marketing message or call to action -->
       <div class="jumbotron">
-        <h2>การยืนยัน Email Address</h2>
+        <h2 class="text-success">ขั้นตอนต่อไป</h2>
         <p>กรุณาทำการยืนยันอีเมล์ตามที่เราส่งไปที่  
         @if(Session::has('nf_confirm_email'))                
                {{ Session::get('nf_confirm_email') }}                

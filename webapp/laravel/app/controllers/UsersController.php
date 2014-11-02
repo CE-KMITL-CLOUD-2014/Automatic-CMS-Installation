@@ -110,7 +110,7 @@ class UsersController extends BaseController {
 				$user_name = $user_data->fullname;
 
 				UsersController::confirmDeleteUser($uid);
-				return Redirect::back()->with('nf_success',$user_name.' ถูกแบนเรียบร้อยแล้ว');
+				return Redirect::to('/admin/user')->with('nf_success',$user_name.' ถูกลบเรียบร้อยแล้ว');
 				
 			} else {
 				return Redirect::to('/site/manage');
@@ -131,7 +131,7 @@ class UsersController extends BaseController {
 				ob_flush();
 			}
 		}
-		
+
 		$user->delete();
 		
 	}
