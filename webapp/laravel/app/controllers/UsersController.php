@@ -164,8 +164,10 @@ class UsersController extends BaseController {
 
 		if($site_count > 0) {
 			for($i=0;$i<$site_count;$i++) {
-				SiteController::confirmBlockSite($site[$i]->sid);
-				ob_flush();
+				if($site[$i]->status_active == 1) {
+					SiteController::confirmBlockSite($site[$i]->sid);
+					ob_flush();
+				}
 			}
 		}
 
@@ -202,8 +204,10 @@ class UsersController extends BaseController {
 
 		if($site_count > 0) {
 			for($i=0;$i<$site_count;$i++) {
-				SiteController::confirmUnblockSite($site[$i]->sid);
-				ob_flush();
+				if($site[$i]->status_active == 0) {
+					SiteController::confirmUnblockSite($site[$i]->sid);
+					ob_flush();
+				}
 			}
 		}		
 
