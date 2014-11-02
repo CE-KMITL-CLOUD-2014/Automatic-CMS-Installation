@@ -163,8 +163,15 @@ class UsersController extends BaseController {
 
 	private function confirmUnbanUser($uid) {
 		$user = User::findOrFail($uid);
+		$site = Site::where('nf_user_uid','=',$uid)->get();
+		$site_count = count($site);
 
-		//Add user's site to block queue
+		if($site_count > 0) {
+			for($i=0;$i<$site_count;$i++) {
+				SiteController::confirmUnblockSite($site[$i]->sid);
+				ob_flush();
+			}
+		}		
 
 		$user->status_active = 1;
 		$user->save();

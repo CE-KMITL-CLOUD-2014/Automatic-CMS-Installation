@@ -38,6 +38,8 @@
 										<button type="button" class="btn btn-success" onclick="unban_user({{$user_data->uid}});"><span class="glyphicon glyphicon-play"> ปลดแบนผู้ใช้นี้</button>
 										@endif
 										<button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-trash"> ลบผู้ใช้นี้</button>
+
+										<input type="hidden" id="user_name_{{$user_data->uid}}" value="{{$user_data->fullname}}" />
 									</p>									
 								</div>
 							</div>
@@ -63,12 +65,11 @@
 								@foreach ($site_data as $data)
 								<tr>
 									<td>{{$count}}</td>
-									<td>{{$data->name}}.{{$data->domain->name}}</td>
+									<td>{{$data->name}}.{{$data->domain->name}} <a href="http://{{$data->name}}.{{$data->domain->name}}" target="_blank"><span class="glyphicon glyphicon-share" title="Visit Website"></span></a></td>
 									<td>{{$data->cms->type}}</td>		           
 									<td>{{CommonController::convertTime($data->date_create)}}</td>
 									<td>@if($data->status_active ==1)   <span class="text-success">Active</span> @else <span class="text-danger">Blocked</span> @endif</td>
-									<td>
-										<a href="http://{{$data->name}}.{{$data->domain->name}}" target="_blank"><span class="glyphicon glyphicon-share" title="Visit Website"></span></a>
+									<td>										
 										<a href="/admin/site/{{$data->sid}}"><span class="glyphicon glyphicon-search" title="View Website"></span></a>
 										@if($data->status_active ==1)
 										<a href="#block_{{$data->sid}}" onclick="block_site({{$data->sid}});"><span class="glyphicon glyphicon-stop" title="Block Website"></span></a>
