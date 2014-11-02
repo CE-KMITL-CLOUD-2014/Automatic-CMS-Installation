@@ -176,6 +176,11 @@ Route::get('site/block/{sid}', [
     "uses" => "SiteController@blockAction"
 ]);
 
+Route::get('site/unblock/{sid}', [
+    "as" => "sites/unblock",
+    "uses" => "SiteController@unblockAction"
+]);
+
 Route::get('site/create', function()
 {
     if (Auth::check()) {

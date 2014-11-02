@@ -50,6 +50,32 @@
 	</div>
 </div>
 
+<!-- Modal on unblock website-->
+<div class="modal fade" id="modalConfirmUnblockSite" tabindex="-1" role="dialog" aria-labelledby="UnblockModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title" id="UnblockModalLabel">การยืนยันการปลดบล็อกเว็บไซต์</h4>
+			</div>
+			<div class="modal-body" id="modalUnblockText">
+				<p class="alert alert-success" id="show_unblock_status">กรุณายืนยันการปลดบล็อกเว็บไซต์ : <span id="show_unblock_site"></span></p>
+			</div>
+			<div class="modal-body" id="modalUnblockLoading" style="display:none;">
+				<p>กรุณารอสักครู่...</p>
+				<div class="progress">
+					<div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">  
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer" id="modalUnblockFooter">
+				<input type="hidden" id="confirm_unblock_input" value="0" />
+				<button type="button" class="btn btn-default" data-dismiss="modal">ยกเลิก</button>
+				<button type="button" class="btn btn-primary" id="confirm_unblock_btn">ยืนยัน</button>
+			</div>
+		</div>
+	</div>
+</div>
+
 <!-- NF Site Installer-->
 <script src="/js/nf_admin.js"></script>
 
