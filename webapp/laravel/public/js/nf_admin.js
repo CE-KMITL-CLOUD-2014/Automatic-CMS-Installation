@@ -62,6 +62,27 @@ $("#confirm_unblock_btn").click(function() {
 	window.location.replace('/site/unblock/'+sid);
 });
 
+//-----Delete User
+function del_user(uid) {
+	var name = $("#user_name_"+uid).val();
+	$("#confirm_del_input").val(uid);
+	$("#show_del_user").text(name);
+	
+	$('#modalConfirmDelUser').modal({
+            show: true,
+            keyboard: false,
+            backdrop: 'static'
+        });
+}
+
+$("#confirm_del_btn").click(function() {
+	$("#modalDelText").hide();
+	$("#modalDelFooter").hide();
+	$("#modalDelLoading").show();
+	var uid = $("#confirm_del_input").val();
+	window.location.replace('/user/delete/'+uid);
+});
+
 //-----Ban User
 function ban_user(uid) {
 	var name = $("#user_name_"+uid).val();

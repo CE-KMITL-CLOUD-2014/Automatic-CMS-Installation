@@ -508,7 +508,7 @@ class SiteController extends BaseController {
 		}
 	}
 
-	private function confirmDeleteSite($sid) {
+	public static function confirmDeleteSite($sid) {
 		$site = Site::findOrFail($sid);
 
 		//delete azure website

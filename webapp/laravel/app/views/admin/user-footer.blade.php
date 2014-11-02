@@ -1,3 +1,30 @@
+<!-- Modal on delete user-->
+<div class="modal fade" id="modalConfirmDelUser" tabindex="-1" role="dialog" aria-labelledby="DelModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title" id="DelModalLabel">การยืนยันการลบผู้ใช้</h4>
+			</div>
+			<div class="modal-body" id="modalDelText">
+				<p class="alert alert-warning" id="show_del_status">กรุณายืนยันการลบผู้ใช้ : <span id="show_del_user"></span></p>
+				<p class="text-danger text-center">คำเตือน : เว็บไซต์ทั้งหมดของผู้ใช้นี้จะถูกลบด้วย</p>
+			</div>
+			<div class="modal-body" id="modalDelLoading" style="display:none;">
+				<p>กรุณารอสักครู่...</p>
+				<div class="progress">
+					<div class="progress-bar progress-bar-danger progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">  
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer" id="modalDelFooter">
+				<input type="hidden" id="confirm_del_input" value="0" />
+				<button type="button" class="btn btn-default" data-dismiss="modal">ยกเลิก</button>
+				<button type="button" class="btn btn-primary" id="confirm_del_btn">ยืนยัน</button>
+			</div>
+		</div>
+	</div>
+</div>
+
 <!-- Modal on ban user-->
 <div class="modal fade" id="modalConfirmBanUser" tabindex="-1" role="dialog" aria-labelledby="BanModalLabel" aria-hidden="true">
 	<div class="modal-dialog">

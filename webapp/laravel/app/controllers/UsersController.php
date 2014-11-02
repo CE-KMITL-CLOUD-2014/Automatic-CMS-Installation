@@ -102,6 +102,40 @@ class UsersController extends BaseController {
 		}		
 	}
 
+	//Delete User
+	public function deleteAction($uid) {
+		if(Auth::check()) {
+			if(Auth::user()->role == 1) {
+				$user_data = User::findOrFail($uid);
+				$user_name = $user_data->fullname;
+
+				UsersController::confirmDeleteUser($uid);
+				return Redirect::back()->with('nf_success',$user_name.' ถูกแบนเรียบร้อยแล้ว');
+				
+			} else {
+				return Redirect::to('/site/manage');
+			}
+		} else {
+			return Redirect::to('/user/login');
+		}
+	}
+
+	private function confirmDeleteUser($uid) {
+		$user = User::findOrFail($uid);
+		$site = Site::where('nf_user_uid','=',$uid)->get();
+		$site_count = count($site);
+
+		if($site_count > 0) {
+			for($i=0;$i<$site_count;$i++) {
+				SiteController::confirmDeleteSite($site[$i]->sid);
+				ob_flush();
+			}
+		}
+		
+		$user->delete();
+		
+	}
+
 	//Ban User
 	public function banAction($uid) {
 		if(Auth::check()) {

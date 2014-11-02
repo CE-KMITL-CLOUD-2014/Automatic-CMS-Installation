@@ -55,7 +55,7 @@
 								@else
 								<a href="#unban_{{$data->uid}}" onclick="unban_user({{$data->uid}});"><span class="glyphicon glyphicon-play" title="Unban User"></span></a>
 								@endif
-								<a href="#del_{{$data->uid}}"><span class="glyphicon glyphicon-trash" title="Delete User"></span></a>
+								<a href="#del_{{$data->uid}}" onclick="del_user({{$data->uid}});"><span class="glyphicon glyphicon-trash" title="Delete User"></span></a>
 
 								<input type="hidden" id="user_name_{{$data->uid}}" value="{{$data->fullname}}" />
 							</td>
