@@ -169,4 +169,8 @@ Route::post('admin/setting', 'AdminController@FormSettingAction');
 Route::get('admin/domain', 'AdminController@ShowDomainAction');
 Route::get('admin/domain/hide/{did}', 'AdminController@HideDomainIDAction');
 Route::get('admin/domain/show/{did}', 'AdminController@ShowDomainIDAction');
+Route::post('admin/domain/add', [
+    "before" => "csrf",
+    "uses" => "AdminController@AddAction"
+]);
 

@@ -682,6 +682,15 @@ class SiteController extends BaseController {
 					curl_close($ch);
 					return false;
 				}
+			} else if($mode == "NEW") {
+				if(SiteController::MakeSubdomain_AddZone($ch, $mainurl, $subdomain)) {
+					SiteController::MakeSubdomain_Commit($ch, $mainurl);
+					curl_close($ch);
+					return true;
+				} else {
+					curl_close($ch);
+					return false;
+				}
 			} else {
 				return false;
 			}	
@@ -739,6 +748,34 @@ class SiteController extends BaseController {
 			return true;
 		return false;
 	}
+
+	public static function MakeSubdomain_AddZone($ch, $mainurl, $domain_name) {	
+		// Data Setup
+		$url = $mainurl."/src/nf_zoneadd.php";
+		$postdata = "name=".$domain_name."&refresh=28800&retry=7200&expire=1209600&ttl=86400&pri_dns=ns1.nfsite.me&sec_dns=ns2.nfsite.me&www=23.101.20.76&mail=&ftp=&owner=1";		
+
+		//Set A Record
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt ($ch, CURLOPT_POSTFIELDS, $postdata); 
+		curl_setopt ($ch, CURLOPT_POST, 1); 
+		$data = curl_exec($ch);
+		
+		//Get result
+		$result = json_decode($data);
+		
+		if($result->status == 'ok') {
+			$domain = new Domain;
+			$domain->name = $domain_name;
+			$domain->mapid = (int)$result->id;
+			$domain->status_active = 1;
+			$domain->date_create = date('Y-m-d H:i:s');
+			$domain->save();
+			return true;
+		}
+		return false;
+	}
+
+
 
 	public static function MakeSubdomain_Commit($ch, $mainurl) {
 		$url = $mainurl."/src/commit.php";

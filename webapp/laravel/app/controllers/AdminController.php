@@ -104,6 +104,27 @@ class AdminController extends BaseController {
 		return Redirect::to(AdminController::redirectErrorPermission());	
 	}
 
+	//Add new domain name
+	public function AddAction() {
+		if(AdminController::checkPermission()) {
+			$rules = array(
+				'domain_name' => 'required|min:4|max:64'
+				);
+			$validator = Validator::make(Input::all(),$rules);
+			if($validator->fails()){
+				$messages = $validator->messages();
+				return Redirect::back()->withErrors($messages)->withInput();
+			} else {	
+				$domain_name = Input::get('domain_name');
+				if(SiteController::MakeSubdomain_Init('no', $domain_name, 'new', 'new', 'NEW')) {
+					return Redirect::back()->with('nf_success','เพิ่มโดเมน '.$domain_name .' แล้ว');	
+				}
+				return Redirect::back()->with('nf_error','ไม่สามารถเพิ่ม '.$domain_name .' ได้');				
+			}					
+		}
+		return Redirect::to(AdminController::redirectErrorPermission());	
+	}
+
 	//Check admin permission
 	private function checkPermission() {
 		if(Auth::check()) {

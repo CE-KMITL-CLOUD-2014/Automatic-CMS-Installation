@@ -25,6 +25,14 @@
 				</div>
 				@endif
 
+				@if($errors->all())
+				<div class='alert alert-danger'>                       
+					@foreach($errors->all() as $error)
+					{{ $error }} <br/>
+					@endforeach
+				</div>  
+				@endif    
+
 				<!-- Nav tabs -->
 				<ul class="nav nav-tabs" role="tablist">
 					<li role="presentation" class="active"><a href="#domain_list" role="tab" data-toggle="tab">โดเมนทั้งหมด <span class="badge">{{$domain_count}}</span></a></li>	
@@ -71,7 +79,31 @@
 					</div>
 
 					<div role="tabpanel" class="tab-pane fade" id="domain_add">
-						sd
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h3 class="panel-title"><i class="glyphicon glyphicon-plus"></i> เพิ่มโดเมนเนม</h3>
+							</div>
+							<div class="panel-body">
+								<div class="panel panel-default">
+									<div class="panel-body">										
+										{{ Form::open(array('url'=>'admin/domain/add', 'id'=>'addDomainForm', 'name' => 'addDomain' , 'class' => 'form-horizontal', 'role' => 'form')) }}
+										<div class="form-group">
+											<label for="inputDomainName" class="col-sm-2 control-label">Domain Name</label>
+											<div class="col-sm-4">
+												<input type="text" class="form-control" id="inputDomainName" name="domain_name" placeholder="enter domain name">
+											</div>
+										</div>										                       
+										<div class="form-group">
+											<div class="col-sm-offset-2 col-sm-10">
+												<button type="submit" class="btn btn-primary">Add</button>
+												<button type="reset" class="btn btn-default">Reset</button>
+											</div>
+										</div>
+										{{ Form::close() }}    
+									</div>
+								</div>
+							</div>
+						</div>
 					</div>
 
 					<div role="tabpanel" class="tab-pane fade" id="domain_manage">
