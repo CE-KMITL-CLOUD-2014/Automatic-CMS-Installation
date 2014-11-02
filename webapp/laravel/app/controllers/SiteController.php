@@ -715,7 +715,7 @@ class SiteController extends BaseController {
 		return false;
 	}
 
-	private function MakeSubdomain_DelRecord($ch, $mainurl, $i, $deltype, $subdomain) {	
+	public static function MakeSubdomain_DelRecord($ch, $mainurl, $i, $deltype, $subdomain) {	
 		// Data Setup
 		$url = $mainurl."/src/nf_del_domain.php?i=".$i;
 		if($deltype == "A") {
@@ -740,7 +740,7 @@ class SiteController extends BaseController {
 		return false;
 	}
 
-	private function MakeSubdomain_Commit($ch, $mainurl) {
+	public static function MakeSubdomain_Commit($ch, $mainurl) {
 		$url = $mainurl."/src/commit.php";
 		//Commit
 		curl_setopt($ch, CURLOPT_URL, $url);
