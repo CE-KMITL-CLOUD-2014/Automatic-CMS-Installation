@@ -125,5 +125,45 @@ $("#confirm_unban_btn").click(function() {
 	window.location.replace('/user/unban/'+uid);
 });
 
+//-----Hide Domain
+function hide_domain(did) {
+	var name = $("#domain_name_"+did).val();
+	$("#confirm_hide_input").val(did);
+	$("#show_hide_domain").text(name);
+	
+	$('#modalConfirmHideDomain').modal({
+            show: true,
+            keyboard: false,
+            backdrop: 'static'
+        });
+}
 
+$("#confirm_hide_btn").click(function() {
+	$("#modalHideText").hide();
+	$("#modalHideFooter").hide();
+	$("#modalHideLoading").show();
+	var did = $("#confirm_hide_input").val();
+	window.location.replace('/admin/domain/hide/'+did);
+});
+
+//-----Show Domain
+function show_domain(did) {
+	var name = $("#domain_name_"+did).val();
+	$("#confirm_show_input").val(did);
+	$("#show_show_domain").text(name);
+	
+	$('#modalConfirmShowDomain').modal({
+            show: true,
+            keyboard: false,
+            backdrop: 'static'
+        });
+}
+
+$("#confirm_show_btn").click(function() {
+	$("#modalShowText").hide();
+	$("#modalShowFooter").hide();
+	$("#modalShowLoading").show();
+	var did = $("#confirm_show_input").val();
+	window.location.replace('/admin/domain/show/'+did);
+});
 

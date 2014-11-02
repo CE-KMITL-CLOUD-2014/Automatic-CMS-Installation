@@ -15,6 +15,7 @@
                 <li class="text-center"> <h4 class="text-warning">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-th"></span> ส่วนผู้ดูแล</h4>   </li>
                 <li {{ (Request::is('*admin/user*') ? 'class="active"' : '') }}><a href="/admin/user"><i class="fa fa-fw fa-user"></i> จัดการผู้ใช้ทั้งหมด</a></li>
                 <li {{ (Request::is('*admin/site*') ? 'class="active"' : '') }}><a href="/admin/site"><i class="fa fa-fw fa-cloud"></i> จัดการเว็บไซต์ทั้งหมด</a></li>
+                <li {{ (Request::is('*admin/domain*') ? 'class="active"' : '') }}><a href="/admin/domain"><i class="fa fa-fw fa-globe"></i> จัดการโดเมนเนม</a></li>
                 <li {{ (Request::is('*admin/setting*') ? 'class="active"' : '') }}><a href="/admin/setting"><i class="fa fa-fw fa-cog"></i> ตั้งค่าระบบ</a></li>
                 @endif
             </ul>            

@@ -77,7 +77,7 @@
 								@foreach ($site_data as $data)
 								<tr>
 									<td>{{$count}}</td>
-									<td>{{$data->name}}.{{$data->domain->name}} <a href="http://{{$data->name}}.{{$data->domain->name}}" target="_blank"><span class="glyphicon glyphicon-share" title="Visit Website"></span></a></td>
+									<td>{{$data->name}}.{{$data->domain->name}} <a href="http://{{$data->name}}.{{$data->domain->name}}" target="_blank"><span class="glyphicon glyphicon-new-window" title="Visit Website"></span></a></td>
 									<td>{{$data->cms->type}}</td>		           
 									<td>{{CommonController::convertTime($data->date_create)}}</td>
 									<td>@if($data->status_active ==1)   <span class="text-success">Active</span> @else <span class="text-danger">Blocked</span> @endif</td>

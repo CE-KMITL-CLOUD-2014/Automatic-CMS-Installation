@@ -69,6 +69,41 @@ class AdminController extends BaseController {
 		return Redirect::to(AdminController::redirectErrorPermission());	
 	}
 
+	//Show domain names
+	public function ShowDomainAction() {
+		if(AdminController::checkPermission()) {
+			$domain_data = Domain::all();
+			return View::make('admin/domain')->with('pagetitle','Admin : Domain Management')->with('domain_data',$domain_data)->with('domain_count',count($domain_data));
+		}
+		return Redirect::to(AdminController::redirectErrorPermission());
+	}
+
+	//Hide domain by ID
+	public function HideDomainIDAction($did) {
+		if(AdminController::checkPermission()) {
+			$domain = Domain::findOrFail($did);
+			$domain_name = $domain->name;
+			$domain->status_active = 0;
+			$domain->save();
+
+			return Redirect::back()->with('nf_success',$domain_name.' ถูกซ่อนเรียบร้อยแล้ว');			
+		}
+		return Redirect::to(AdminController::redirectErrorPermission());	
+	}
+
+	//Show domain by ID
+	public function ShowDomainIDAction($did) {
+		if(AdminController::checkPermission()) {
+			$domain = Domain::findOrFail($did);
+			$domain_name = $domain->name;
+			$domain->status_active = 1;
+			$domain->save();
+
+			return Redirect::back()->with('nf_success',$domain_name.' ถูกแสดงเรียบร้อยแล้ว');			
+		}
+		return Redirect::to(AdminController::redirectErrorPermission());	
+	}
+
 	//Check admin permission
 	private function checkPermission() {
 		if(Auth::check()) {

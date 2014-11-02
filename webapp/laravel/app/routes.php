@@ -136,7 +136,7 @@ Route::get('site/unblock/{sid}', 'SiteController@unblockAction');
 Route::get('site/create', function()
 {
     if (Auth::check()) {
-        $domain = DB::table('nf_domain')->orderBy('did', 'asc')->lists('name','did');
+        $domain = Domain::where('status_active','=',1)->orderBy('did', 'asc')->lists('name','did');
         return View::make('sites/create')->with('pagetitle','Create Website')->with('domain', $domain);
     } else {
         return Redirect::to('/user/login');
@@ -165,4 +165,8 @@ Route::get('admin/site/{sid}', 'AdminController@ShowSiteIDAction');
 
 Route::get('admin/setting', 'AdminController@ShowSettingAction');
 Route::post('admin/setting', 'AdminController@FormSettingAction');
+
+Route::get('admin/domain', 'AdminController@ShowDomainAction');
+Route::get('admin/domain/hide/{did}', 'AdminController@HideDomainIDAction');
+Route::get('admin/domain/show/{did}', 'AdminController@ShowDomainIDAction');
 
