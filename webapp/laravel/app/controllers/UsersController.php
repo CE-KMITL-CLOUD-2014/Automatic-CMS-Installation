@@ -100,6 +100,74 @@ class UsersController extends BaseController {
 		} else {
 			return Redirect::to('/');
 		}		
-	}	
-	
+	}
+
+	//Ban User
+	public function banAction($uid) {
+		if(Auth::check()) {
+			if(Auth::user()->role == 1) {
+				$user_data = User::findOrFail($uid);
+				$user_name = $user_data->fullname;
+
+				if($user_data->status_active == 1) {
+					UsersController::confirmBanUser($uid);
+					return Redirect::back()->with('nf_success',$user_name.' ถูกแบนเรียบร้อยแล้ว');
+				} else {
+					return Redirect::back()->with('nf_error',$user_name.' ถูกแบนอยู่แล้ว');
+				}
+			} else {
+				return Redirect::to('/site/manage');
+			}
+		} else {
+			return Redirect::to('/user/login');
+		}
+	}
+
+	private function confirmBanUser($uid) {
+		$user = User::findOrFail($uid);
+		$site = Site::where('nf_user_uid','=',$uid)->get();
+		$site_count = count($site);
+
+		if($site_count > 0) {
+			for($i=0;$i<$site_count;$i++) {
+				SiteController::confirmBlockSite($site[$i]->sid);
+				ob_flush();
+			}
+		}
+
+		$user->status_active = 0;
+		$user->save();
+		
+	}
+
+	//Unban User
+	public function unbanAction($uid) {
+		if(Auth::check()) {
+			if(Auth::user()->role == 1) {
+				$user_data = User::findOrFail($uid);
+				$user_name = $user_data->fullname;
+
+				if($user_data->status_active == 0) {
+					UsersController::confirmUnbanUser($uid);
+					return Redirect::back()->with('nf_success',$user_name.' ถูกปลดแบนเรียบร้อยแล้ว');
+				} else {
+					return Redirect::back()->with('nf_error',$user_name.' ไม่ได้ถูกแบน');
+				}
+			} else {
+				return Redirect::to('/site/manage');
+			}
+		} else {
+			return Redirect::to('/user/login');
+		}
+	}
+
+	private function confirmUnbanUser($uid) {
+		$user = User::findOrFail($uid);
+
+		//Add user's site to block queue
+
+		$user->status_active = 1;
+		$user->save();
+		
+	}			
 }

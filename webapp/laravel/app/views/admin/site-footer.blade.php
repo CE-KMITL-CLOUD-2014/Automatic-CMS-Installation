@@ -75,7 +75,3 @@
 		</div>
 	</div>
 </div>
-
-<!-- NF Site Installer-->
-<script src="/js/nf_admin.js"></script>
-

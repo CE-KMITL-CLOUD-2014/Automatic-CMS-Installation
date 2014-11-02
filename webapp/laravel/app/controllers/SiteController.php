@@ -557,7 +557,7 @@ class SiteController extends BaseController {
 		}		
 	}
 
-	private function confirmBlockSite($sid) {
+	public static function confirmBlockSite($sid) {
 		$site = Site::findOrFail($sid);
 
 		//Stop azure website

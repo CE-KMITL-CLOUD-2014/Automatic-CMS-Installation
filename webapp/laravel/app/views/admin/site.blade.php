@@ -43,19 +43,19 @@
 						@foreach ($site_data as $data)
 						<tr>
 							<td>{{$count}}</td>
-							<td>{{$data->name}}.{{$data->domain->name}}</td>
+							<td>{{$data->name}}.{{$data->domain->name}} <a href="http://{{$data->name}}.{{$data->domain->name}}" target="_blank"><span class="glyphicon glyphicon-share" title="Visit Website"></span></a></td>
 							<td>{{$data->cms->type}}</td>		           
 							<td>{{$data->user->fullname}}</td>
 							<td>{{CommonController::convertTime($data->date_create)}}</td>
 							<td>@if($data->status_active ==1)   <span class="text-success">Active</span> @else <span class="text-danger">Blocked</span> @endif</td>
-							<td>
+							<td>								
 								<a href="/admin/site/{{$data->sid}}"><span class="glyphicon glyphicon-search" title="View Website"></span></a>
 								@if($data->status_active ==1)
 								<a href="#block_{{$data->sid}}" onclick="block_site({{$data->sid}});"><span class="glyphicon glyphicon-stop" title="Block Website"></span></a>
 								@else
 								<a href="#unblock_{{$data->sid}}" onclick="unblock_site({{$data->sid}});"><span class="glyphicon glyphicon-play" title="Unblock Website"></span></a>
 								@endif
-								<a href="#del_{{$data->sid}}" onclick="del_site({{$data->sid}});"><span class="glyphicon glyphicon-trash" title="Delete Website"></span></a>
+								<a href="#del_{{$data->sid}}" onclick="del_site({{$data->sid}});"><span class="glyphicon glyphicon-trash" title="Delete Website"></span></a>								
 
 								<input type="hidden" id="site_url_{{$data->sid}}" value="{{$data->name}}.{{$data->domain->name}}" />
 							</td>

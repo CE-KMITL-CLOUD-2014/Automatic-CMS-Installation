@@ -6,13 +6,24 @@
 		<div class="row">
 			<div class="col-lg-12">
 				<h1 class="page-header">
-					จัดการผู้ใช้ทั้งหมด
+					จัดการผู้ใช้ทั้งหมด 
 				</h1>
 			</div>
 		</div>
 
 		<div class="row">
 			<div class="col-lg-12">
+				@if(Session::has('nf_success'))
+				<div class='alert alert-success'>   
+					{{ Session::get('nf_success') }}
+				</div>
+				@endif
+
+				@if(Session::has('nf_error'))
+				<div class='alert alert-danger'>   
+					{{ Session::get('nf_error') }}
+				</div>
+				@endif
 				<table class="table table-striped" id="user_data">
 					<thead>
 						<tr>
@@ -68,6 +79,5 @@
 </script>
 
 @include("admin.user-footer")
-
 
 @stop

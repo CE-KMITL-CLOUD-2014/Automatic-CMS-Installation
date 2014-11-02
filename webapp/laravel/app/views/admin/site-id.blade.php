@@ -43,6 +43,7 @@
 									<p><b>Status :</b> @if($site_data->status_active ==1)   <span class="text-success">Active</span> @else <span class="text-danger">Blocked</span> @endif</p>									
 									<p></p>
 									<p class="pull-right">
+										<button type="button" class="btn btn-primary" onclick="window.open('http://{{$site_data->name}}.{{$site_data->domain->name}}/', '_blank');"><span class="glyphicon glyphicon-share"> เยี่ยมชมเว็บไซต์นี้</button> 
 										@if($site_data->status_active ==1)
 										<button type="button" class="btn btn-warning" onclick="block_site({{$site_data->sid}});"><span class="glyphicon glyphicon-stop"> บล็อกเว็บไซต์นี้</button> 
 										@else

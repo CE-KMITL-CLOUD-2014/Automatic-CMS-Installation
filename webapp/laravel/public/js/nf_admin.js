@@ -66,9 +66,9 @@ $("#confirm_unblock_btn").click(function() {
 function ban_user(uid) {
 	var name = $("#user_name_"+uid).val();
 	$("#confirm_ban_input").val(uid);
-	$("#show_block_user").text(name);
+	$("#show_ban_user").text(name);
 	
-	$('#modalConfirmBanSite').modal({
+	$('#modalConfirmBanUser').modal({
             show: true,
             keyboard: false,
             backdrop: 'static'
@@ -82,5 +82,27 @@ $("#confirm_ban_btn").click(function() {
 	var uid = $("#confirm_ban_input").val();
 	window.location.replace('/user/ban/'+uid);
 });
+
+//-----Unban User
+function unban_user(uid) {
+	var name = $("#user_name_"+uid).val();
+	$("#confirm_unban_input").val(uid);
+	$("#show_unban_user").text(name);
+	
+	$('#modalConfirmUnbanUser').modal({
+            show: true,
+            keyboard: false,
+            backdrop: 'static'
+        });
+}
+
+$("#confirm_unban_btn").click(function() {
+	$("#modalUnbanText").hide();
+	$("#modalUnbanFooter").hide();
+	$("#modalUnbanLoading").show();
+	var uid = $("#confirm_unban_input").val();
+	window.location.replace('/user/unban/'+uid);
+});
+
 
 

@@ -16,7 +16,7 @@
 				<!-- Nav tabs -->
 				<ul class="nav nav-tabs" role="tablist">
 					<li role="presentation" class="active"><a href="#general" role="tab" data-toggle="tab">ข้อมูลทั่วไป</a></li>
-					<li role="presentation"><a href="#site" role="tab" data-toggle="tab">เว็บไซต์</a></li>
+					<li role="presentation"><a href="#site" role="tab" data-toggle="tab">เว็บไซต์ <span class="badge">{{$site_count}}</span></a></li>
 				</ul>
 
 				<!-- Tab panes -->
@@ -31,7 +31,14 @@
 									<p><b>Status :</b> @if($user_data->status_active ==1)   <span class="text-success">Active</span> @else <span class="text-danger">Banned</span> @endif</p>
 									<p><b>Role :</b> @if($user_data->role ==1)   Admin @else User @endif</p>
 									<p></p>
-									<p class="pull-right"><button type="button" class="btn btn-warning"><span class="glyphicon glyphicon-stop"> แบนผู้ใช้นี้</button> <button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-trash"> ลบผู้ใช้นี้</button></p>									
+									<p class="pull-right">
+										@if($user_data->status_active ==1)
+										<button type="button" class="btn btn-warning" onclick="ban_user({{$user_data->uid}});"><span class="glyphicon glyphicon-stop"> แบนผู้ใช้นี้</button>
+										@else
+										<button type="button" class="btn btn-success" onclick="unban_user({{$user_data->uid}});"><span class="glyphicon glyphicon-play"> ปลดแบนผู้ใช้นี้</button>
+										@endif
+										<button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-trash"> ลบผู้ใช้นี้</button>
+									</p>									
 								</div>
 							</div>
 						</div>
@@ -61,6 +68,7 @@
 									<td>{{CommonController::convertTime($data->date_create)}}</td>
 									<td>@if($data->status_active ==1)   <span class="text-success">Active</span> @else <span class="text-danger">Blocked</span> @endif</td>
 									<td>
+										<a href="http://{{$data->name}}.{{$data->domain->name}}" target="_blank"><span class="glyphicon glyphicon-share" title="Visit Website"></span></a>
 										<a href="/admin/site/{{$data->sid}}"><span class="glyphicon glyphicon-search" title="View Website"></span></a>
 										@if($data->status_active ==1)
 										<a href="#block_{{$data->sid}}" onclick="block_site({{$data->sid}});"><span class="glyphicon glyphicon-stop" title="Block Website"></span></a>
@@ -86,6 +94,7 @@
 </div>
 <!-- /#page-wrapper -->
 
+@include("admin.user-footer")
 @include("admin.site-footer")
 
 @stop

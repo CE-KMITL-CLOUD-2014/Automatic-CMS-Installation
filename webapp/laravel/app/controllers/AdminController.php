@@ -15,7 +15,7 @@ class AdminController extends BaseController {
 		if(AdminController::checkPermission()) {
 			$user_data = User::findOrFail($uid);
 			$site_data = Site::with(array('domain', 'cms'))->where('nf_user_uid','=',$uid)->get();				
-			return View::make('admin/user-id')->with('pagetitle',$user_data->fullname)->with('user_data',$user_data)->with('site_data',$site_data);
+			return View::make('admin/user-id')->with('pagetitle',$user_data->fullname)->with('user_data',$user_data)->with('site_data',$site_data)->with('site_count',count($site_data));
 		}
 		return Redirect::to(AdminController::redirectErrorPermission());
 	}

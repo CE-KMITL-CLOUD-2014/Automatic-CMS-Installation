@@ -1,3 +1,9 @@
+@if(Request::is('*admin*'))
+
+<!-- NF Admin-->
+<script src="/js/nf_admin.js"></script>
+
+@endif
 <footer class="text-center">        
         <div class="footer-below">
             <div class="container">

@@ -23,6 +23,10 @@ Route::get('/', function()
 });
 
 ## User Route ##
+Route::get('user/delete/{uid}', 'UsersController@deleteAction');
+Route::get('user/ban/{uid}', 'UsersController@banAction');
+Route::get('user/unban/{uid}', 'UsersController@unbanAction');
+
 Route::get('user/register', function()
 {   
     if (Auth::check()) {
