@@ -127,7 +127,8 @@ class UsersController extends BaseController {
 
 		if($site_count > 0) {
 			for($i=0;$i<$site_count;$i++) {
-				SiteController::confirmDeleteSite($site[$i]->sid);
+				$site_obj = new SiteController();
+				$site_obj->confirmDeleteSite($site[$i]->sid);
 				ob_flush();
 			}
 		}
