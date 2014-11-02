@@ -3,18 +3,23 @@ class SiteController extends BaseController {
 	//Azure Setting
 	//static private $AZURE_PATH = "/usr/local/bin/azure";
 	static private $AZURE_PATH = "";
-	static private $AZURE_SUFFIX = "azurewebsites.net";
-	static private $FTP_SUFFIX = "ftp.azurewebsites.windows.net";
-	static private $FTP_USER = "cmsserver";
-	static private $FTP_PW = "e7H+QJ^HV-W!PCbBbev3*w3dNDTtrqUf";	
-	static private $LOCATION = "Southeast Asia";
+	static private $AZURE_SUFFIX = "";
+	static private $FTP_SUFFIX = "";
+	static private $FTP_USER = "";
+	static private $FTP_PW = "";	
+	static private $LOCATION = "";
 	static private $SITE_FTP = "";
 	static private $SCRIPT_NAME = "nfscript.zip";
 	static private $SCRIPT_PATH= "/site/wwwroot/";
 
 	public function __construct(){
 		$setting = CommonController::getSetting();
-		SiteController::$AZURE_PATH = $setting->azure_path;		
+		SiteController::$AZURE_PATH = $setting->azure_path;
+		SiteController::$AZURE_SUFFIX = $setting->azure_suffix;	
+		SiteController::$LOCATION = $setting->azure_location;
+		SiteController::$FTP_SUFFIX = $setting->azure_ftp_suffix;	
+		SiteController::$FTP_USER = $setting->azure_ftp_user;	
+		SiteController::$FTP_PW = $setting->azure_ftp_password;	
 	}
     
 
@@ -706,7 +711,7 @@ class SiteController extends BaseController {
 		}
 	}
 
-	private function MakeSubdomain_AddRecord($ch, $mainurl, $i, $newtype, $subdomain, $site_url, $site_ip) {	
+	public static function MakeSubdomain_AddRecord($ch, $mainurl, $i, $newtype, $subdomain, $site_url, $site_ip) {	
 		// Data Setup
 		$url = $mainurl."/src/nf_add_domain.php?i=".$i;
 		if($newtype == "A") {
