@@ -62,4 +62,25 @@ $("#confirm_unblock_btn").click(function() {
 	window.location.replace('/site/unblock/'+sid);
 });
 
+//-----Ban User
+function ban_user(uid) {
+	var name = $("#user_name_"+uid).val();
+	$("#confirm_ban_input").val(uid);
+	$("#show_block_user").text(name);
+	
+	$('#modalConfirmBanSite').modal({
+            show: true,
+            keyboard: false,
+            backdrop: 'static'
+        });
+}
+
+$("#confirm_ban_btn").click(function() {
+	$("#modalBanText").hide();
+	$("#modalBanFooter").hide();
+	$("#modalBanLoading").show();
+	var uid = $("#confirm_ban_input").val();
+	window.location.replace('/user/ban/'+uid);
+});
+
 

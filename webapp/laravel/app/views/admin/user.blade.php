@@ -39,8 +39,14 @@
 							<td>@if($data->status_active ==1)   <span class="text-success">Active</span> @else <span class="text-danger">Banned</span> @endif</td>
 							<td>
 								<a href="/admin/user/{{$data->uid}}"><span class="glyphicon glyphicon-search" title="View User"></span></a>
-								<a href="#"><span class="glyphicon glyphicon-stop" title="Ban User"></span></a>
-								<a href="#"><span class="glyphicon glyphicon-trash" title="Delete User"></span></a>
+								@if($data->status_active ==1)
+								<a href="#ban_{{$data->uid}}" onclick="ban_user({{$data->uid}});"><span class="glyphicon glyphicon-stop" title="Ban User"></span></a>
+								@else
+								<a href="#unban_{{$data->uid}}" onclick="unban_user({{$data->uid}});"><span class="glyphicon glyphicon-play" title="Unban User"></span></a>
+								@endif
+								<a href="#del_{{$data->uid}}"><span class="glyphicon glyphicon-trash" title="Delete User"></span></a>
+
+								<input type="hidden" id="user_name_{{$data->uid}}" value="{{$data->fullname}}" />
 							</td>
 						</tr>
 						<?php
@@ -61,6 +67,7 @@
 	} );
 </script>
 
+@include("admin.user-footer")
 
 
 @stop

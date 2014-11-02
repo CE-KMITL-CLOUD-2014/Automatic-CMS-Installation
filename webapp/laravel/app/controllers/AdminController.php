@@ -5,7 +5,7 @@ class AdminController extends BaseController {
 	public function ShowUserAction() {
 		if(AdminController::checkPermission()) {
 			$user_data = User::all();
-			return View::make('admin/user')->with('pagetitle','Admin Manage Users')->with('user_data',$user_data)->with('user_count',count($user_data));
+			return View::make('admin/user')->with('pagetitle','Admin : User Management')->with('user_data',$user_data)->with('user_count',count($user_data));
 		}
 		return Redirect::to(AdminController::redirectErrorPermission());
 	}
@@ -24,7 +24,7 @@ class AdminController extends BaseController {
 	public function ShowSiteAction() {
 		if(AdminController::checkPermission()) {
 			$site_data = Site::with(array('user' , 'domain', 'cms'))->where('step1','=',1)->where('step2','=',1)->where('step3','=',1)->where('step4','=',1)->where('step5','=',1)->where('step6','=',1)->get();
-			return View::make('admin/site')->with('pagetitle','Admin Manage Sites')->with('site_data',$site_data)->with('site_count',count($site_data));
+			return View::make('admin/site')->with('pagetitle','Admin : Site Management')->with('site_data',$site_data)->with('site_count',count($site_data));
 		}
 		return Redirect::to(AdminController::redirectErrorPermission());	
 	}
@@ -44,7 +44,7 @@ class AdminController extends BaseController {
 	public function ShowSettingAction() {
 		if(AdminController::checkPermission()) {
 			$setting = Setting::findOrFail(1);
-			return View::make('admin/setting')->with('pagetitle','Admin Settings')->with('setting',$setting);
+			return View::make('admin/setting')->with('pagetitle','Admin : System Setting')->with('setting',$setting);
 		}
 		return Redirect::to(AdminController::redirectErrorPermission());	
 	}

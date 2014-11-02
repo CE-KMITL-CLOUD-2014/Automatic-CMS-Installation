@@ -11,52 +11,11 @@
 |
 */
 
-//Basic GET Route
-/*Route::get('/', function()
-{
-	return View::make('hello');
-});
-
-//Basic GET Route
-Route::get('foo/bar', function()
-{
-	return 'Hello GET foo bar!';
-});
-
-//Basic POST Route
-Route::post('foo/bar', function()
-{
-	return 'Hello POST foo bar!';
-});
-
-//Registering A Route For Multiple Verbs
-Route::match(array('GET', 'POST'), 'get/post', function()
-{
-	return 'Hello GET & POST';
-});
-
-//Registering A Route Responding To Any HTTP Verb
-Route::any('foo', function()
-{
-    return 'Hello any HTTP foo World';
-});
-
-//Forcing A Route To Be Served Over HTTPS
-Route::get('foos', array('https', function()
-{
-    return 'foo Must be over HTTPS';
-}));
-
-Route::get('user/{id}', function($id)
-{
-	return 'User page '.$id;
-});*/
-
 //Test Database Connection
-Route::get('db', function()
+/*Route::get('db', function()
 {
 	return View::make('db');
-});
+});*/
 
 Route::get('/', function()
 {
@@ -166,20 +125,9 @@ Route::post('password/reset/{token}', [
 ]);
 
 ## Site ##
-Route::get('site/delete/{sid}/{mode}', [
-    "as" => "sites/delete",
-    "uses" => "SiteController@deleteAction"
-]);
-
-Route::get('site/block/{sid}', [
-    "as" => "sites/block",
-    "uses" => "SiteController@blockAction"
-]);
-
-Route::get('site/unblock/{sid}', [
-    "as" => "sites/unblock",
-    "uses" => "SiteController@unblockAction"
-]);
+Route::get('site/delete/{sid}/{mode}', 'SiteController@deleteAction');
+Route::get('site/block/{sid}', 'SiteController@blockAction');
+Route::get('site/unblock/{sid}', 'SiteController@unblockAction');
 
 Route::get('site/create', function()
 {
