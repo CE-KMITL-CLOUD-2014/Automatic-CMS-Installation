@@ -166,7 +166,7 @@ Route::post('password/reset/{token}', [
 ]);
 
 ## Site ##
-Route::get('site/delete/{sid}', [
+Route::get('site/delete/{sid}/{mode}', [
     "as" => "sites/delete",
     "uses" => "SiteController@deleteAction"
 ]);

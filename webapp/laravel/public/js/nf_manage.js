@@ -16,5 +16,5 @@ $("#confirm_del_btn").click(function() {
 	$("#modalDelFooter").hide();
 	$("#modalDelLoading").show();
 	var sid = $("#confirm_del_input").val();
-	window.location.replace('/site/delete/'+sid);
+	window.location.replace('/site/delete/'+sid+'/user');
 });

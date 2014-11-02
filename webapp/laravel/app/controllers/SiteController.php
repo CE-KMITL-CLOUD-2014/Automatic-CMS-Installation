@@ -482,7 +482,7 @@ class SiteController extends BaseController {
 
 
 	//Delete Website
-	public function deleteAction($sid) {
+	public function deleteAction($sid, $mode='user') {
 		if(Auth::check()) {
 			$uid = Auth::user()->uid;			
 			if(Auth::user()->role == 1) {
@@ -493,8 +493,13 @@ class SiteController extends BaseController {
 				$count_site = Site::where('sid','=',$sid)->where('nf_user_uid','=',$uid)->count();
 			}
 			if($count_site == 1) {
-				SiteController::confirmDeleteSite($sid);				
-				return Redirect::back()->with('nf_success','ทำการลบเว็บไซต์เรียบร้อย');
+				SiteController::confirmDeleteSite($sid);
+				$message = 'ทำการลบเว็บไซต์เรียบร้อย';	
+				if($mode == 'admin')
+					return Redirect::to('/admin/site')->with('nf_success',$message);
+				else
+					return Redirect::to('/site/manage')->with('nf_success',$message);
+
 			} else {
 				return Redirect::back()->with('nf_error','ไม่สามารถลบเว็บไซต์นี้ได้');
 			}
