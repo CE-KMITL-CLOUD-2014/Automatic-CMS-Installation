@@ -19,7 +19,7 @@
 							<th>No</th>
 							<th>Full Name</th>
 							<th>Email</th>
-							<th>Date Register</th>
+							<th>Register Date</th>
 							<th>Email Confirm</th>
 							<th>Status</th>
 							<th>Action</th>
@@ -38,7 +38,7 @@
 							<td>@if($data->status_confirm ==1)   <span class="text-success">Yes</span> @else <span class="text-danger">No</span> @endif</td>
 							<td>@if($data->status_active ==1)   <span class="text-success">Active</span> @else <span class="text-danger">Banned</span> @endif</td>
 							<td>
-								<a href="#"><span class="glyphicon glyphicon-search" title="View User"></span></a>
+								<a href="/admin/user/{{$data->uid}}"><span class="glyphicon glyphicon-search" title="View User"></span></a>
 								<a href="#"><span class="glyphicon glyphicon-stop" title="Ban User"></span></a>
 								<a href="#"><span class="glyphicon glyphicon-trash" title="Delete User"></span></a>
 							</td>
@@ -49,17 +49,18 @@
 						@endforeach		        		        
 					</tbody>
 				</table>
-			</div> </div>
+			</div> 
 		</div>
 	</div>
-	<!-- /#page-wrapper -->
+</div>
+<!-- /#page-wrapper -->
 
-	<script type="text/javascript">
-		$(document).ready( function () {
-			$('#user_data').DataTable();
-		} );
-	</script>
+<script type="text/javascript">
+	$(document).ready( function () {
+		$('#user_data').DataTable();
+	} );
+</script>
 
 
 
-	@stop
+@stop

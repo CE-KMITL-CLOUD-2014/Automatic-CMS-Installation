@@ -16,15 +16,15 @@
 
         <!-- Content -->
 
-      @if(Session::has('nf_del_success'))
+      @if(Session::has('nf_success'))
         <div class='alert alert-success'>   
-         {{ Session::get('nf_del_success') }}
+         {{ Session::get('nf_success') }}
      </div>
      @endif
 
-     @if(Session::has('nf_del_error'))
+     @if(Session::has('nf_error'))
      <div class='alert alert-danger'>   
-         {{ Session::get('nf_del_error') }}
+         {{ Session::get('nf_error') }}
      </div>
      @endif
 
@@ -128,13 +128,19 @@ $count++;
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title" id="myModalLabel">ลบเว็บไซต์</h4>
+        <h4 class="modal-title" id="myModalLabel">การยืนยันการลบเว็บไซต์</h4>
     </div>
-    <div class="modal-body">
+    <div class="modal-body" id="modalDelText">
      <p class="modalCheckAvailable_msg alert alert-warning" id="show_del_status">กรุณายืนยันการลบเว็บไซต์ : <span id="show_del_site"></span></p>
  </div>
- <div class="modal-footer">
+ <div class="modal-body" id="modalDelLoading" style="display:none;">
+    <p>กรุณารอสักครู่...</p>
+     <div class="progress">
+  <div class="progress-bar progress-bar-danger progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 100%">  
+  </div>
+</div>
+ </div>
+ <div class="modal-footer" id="modalDelFooter">
      <input type="hidden" id="confirm_del_input" value="0" />
      <button type="button" class="btn btn-default" data-dismiss="modal">ยกเลิก</button>
      <button type="button" class="btn btn-primary" id="confirm_del_btn">ยืนยัน</button>

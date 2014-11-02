@@ -1,9 +1,5 @@
-//CMS MANAGE
-function del_site(sid,count) {
-	var url = $("#site_"+count).val();
-	$("#confirm_del_input").val(sid);
-	$("#show_del_site").text(url);
-	$('#webSite'+count).modal('hide');
+//CMS ADMIN
+function del_site() {
 	$('#modalConfirmDeleteSite').modal({
             show: true,
             keyboard: false,

@@ -493,10 +493,10 @@ class SiteController extends BaseController {
 				$count_site = Site::where('sid','=',$sid)->where('nf_user_uid','=',$uid)->count();
 			}
 			if($count_site == 1) {
-				SiteController::confirmDeleteSite($sid);
-				return Redirect::to('site/manage')->with('nf_del_success','ทำการลบเว็บไซต์เรียบร้อย');
+				//SiteController::confirmDeleteSite($sid);				
+				return Redirect::back()->with('nf_success','ทำการลบเว็บไซต์เรียบร้อย');
 			} else {
-				return Redirect::to('site/manage')->with('nf_del_error','ไม่สามารถลบเว็บไซต์นี้ได้');
+				return Redirect::back()->with('nf_error','ไม่สามารถลบเว็บไซต์นี้ได้');
 			}
 		} else {
 			return Redirect::to('/user/login');
@@ -725,14 +725,14 @@ class SiteController extends BaseController {
 		return $output;
 	}
 
-	private function getScreenShot($url) {
+	public static function getScreenShot($url,$set_fullpage='false',$set_force='false') {
 		//API Settings
 		$URLBOX_APIKEY = "2d6d4015-447f-4a40-a263-42a3049ea621";
 		$URLBOX_SECRET = "bbdff8d9-7a94-414c-8037-3d1eee78db14";
 		$args['width'] = "1024";
 		$args['height'] = "768";
-		$args['full_page'] = 'false';
-		$args['force'] = 'false';
+		$args['full_page'] = $set_fullpage;
+		$args['force'] = $set_force;
 
 		$options['url'] = urlencode($url);
 		$options += $args;

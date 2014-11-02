@@ -196,8 +196,10 @@ Route::get('site/manage', 'SiteController@ManageSiteAction');
 
 ## Admin ##
 Route::get('admin/user', 'AdminController@ShowUserAction');
+Route::get('admin/user/{uid}', 'AdminController@ShowUserIDAction');
 
 Route::get('admin/site', 'AdminController@ShowSiteAction');
+Route::get('admin/site/{sid}', 'AdminController@ShowSiteIDAction');
 
 Route::get('admin/setting', 'AdminController@ShowSettingAction');
 Route::post('admin/setting', 'AdminController@FormSettingAction');
