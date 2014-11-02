@@ -2,7 +2,7 @@
 class SiteController extends BaseController {
 	//Azure Setting
 	//static private $AZURE_PATH = "/usr/local/bin/azure";
-	static private $AZURE_PATH = "HOME=/tmp/  /usr/local/bin/azure";
+	static private $AZURE_PATH = "";
 	static private $AZURE_SUFFIX = "azurewebsites.net";
 	static private $FTP_SUFFIX = "ftp.azurewebsites.windows.net";
 	static private $FTP_USER = "cmsserver";
@@ -11,6 +11,12 @@ class SiteController extends BaseController {
 	static private $SITE_FTP = "";
 	static private $SCRIPT_NAME = "nfscript.zip";
 	static private $SCRIPT_PATH= "/site/wwwroot/";
+
+	public function __construct(){
+		$setting = CommonController::getSetting();
+		SiteController::$AZURE_PATH = $setting->azure_path;		
+	}
+    
 
 	//Check available site
 	public function checkAvailable() {				
@@ -641,12 +647,13 @@ class SiteController extends BaseController {
 	public static  function MakeSubdomain_Init($i, $subdomain, $site_url, $site_ip, $mode = "ADD") {
 		if(!empty($i) && !empty($subdomain) && !empty($site_url) && !empty($site_ip)) {
 			// BindDNS Setting
-			$username = "admin"; 
-			$password = "admin123456"; 
-			$mainurl = "http://nfsite.me/dns";
+			$setting = Setting::findOrFail(1);
+			$username = $setting->dns_username; 
+			$password = $setting->dns_password; 
+			$mainurl = $setting->dns_mainurl; 
 			$url = $mainurl."/src/main.php"; 
 			$cookie = "nfcookie.txt";
-			$useragent = "Mozilla/5.0 (Windows; U; Windows NT 5.1; de; rv:1.9.2.3) Gecko/20100401 Firefox/3.6.3 (FM Scene 4.6.1)";
+			$useragent = $setting->dns_ua; 
 			$postdata = "username=".$username."&password=".$password.""; 
 
 			// Login to BindDNS
@@ -752,7 +759,15 @@ class SiteController extends BaseController {
 	public static function MakeSubdomain_AddZone($ch, $mainurl, $domain_name) {	
 		// Data Setup
 		$url = $mainurl."/src/nf_zoneadd.php";
-		$postdata = "name=".$domain_name."&refresh=28800&retry=7200&expire=1209600&ttl=86400&pri_dns=ns1.nfsite.me&sec_dns=ns2.nfsite.me&www=23.101.20.76&mail=&ftp=&owner=1";		
+		$setting = Setting::findOrFail(1);
+		$refresh = $setting->refresh;
+		$retry = $setting->retry;
+		$expire = $setting->expire;
+		$ttl = $setting->ttl;
+		$pri_dns = $setting->ns1;
+		$sec_dns = $setting->ns2;
+		$www = $setting->www;
+		$postdata = "name=".$domain_name."&refresh=".$refresh."&retry=".$retry."&expire=".$expire."&ttl=".$ttl."&pri_dns=".$pri_dns."&sec_dns=".$sec_dns."&www=".$www."&mail=&ftp=&owner=1";		
 
 		//Set A Record
 		curl_setopt($ch, CURLOPT_URL, $url);
@@ -832,11 +847,12 @@ class SiteController extends BaseController {
 	}
 
 	public static function getScreenShot($url,$set_fullpage='false',$set_force='false') {
+		$setting = Setting::findOrFail(1);
 		//API Settings
-		$URLBOX_APIKEY = "2d6d4015-447f-4a40-a263-42a3049ea621";
-		$URLBOX_SECRET = "bbdff8d9-7a94-414c-8037-3d1eee78db14";
-		$args['width'] = "1024";
-		$args['height'] = "768";
+		$URLBOX_APIKEY = $setting->ss_pubkey;
+		$URLBOX_SECRET = $setting->ss_seckey;
+		$args['width'] = $setting->ss_width;
+		$args['height'] = $setting->ss_height;
 		$args['full_page'] = $set_fullpage;
 		$args['force'] = $set_force;
 

@@ -47,7 +47,16 @@ class CommonController extends BaseController {
 		return "$difference $periods[$j] {$tense}";
 	}
 
+	//convertTime
 	public static function convertTime($date) {
 		return date('d M Y  H:i:s', strtotime($date));
 	}
+
+	//getSetting
+	public static function getSetting() {
+		$setting = Setting::findOrFail(1);
+		return $setting;
+	}
+
+
 }

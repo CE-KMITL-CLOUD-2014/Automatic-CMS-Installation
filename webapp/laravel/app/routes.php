@@ -164,7 +164,11 @@ Route::get('admin/site', 'AdminController@ShowSiteAction');
 Route::get('admin/site/{sid}', 'AdminController@ShowSiteIDAction');
 
 Route::get('admin/setting', 'AdminController@ShowSettingAction');
-Route::post('admin/setting', 'AdminController@FormSettingAction');
+Route::post('admin/setting/general', 'AdminController@FormSettingGeneralAction');
+Route::post('admin/setting/cloud', 'AdminController@FormSettingCloudAction');
+Route::post('admin/setting/dns_zone', 'AdminController@FormSettingDnsZoneAction');
+Route::post('admin/setting/dns_server', 'AdminController@FormSettingDnsServerAction');
+Route::post('admin/setting/screenshot', 'AdminController@FormSettingScreenshotAction');
 
 Route::get('admin/domain', 'AdminController@ShowDomainAction');
 Route::get('admin/domain/hide/{did}', 'AdminController@HideDomainIDAction');

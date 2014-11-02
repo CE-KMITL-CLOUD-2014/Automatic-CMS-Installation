@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>{{$pagetitle}} | Automatic CMS Installation Service</title>
+    <title>{{$pagetitle}} | {{CommonController::getSetting()->site_title}}</title>
 
     <!-- Bootstrap Core CSS - Uses Bootswatch Flatly Theme: http://bootswatch.com/flatly/ -->
     <link href="/css/bootstrap.min.css" rel="stylesheet">
