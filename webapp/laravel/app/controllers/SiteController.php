@@ -87,7 +87,7 @@ class SiteController extends BaseController {
 			$site_exist = SiteController::countExistSite($name, $did);
 			$domain_exist = Domain::where('did', '=', $did)->count();
 
-			$count_user_sid = Site::where('nf_user_uid','=',Auth::user()->uid)->where('step1','=',1)->where('step2','=',1)->where('step3','=',1)->where('step4','=',1)->where('step5','=',1)->where('step6','=',1)->count();
+			$count_user_sid = Site::where('nf_user_uid','=',Auth::user()->uid)->count();
 			$get_max_site = Setting::findOrFail(1)->max_site;
 
 			if(Auth::check()) {
