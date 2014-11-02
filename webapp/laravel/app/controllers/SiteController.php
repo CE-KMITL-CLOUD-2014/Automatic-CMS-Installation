@@ -493,7 +493,7 @@ class SiteController extends BaseController {
 				$count_site = Site::where('sid','=',$sid)->where('nf_user_uid','=',$uid)->count();
 			}
 			if($count_site == 1) {
-				//SiteController::confirmDeleteSite($sid);				
+				SiteController::confirmDeleteSite($sid);				
 				return Redirect::back()->with('nf_success','ทำการลบเว็บไซต์เรียบร้อย');
 			} else {
 				return Redirect::back()->with('nf_error','ไม่สามารถลบเว็บไซต์นี้ได้');
