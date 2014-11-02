@@ -43,7 +43,7 @@
 									<p><b>Status :</b> @if($site_data->status_active ==1)   <span class="text-success">Active</span> @else <span class="text-danger">Blocked</span> @endif</p>									
 									<p></p>
 									<p class="pull-right">
-										@if($data->status_active ==1)
+										@if($site_data->status_active ==1)
 										<button type="button" class="btn btn-warning" onclick="block_site({{$site_data->sid}});"><span class="glyphicon glyphicon-stop"> บล็อกเว็บไซต์นี้</button> 
 										@else
 										<button type="button" class="btn btn-success" onclick="unblock_site({{$site_data->sid}});"><span class="glyphicon glyphicon-play"> ปลดบล็อกเว็บไซต์นี้</button> 
