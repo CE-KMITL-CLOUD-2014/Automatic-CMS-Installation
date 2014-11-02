@@ -638,7 +638,7 @@ class SiteController extends BaseController {
 	}
 
 	//Manage subdomain
-	private  function MakeSubdomain_Init($i, $subdomain, $site_url, $site_ip, $mode = "ADD") {
+	public static  function MakeSubdomain_Init($i, $subdomain, $site_url, $site_ip, $mode = "ADD") {
 		if(!empty($i) && !empty($subdomain) && !empty($site_url) && !empty($site_ip)) {
 			// BindDNS Setting
 			$username = "admin"; 
