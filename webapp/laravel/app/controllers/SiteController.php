@@ -536,6 +536,38 @@ class SiteController extends BaseController {
 
 	}
 
+	//Block Website
+	public function blockAction($sid) {
+		if(Auth::check()) {
+			if(Auth::user()->role == 1) {
+				$site_data = Site::with(array('user' , 'domain', 'cms'))->findOrFail($sid);
+				$site_name = $site_data->name.'.'.$site_data->domain->name;
+
+				if($site_data->status_active == 1) {
+					SiteController::confirmBlockSite($sid);
+					return Redirect::back()->with('nf_success',$site_name.' ถูกบล็อกเรียบร้อยแล้ว');
+				} else {
+					return Redirect::back()->with('nf_error',$site_name.' ถูกบล็อกอยู่แล้ว');
+				}
+			} else {
+				return Redirect::to('/site/manage');
+			}
+		} else {
+			return Redirect::to('/user/login');
+		}		
+	}
+
+	private function confirmBlockSite($sid) {
+		$site = Site::findOrFail($sid);
+
+		//Stop azure website
+		shell_exec(SiteController::$AZURE_PATH.' site stop "'.$site->mapping.'" 2>&1');
+
+		$site->status_active = 0;
+		$site->save();
+		
+	}
+
 	//Manage Website
 	public function ManageSiteAction() {
 		if (Auth::check()) { 

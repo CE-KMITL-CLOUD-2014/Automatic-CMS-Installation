@@ -50,8 +50,10 @@
 							<td>@if($data->status_active ==1)   <span class="text-success">Active</span> @else <span class="text-danger">Blocked</span> @endif</td>
 							<td>
 								<a href="/admin/site/{{$data->sid}}"><span class="glyphicon glyphicon-search" title="View Website"></span></a>
-								<a href="#"><span class="glyphicon glyphicon-stop" title="Block Website"></span></a>
-								<a href="#"><span class="glyphicon glyphicon-trash" title="Delete Website"></span></a>
+								<a href="#block_{{$data->sid}}" onclick="block_site({{$data->sid}});"><span class="glyphicon glyphicon-stop" title="Block Website"></span></a>
+								<a href="#del_{{$data->sid}}" onclick="del_site({{$data->sid}});"><span class="glyphicon glyphicon-trash" title="Delete Website"></span></a>
+
+								<input type="hidden" id="site_url_{{$data->sid}}" value="{{$data->name}}.{{$data->domain->name}}" />
 							</td>
 						</tr>
 						<?php
@@ -72,6 +74,6 @@
 	} );
 </script>
 
-
+@include("admin.site-footer")
 
 @stop

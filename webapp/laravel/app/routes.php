@@ -171,6 +171,11 @@ Route::get('site/delete/{sid}/{mode}', [
     "uses" => "SiteController@deleteAction"
 ]);
 
+Route::get('site/block/{sid}', [
+    "as" => "sites/block",
+    "uses" => "SiteController@blockAction"
+]);
+
 Route::get('site/create', function()
 {
     if (Auth::check()) {

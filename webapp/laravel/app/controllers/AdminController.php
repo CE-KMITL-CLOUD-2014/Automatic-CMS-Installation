@@ -23,7 +23,7 @@ class AdminController extends BaseController {
 	//Show all sites
 	public function ShowSiteAction() {
 		if(AdminController::checkPermission()) {
-			$site_data = Site::with(array('user' , 'domain', 'cms'))->get();
+			$site_data = Site::with(array('user' , 'domain', 'cms'))->where('step1','=',1)->where('step2','=',1)->where('step3','=',1)->where('step4','=',1)->where('step5','=',1)->where('step6','=',1)->get();
 			return View::make('admin/site')->with('pagetitle','Admin Manage Sites')->with('site_data',$site_data)->with('site_count',count($site_data));
 		}
 		return Redirect::to(AdminController::redirectErrorPermission());	
