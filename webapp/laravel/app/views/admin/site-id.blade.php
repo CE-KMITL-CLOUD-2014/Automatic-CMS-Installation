@@ -42,7 +42,14 @@
 									<p><b>Create Date :</b> {{CommonController::convertTime($site_data->date_create)}} ({{CommonController::showTimeAgo($site_data->date_create)}})</p>
 									<p><b>Status :</b> @if($site_data->status_active ==1)   <span class="text-success">Active</span> @else <span class="text-danger">Blocked</span> @endif</p>									
 									<p></p>
-									<p class="pull-right"><button type="button" class="btn btn-warning" onclick="block_site({{$site_data->sid}});"><span class="glyphicon glyphicon-stop"> บล็อกเว็บไซต์นี้</button> <button type="button" class="btn btn-danger" onclick="del_site({{$site_data->sid}});"><span class="glyphicon glyphicon-trash"> ลบเว็บไซต์นี้</button></p>	
+									<p class="pull-right">
+										@if($data->status_active ==1)
+										<button type="button" class="btn btn-warning" onclick="block_site({{$site_data->sid}});"><span class="glyphicon glyphicon-stop"> บล็อกเว็บไซต์นี้</button> 
+										@else
+										<button type="button" class="btn btn-success" onclick="unblock_site({{$site_data->sid}});"><span class="glyphicon glyphicon-play"> ปลดบล็อกเว็บไซต์นี้</button> 
+										@endif
+										<button type="button" class="btn btn-danger" onclick="del_site({{$site_data->sid}});"><span class="glyphicon glyphicon-trash"> ลบเว็บไซต์นี้</button>
+									</p>	
 									<input type="hidden" id="site_url_{{$site_data->sid}}" value="{{$site_data->name}}.{{$site_data->domain->name}}" />								
 								</div>
 							</div>
