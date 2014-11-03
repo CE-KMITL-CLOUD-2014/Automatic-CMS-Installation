@@ -55,11 +55,11 @@
                         <table style="background-color: #f5f5f5;">
                             <tr>
                                 <td valign="middle" style="width:100%;">
-                                    <img src='{{$data["img"]}}' style="width:inherit;height:265px;"/>
+                                    <img src='{{$data["img"]}}' style="width:inherit" class="nf_auto_adjust" />
                                 </td>
                             </tr>
                         </table>
-                        <h3>{{$data['url']}}</h3>
+                        <h4>{{$data['url']}}</h4>
                     </div>
                 </div>
             </a>
@@ -77,7 +77,7 @@
 
                                 <div class="col-md-12">
                                   <div class="row" >
-                                    <div class="col-sm-12 col-md-offset-1 col-lg-10 col-lg-offset-1">                            
+                                    <div class="col-sm-12">                            
                                         <div class="well"><h4 class="text-center"><span class="glyphicon glyphicon-info-sign"></span> รายละเอียดการเข้าถึงเว็บไซต์</h4>
                                             <img src='{{$data["img"]}}' class="center-block" title="{{$data['cms_name']}}" style="width:inherit;height:265px;"/>                                                   
                                             <h5>หน้าหลัก : <a target="_blank" href="http://{{$data['url']}}">{{$data['url']}}</a></h5>
@@ -149,7 +149,32 @@ $count++;
 </div>
 </div>
 
-<!-- NF Site Installer-->
+<script>
+    var x=0;
+    $(document).ready(function(){
+        var temp=$('img.nf_auto_adjust');
+        setTimeout(function(){
+            $('img.nf_auto_adjust').each(function(){
+                var i=$(this).height();
+                //alert('height:'+i);
+                if(i>x){
+                    x=i;
+                    temp=$(this);
+                }
+            });
+            //alert('max-height:'+x);
+            $('img.nf_auto_adjust').parent().not('div').animate({height:x+'px'});
+        },2000);
+        $(window).resize(function(){
+            setTimeout(function(){
+                $('img.nf_auto_adjust').parent().not('div').animate({height:temp.height()+"px"});
+            },500);
+        });
+    });
+    
+</script>
+
+<!-- NF Site Manage-->
 <script src="/js/nf_manage.js"></script>
 
 @stop
