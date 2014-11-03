@@ -13,7 +13,10 @@
 
 App::before(function($request)
 {
-	//
+	if( ! Request::secure() && (Request::is('*user/*') || Request::is('*site/*') || Request::is('*admin/*')))
+	    {
+	        return Redirect::secure(Request::path());
+	    }
 });
 
 
