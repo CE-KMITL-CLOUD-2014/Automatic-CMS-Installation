@@ -59,7 +59,7 @@
                                 </td>
                             </tr>
                         </table>
-                        <h4>{{$data['url']}}</h4>
+                        <h4>{{$data['url']}} (@if($data['status'] ==1) <span class="text-success">Active</span> @else <span class="text-danger">Blocked</span> @endif)</h4>
                     </div>
                 </div>
             </a>

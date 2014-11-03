@@ -615,7 +615,7 @@ class SiteController extends BaseController {
 	public function ManageSiteAction() {
 		if (Auth::check()) { 
 			$uid = Auth::user()->uid;
-			$site_data = Site::where('nf_user_uid','=',$uid)->where('status_active','=',1)->where('step1','=',1)->where('step2','=',1)->where('step3','=',1)->where('step4','=',1)->where('step5','=',1)->where('step6','=',1)->get();
+			$site_data = Site::where('nf_user_uid','=',$uid)->where('step1','=',1)->where('step2','=',1)->where('step3','=',1)->where('step4','=',1)->where('step5','=',1)->where('step6','=',1)->get();
 			$data = array();
 
 			for($i=0;$i<count($site_data);$i++) {
@@ -629,6 +629,7 @@ class SiteController extends BaseController {
 				$sid = $site_data[$i]->sid;
 				$url = $site_data[$i]->name.'.'.$domain_name;
 				$title = $site_data[$i]->site_title;
+				$status = $site_data[$i]->status_active;
 				$img = SiteController::getScreenShot($url);
 
 				$data[] = array(
@@ -637,6 +638,7 @@ class SiteController extends BaseController {
 					'title' => $title,
 					'cms_name' => $cms_name,
 					'cms_type' => $cms_type,
+					'status' => $status,
 					'img' => $img
 				);
 			}
