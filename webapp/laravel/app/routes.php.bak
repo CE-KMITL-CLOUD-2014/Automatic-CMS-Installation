@@ -178,5 +178,3 @@ Route::post('admin/domain/add', [
     "uses" => "AdminController@AddAction"
 ]);
 
-## Test ##
-
