@@ -1,10 +1,12 @@
 <?php
-class ScheduleController extends BaseController {
+class ScheduleController extends BaseController {	
 
 	public  function deleteAction() {
 		$site = Site::all();
 		//$data = array();
 		$count_data = 0;
+		$setting = CommonController::getSetting();
+		$schedule_delete = $setting->schedule_delete;
 
 		for($i=0;$i<count($site);$i++) {
 			$sid = $site[$i]->sid;
@@ -13,7 +15,7 @@ class ScheduleController extends BaseController {
 			$date_today = strtotime(date('Y-m-d H:i:s'));
 			$diff = $date_today - $date_create;
 
-			if($diff > 3600 && $step != '111111') {
+			if($diff > $schedule_delete && $step != '111111') {
 				$count_data++;
 				SiteController::confirmDeleteSite($sid);
 				ob_flush();

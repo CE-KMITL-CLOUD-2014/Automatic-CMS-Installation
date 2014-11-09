@@ -57,6 +57,13 @@
 								</div>
 
 								<div class="form-group">
+									<label for="inputMaxSite" class="col-sm-2 control-label">Schedule to delete error sites (second)</label>
+									<div class="col-sm-4">
+										<input type="text" class="form-control" id="inputMaxSite" name="setting_schedule_delete" placeholder="ระยะเวลาที่จะลบเว็บไซต์ที่ผิดพลาด" value="{{$setting->schedule_delete}}">
+									</div>
+								</div>
+
+								<div class="form-group">
 									<div class="col-sm-offset-2 col-sm-10">
 										<button type="submit" class="btn btn-default">ตกลง</button>
 										<button type="reset" class="btn btn-default">ล้าง</button>

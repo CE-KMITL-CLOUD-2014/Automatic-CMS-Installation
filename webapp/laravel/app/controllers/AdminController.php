@@ -54,7 +54,8 @@ class AdminController extends BaseController {
 		if(AdminController::checkPermission()) {
 			$rules = array(
 				'setting_site_title' => 'required|min:4|max:64',
-				'setting_max_site' => 'required|digits_between:1,2'
+				'setting_max_site' => 'required|digits_between:1,2',
+				'setting_schedule_delete' => 'required'
 				);
 			$validator = Validator::make(Input::all(),$rules);
 			if($validator->fails()){
@@ -64,6 +65,7 @@ class AdminController extends BaseController {
 				$setting = Setting::findOrFail(1);
 				$setting->max_site = Input::get('setting_max_site');
 				$setting->site_title = Input::get('setting_site_title');
+				$setting->schedule_delete = Input::get('setting_schedule_delete');
 				$setting->save();
 				return Redirect::to('/admin/setting')->with('nf_setting','บันทึกการตั้งค่า General เรียบร้อย');
 			}
