@@ -12,16 +12,16 @@
     <title>{{$pagetitle}} | {{CommonController::getSetting()->site_title}}</title>
 
     <!-- Bootstrap Core CSS -->
-    <link href="/css/bootstrap.min.admin.css" rel="stylesheet">
+    <link href="//cdn.nfsite.me/css/bootstrap.min.admin.css" rel="stylesheet">
 
     <!-- Custom CSS -->
-    <link href="/css/sb-admin.css" rel="stylesheet">
+    <link href="//cdn.nfsite.me/css/sb-admin.css" rel="stylesheet">
 
     <!-- Morris Charts CSS -->
-    <link href="/css/plugins/morris.css" rel="stylesheet">
+    <link href="//cdn.nfsite.me/css/plugins/morris.css" rel="stylesheet">
 
     <!-- Custom Fonts -->
-    <link href="/font-awesome-4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="//cdn.nfsite.me/font-awesome-4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -31,10 +31,10 @@
         <![endif]-->   
 
    <!-- jQuery Version 1.11.0 -->
-   <script src="/js/jquery-1.11.0.js"></script>
+   <script src="//cdn.nfsite.me/js/jquery-1.11.0.js"></script>
 
    <!-- Bootstrap Core JavaScript -->
-   <script src="/js/bootstrap.min.js"></script>
+   <script src="//cdn.nfsite.me/js/bootstrap.min.js"></script>
 
 @if(Request::is('*user') || Request::is('*site'))
    <!-- DataTables CSS -->
