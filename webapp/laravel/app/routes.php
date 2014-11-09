@@ -178,5 +178,8 @@ Route::post('admin/domain/add', [
     "uses" => "AdminController@AddAction"
 ]);
 
+## Scheduler ##
+Route::get('schedule/delete', 'ScheduleController@deleteAction');
+
 ## Test ##
 
