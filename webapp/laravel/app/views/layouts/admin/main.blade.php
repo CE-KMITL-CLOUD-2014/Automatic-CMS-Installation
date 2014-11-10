@@ -11,6 +11,9 @@
 
     <title>{{$pagetitle}} | {{CommonController::getSetting()->site_title}}</title>
 
+    <!-- NF Favicon -->
+    <link rel="shortcut icon" href="/favicon.ico" />    
+
     <!-- Bootstrap Core CSS -->
     <link href="//az686380.vo.msecnd.net/css/bootstrap.min.admin.css" rel="stylesheet">
 

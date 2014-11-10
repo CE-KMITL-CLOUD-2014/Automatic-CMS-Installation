@@ -11,6 +11,9 @@
 
     <title>{{$pagetitle}} | {{CommonController::getSetting()->site_title}}</title>
 
+    <!-- NF Favicon -->
+    <link rel="shortcut icon" href="/favicon.ico" />    
+
     <!-- Bootstrap Core CSS - Uses Bootswatch Flatly Theme: http://bootswatch.com/flatly/ -->
     <link href="//az686380.vo.msecnd.net/css/bootstrap.min.css" rel="stylesheet">
 
