@@ -36,8 +36,7 @@
 				<!-- Nav tabs -->
 				<ul class="nav nav-tabs" role="tablist">
 					<li role="presentation" class="active"><a href="#domain_list" role="tab" data-toggle="tab">โดเมนทั้งหมด <span class="badge">{{$domain_count}}</span></a></li>	
-					<li role="presentation"><a href="#domain_add" role="tab" data-toggle="tab">เพิ่มโดเมนใหม่</a></li>
-					<li role="presentation"><a href="#domain_manage" role="tab" data-toggle="tab">จัดการโดเมน</a></li>					
+					<li role="presentation"><a href="#domain_add" role="tab" data-toggle="tab">เพิ่มโดเมนใหม่</a></li>										
 				</ul>
 
 				<!-- Tab panes -->
@@ -104,11 +103,7 @@
 								</div>
 							</div>
 						</div>
-					</div>
-
-					<div role="tabpanel" class="tab-pane fade" id="domain_manage">
-						<iframe src="http://nfsite.me/dns" width="800px" height="500px" frameborder="0" class="center-block" id="frame_dns"></iframe>
-					</div>
+					</div>					
 				</div>
 
 			</div> 
