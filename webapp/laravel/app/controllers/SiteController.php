@@ -521,12 +521,13 @@ class SiteController extends BaseController {
 
 	public static function confirmDeleteSite($sid) {
 		$site = Site::findOrFail($sid);
+		$setting = CommonController::getSetting();
+		SiteController::$AZURE_PATH = $setting->azure_path;
 
 		//delete azure website
-		/*if($site->step1 == 1) {
+		if($site->step1 == 1) {
 			shell_exec(SiteController::$AZURE_PATH.' site delete -q "'.$site->mapping.'" 2>&1');
-		}*/
-		shell_exec(SiteController::$AZURE_PATH.' site delete -q "'.$site->mapping.'" 2>&1');
+		}
 
 		//delete mapping domain
 		if($site->step2 == 1) {
@@ -571,6 +572,8 @@ class SiteController extends BaseController {
 
 	public static function confirmBlockSite($sid) {
 		$site = Site::findOrFail($sid);
+		$setting = CommonController::getSetting();
+		SiteController::$AZURE_PATH = $setting->azure_path;
 
 		//Stop azure website
 		shell_exec(SiteController::$AZURE_PATH.' site stop "'.$site->mapping.'" 2>&1');
@@ -603,6 +606,8 @@ class SiteController extends BaseController {
 
 	public static function confirmUnblockSite($sid) {
 		$site = Site::findOrFail($sid);
+		$setting = CommonController::getSetting();
+		SiteController::$AZURE_PATH = $setting->azure_path;
 
 		//Stop azure website
 		shell_exec(SiteController::$AZURE_PATH.' site start "'.$site->mapping.'" 2>&1');
