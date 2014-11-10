@@ -18,7 +18,7 @@
     <link href="//az686380.vo.msecnd.net/css/freelancer.css" rel="stylesheet">
 
     <!-- Custom Fonts -->
-    <link href="//az686380.vo.msecnd.net/font-awesome-4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <link href="http://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
     <link href="http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css">
 
