@@ -523,9 +523,10 @@ class SiteController extends BaseController {
 		$site = Site::findOrFail($sid);
 
 		//delete azure website
-		if($site->step1 == 1) {
+		/*if($site->step1 == 1) {
 			shell_exec(SiteController::$AZURE_PATH.' site delete -q "'.$site->mapping.'" 2>&1');
-		}
+		}*/
+		shell_exec(SiteController::$AZURE_PATH.' site delete -q "'.$site->mapping.'" 2>&1');
 
 		//delete mapping domain
 		if($site->step2 == 1) {

@@ -18,7 +18,7 @@
 			<div class="modal-footer" id="modalDelFooter">
 				<input type="hidden" id="confirm_del_input" value="0" />
 				<button type="button" class="btn btn-default" data-dismiss="modal">ยกเลิก</button>
-				<button type="button" class="btn btn-primary" id="confirm_del_btn">ยืนยัน</button>
+				<button type="button" class="btn btn-primary" id="confirm_del_site_btn">ยืนยัน</button>
 			</div>
 		</div>
 	</div>

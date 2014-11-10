@@ -12,7 +12,7 @@ function del_site(sid) {
         });
 }
 
-$("#confirm_del_btn").click(function() {
+$("#confirm_del_site_btn").click(function() {
 	$("#modalDelText").hide();
 	$("#modalDelFooter").hide();
 	$("#modalDelLoading").show();
