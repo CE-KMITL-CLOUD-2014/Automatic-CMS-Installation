@@ -15,10 +15,10 @@
     <link rel="icon" type="image/x-icon" href="http://www.nfsite.me/favicon.ico">
 
     <!-- Bootstrap Core CSS - Uses Bootswatch Flatly Theme: http://bootswatch.com/flatly/ -->
-    <link href="//az686380.vo.msecnd.net/css/bootstrap.min.css" rel="stylesheet">
+    <link href="//az686299.vo.msecnd.net/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom CSS -->
-    <link href="//az686380.vo.msecnd.net/css/freelancer.css" rel="stylesheet">
+    <link href="//az686299.vo.msecnd.net/css/freelancer.css" rel="stylesheet">
 
     <!-- Custom Fonts -->
     <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
