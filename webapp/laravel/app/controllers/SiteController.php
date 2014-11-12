@@ -257,8 +257,6 @@ class SiteController extends BaseController {
 
 	//Step1 : create azure website
 	private function createAzureSite($real_name) {
-		$setting = CommonController::getSetting();
-		SiteController::$AZURE_PATH = $setting->azure_path;
 		shell_exec(SiteController::$AZURE_PATH.' site create --location "'.SiteController::$LOCATION.'" "'.$real_name.'" 2>&1');	
 		ob_flush();
 		$output = shell_exec(SiteController::$AZURE_PATH.' site list --json "'.$real_name.'" 2>&1');
