@@ -180,8 +180,9 @@ class SiteController extends BaseController {
 						SiteController::confirmDeleteSite($sid);
 						return Response::json(array('status' => 'error', 'message' => 'ไม่สามารถสร้างเว็บไซต์ได้'));
 					}*/
+					$output = shell_exec('whoami');
 					SiteController::confirmDeleteSite($sid);
-					return Response::json(array('status' => 'error', 'message' => SiteController::$AZURE_PATH.' site create --location "'.SiteController::$LOCATION.'" "'.$real_name.'" 2>&1'));
+					return Response::json(array('status' => 'error', 'message' => $output));
 				} else if($step == 2) {
 					//Step 2 : mapping domain name
 					$chk_step = SiteController::mappingDomain($real_name, $name, $site_full, $domain);
