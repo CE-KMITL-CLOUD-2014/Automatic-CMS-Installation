@@ -169,7 +169,7 @@ class SiteController extends BaseController {
 
 				if($step == 1) {
 					//Step 1 : create azure website
-					/*$chk_step = SiteController::createAzureSite($real_name);
+					$chk_step = SiteController::createAzureSite($real_name);
 					if($chk_step) {
 						//update state				
 						$current_site->step1 = 1;
@@ -179,10 +179,7 @@ class SiteController extends BaseController {
 					} else {
 						SiteController::confirmDeleteSite($sid);
 						return Response::json(array('status' => 'error', 'message' => 'ไม่สามารถสร้างเว็บไซต์ได้'));
-					}*/
-					$output = shell_exec('whoami');
-					SiteController::confirmDeleteSite($sid);
-					return Response::json(array('status' => 'error', 'message' => $output));
+					}
 				} else if($step == 2) {
 					//Step 2 : mapping domain name
 					$chk_step = SiteController::mappingDomain($real_name, $name, $site_full, $domain);
