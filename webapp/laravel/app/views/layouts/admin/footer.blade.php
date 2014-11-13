@@ -1,7 +1,7 @@
 @if(Request::is('*admin*'))
 
 <!-- NF Admin-->
-<script src="//az686299.vo.msecnd.net/js/nf_admin.js"></script>
+<script src="/cdn/js/nf_admin.js"></script>
 
 @endif
 <footer class="text-center">        

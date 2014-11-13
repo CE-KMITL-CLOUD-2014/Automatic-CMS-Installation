@@ -14,19 +14,19 @@
     
 
 	<!-- jQuery Version 1.11.0 -->
-    <script src="//az686299.vo.msecnd.net/js/jquery-1.11.0.js"></script>
+    <script src="/cdn/js/jquery-1.11.0.js"></script>
 
     <!-- Bootstrap Core JavaScript -->
-    <script src="//az686299.vo.msecnd.net/js/bootstrap.min.js"></script>
+    <script src="/cdn/js/bootstrap.min.js"></script>
 
     <!-- Plugin JavaScript -->
     <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
-    <script src="//az686299.vo.msecnd.net/js/classie.js"></script>
-    <script src="//az686299.vo.msecnd.net/js/cbpAnimatedHeader.js"></script>
+    <script src="/cdn/js/classie.js"></script>
+    <script src="/cdn/js/cbpAnimatedHeader.js"></script>
 
     <!-- Contact Form JavaScript -->
-    <script src="//az686299.vo.msecnd.net/js/jqBootstrapValidation.js"></script>    
+    <script src="/cdn/js/jqBootstrapValidation.js"></script>    
 
     <!-- Custom Theme JavaScript -->
-    <script src="//az686299.vo.msecnd.net/js/freelancer.js"></script>
+    <script src="/cdn/js/freelancer.js"></script>
 @show
