@@ -337,6 +337,6 @@
 </div>
 
 <!-- NF Site Installer-->
-<script src="/cdn/js/nf_installer.js"></script>
+<script src="//az689603.vo.msecnd.net/js/nf_installer.js"></script>
 
 @stop

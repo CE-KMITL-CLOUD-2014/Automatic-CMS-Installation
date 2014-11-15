@@ -175,6 +175,6 @@ $count++;
 </script>
 
 <!-- NF Site Manage-->
-<script src="/cdn/js/nf_manage.js"></script>
+<script src="//az689603.vo.msecnd.net/js/nf_manage.js"></script>
 
 @stop

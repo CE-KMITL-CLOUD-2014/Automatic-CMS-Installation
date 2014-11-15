@@ -15,13 +15,13 @@
     <link rel="icon" type="image/x-icon" href="http://www.nfsite.me/favicon.ico">  
 
     <!-- Bootstrap Core CSS -->
-    <link href="/cdn/css/bootstrap.min.admin.css" rel="stylesheet">
+    <link href="//az689603.vo.msecnd.net/css/bootstrap.min.admin.cdn.css" rel="stylesheet">
 
     <!-- Custom CSS -->
-    <link href="/cdn/css/sb-admin.css" rel="stylesheet">
+    <link href="//az689603.vo.msecnd.net/css/sb-admin.css" rel="stylesheet">
 
     <!-- Morris Charts CSS -->
-    <link href="/cdn/css/plugins/morris.css" rel="stylesheet">
+    <link href="//az689603.vo.msecnd.net/css/plugins/morris.css" rel="stylesheet">
 
     <!-- Custom Fonts -->
     <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -34,10 +34,10 @@
         <![endif]-->   
 
    <!-- jQuery Version 1.11.0 -->
-   <script src="/cdn/js/jquery-1.11.0.js"></script>
+   <script src="//az689603.vo.msecnd.net/js/jquery-1.11.0.js"></script>
 
    <!-- Bootstrap Core JavaScript -->
-   <script src="/cdn/js/bootstrap.min.js"></script>
+   <script src="//az689603.vo.msecnd.net/js/bootstrap.min.js"></script>
 
 @if(Request::is('*user') || Request::is('*site'))
    <!-- DataTables CSS -->
