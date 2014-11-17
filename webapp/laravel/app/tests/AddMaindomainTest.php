@@ -1,21 +1,31 @@
 <?php
 
-class AddSubdomainTest extends TestCase {
+class AddMaindomainTest extends TestCase {
 
 	//DEFINE 
-	static private $sitename = 'test-mapping';
+	static private $domain_name = '.domain.me';
 
 	/**
 	 * A basic functional test example.
 	 *
 	 * 
 	 */
+	private function randString($length) {
+		$characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+		$randomString = '';
+		for ($i = 0; $i < $length; $i++) {
+			$randomString .= $characters[rand(0, strlen($characters) - 1)];
+		}
+		return $randomString;
+	}
 
 	 //Login general user
 	private function loginGeneralUser()
 	{
 		//### Login General User###
 		printf('%s%c','### Login General User ###',10);
+
+		AddMaindomainTest::$domain_name = AddMaindomainTest::randString(6).AddMaindomainTest::$domain_name ;
 
 		//Define
 		$username = 'test@nfsite.me';
@@ -44,6 +54,8 @@ class AddSubdomainTest extends TestCase {
 	{
 		//### Login Admin User###
 		printf('%s%c','### Login ###',10);
+
+		AddMaindomainTest::$domain_name = AddMaindomainTest::randString(6).AddMaindomainTest::$domain_name ;
 
 		//Define
 		$username = 'admintest@nfsite.com';
@@ -95,7 +107,7 @@ class AddSubdomainTest extends TestCase {
 		printf('%s%c','(2)Test request page with general user',10);
 
 		//Login with general user
-		AddSubdomainTest::loginGeneralUser();
+		AddMaindomainTest::loginGeneralUser();
 
 		printf('%s%c','### Request admin domain page ###',10);
 
@@ -128,7 +140,7 @@ class AddSubdomainTest extends TestCase {
 		printf('%s%c','(3)Test request page with admin login',10);
 
 		//Login with general user
-		AddSubdomainTest::loginAdminUser();
+		AddMaindomainTest::loginAdminUser();
 
 		printf('%s%c','### Request admin domain page ###',10);
 
@@ -146,16 +158,13 @@ class AddSubdomainTest extends TestCase {
 		printf('%s%c','----------------------------------------',10);
 	}
 
-	//(4)Test add subdomain
-	public function testAddSubdomain()
+	//(4)Test add maindomain
+	public function testAddMaindomain()
 	{
-		printf('%s%c','(4)Test add subdomain',10);
-
-		//Define
-		$domain_name = 'test-add-subdomain.me';
+		printf('%s%c','(4)Test add maindomain',10);
 
 		//Login with general user
-		AddSubdomainTest::loginAdminUser();
+		AddMaindomainTest::loginAdminUser();
 
 		printf('%s%c','### Request admin domain page ###',10);
 
@@ -173,9 +182,9 @@ class AddSubdomainTest extends TestCase {
 
 		//Add domain name is not repeat
 		printf('%s%c','### Test add domain name is not repeat ###',10);
-		$this->call('POST', '/admin/domain/add', array('_token' => $token, 'domain_name' => $domain_name));
+		$this->call('POST', '/admin/domain/add', array('_token' => $token, 'domain_name' => AddMaindomainTest::$domain_name));
 		printf('%s%c','>Request("POST", "/addmin/domain/add")',10);
-		printf('%s%c','Domain name = '.$domain_name,10);
+		printf('%s%c','Domain name = '.AddMaindomainTest::$domain_name,10);
 
 		//Assert add success
 		$this->assertSessionHas('nf_success');
@@ -183,9 +192,9 @@ class AddSubdomainTest extends TestCase {
 
 		//Add domain name is repeat
 		printf('%s%c','### Test add domain name is not repeat ###',10);
-		$this->call('POST', '/admin/domain/add', array('_token' => $token, 'domain_name' => $domain_name));
+		$this->call('POST', '/admin/domain/add', array('_token' => $token, 'domain_name' => AddMaindomainTest::$domain_name));
 		printf('%s%c','>Request("POST", "/addmin/domain/add")',10);
-		printf('%s%c','Domain name = '.$domain_name,10);
+		printf('%s%c','Domain name = '.AddMaindomainTest::$domain_name,10);
 
 		//Assert add success
 		$this->assertSessionHas('nf_error');
