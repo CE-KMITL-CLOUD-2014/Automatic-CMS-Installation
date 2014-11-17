@@ -26,7 +26,7 @@ class EvaluateCreateWebTest extends TestCase {
 	public function testWordpressDomain2(){
 		printf('%s%c','--- Test Full Create Wordpress domain=nfsite.uni.me ---',10);
 
-		EvaluateCreateWebTest::$sitename = 't'.EvaluateCreateWebTest::randString(6).EvaluateCreateWebTest::$sitename;
+		EvaluateCreateWebTest::$sitename = 't'.EvaluateCreateWebTest::randString(4).EvaluateCreateWebTest::$sitename;
 		EvaluateCreateWebTest::$domain_id = '2';
 		EvaluateCreateWebTest::$cmsSelected = 'wordpress';
 
@@ -36,7 +36,7 @@ class EvaluateCreateWebTest extends TestCase {
 	public function testJoomlaDomain1(){
 		printf('%s%c','--- Test Full Create Joomla domain=nf.cz.cc ---',10);
 
-		EvaluateCreateWebTest::$sitename = 't'.EvaluateCreateWebTest::randString(6).EvaluateCreateWebTest::$sitename;
+		EvaluateCreateWebTest::$sitename = 't'.EvaluateCreateWebTest::randString(4).EvaluateCreateWebTest::$sitename;
 		EvaluateCreateWebTest::$domain_id = '1';
 		EvaluateCreateWebTest::$cmsSelected = 'joomla';
 
@@ -46,7 +46,7 @@ class EvaluateCreateWebTest extends TestCase {
 	public function testJoomlaDomain2(){
 		printf('%s%c','--- Test Full Create Joomla domain=nfsite.uni.me ---',10);
 
-		EvaluateCreateWebTest::$sitename = 't'.EvaluateCreateWebTest::randString(6).EvaluateCreateWebTest::$sitename;
+		EvaluateCreateWebTest::$sitename = 't'.EvaluateCreateWebTest::randString(4).EvaluateCreateWebTest::$sitename;
 		EvaluateCreateWebTest::$domain_id = '2';
 		EvaluateCreateWebTest::$cmsSelected = 'joomla';
 
@@ -56,7 +56,7 @@ class EvaluateCreateWebTest extends TestCase {
 	public function testDrupalDomain1(){
 		printf('%s%c','--- Test Full Create Drupal domain=nf.cz.cc ---',10);
 
-		EvaluateCreateWebTest::$sitename = 't'.EvaluateCreateWebTest::randString(6).EvaluateCreateWebTest::$sitename;
+		EvaluateCreateWebTest::$sitename = 't'.EvaluateCreateWebTest::randString(4).EvaluateCreateWebTest::$sitename;
 		EvaluateCreateWebTest::$domain_id = '1';
 		EvaluateCreateWebTest::$cmsSelected = 'drupal';
 
@@ -66,7 +66,7 @@ class EvaluateCreateWebTest extends TestCase {
 	public function testDrupalDomain2(){
 		printf('%s%c','--- Test Full Create Drupal domain=nfsite.uni.me ---',10);
 
-		EvaluateCreateWebTest::$sitename = 't'.EvaluateCreateWebTest::randString(6).EvaluateCreateWebTest::$sitename;
+		EvaluateCreateWebTest::$sitename = 't'.EvaluateCreateWebTest::randString(4).EvaluateCreateWebTest::$sitename;
 		EvaluateCreateWebTest::$domain_id = '2';
 		EvaluateCreateWebTest::$cmsSelected = 'drupal';
 
