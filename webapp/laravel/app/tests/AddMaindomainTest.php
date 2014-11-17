@@ -119,7 +119,7 @@ class AddMaindomainTest extends TestCase {
 		$this->assertRedirectedTo('/site/manage');
 		printf('%s%c','>RedirectedTO("/site/manage")',10);
 
-		//follow a redirect
+		//follow redirect
 		$this->client->followRedirect();
 
 		// Assert a specific 200 status code (site manage page OK)
