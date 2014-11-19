@@ -1,0 +1,6 @@
+bootstrap/compiled.php
+composer.phar
+composer.lock
+app/config/database.php
+app/config/mail.php
+
