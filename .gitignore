@@ -1,0 +1,8 @@
+webapp/laravel/bootstrap/compiled.php
+webapp/laravel//vendor
+webapp/laravel/composer.phar
+webapp/laravel/composer.lock 
+webapp/laravel/.env.*.php
+webapp/laravel/.env.php
+webapp/laravel/.DS_Store
+webapp/laravel/Thumbs.db
